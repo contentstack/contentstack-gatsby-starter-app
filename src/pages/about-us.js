@@ -9,7 +9,7 @@ const About = props => {
   let { data } = props
   return (
     <Layout>
-      <SEO title="About" />
+      <SEO title={data.allContentstackPage.nodes[0].title} />
       <div className="about">
         {data.allContentstackPage.nodes[0].page_components && (
           <RenderComponents

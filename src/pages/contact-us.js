@@ -8,7 +8,7 @@ const Contact = props => {
   let { data } = props
   return (
     <Layout>
-      <SEO title="Contact" />
+      <SEO title={data.allContentstackPage.nodes[0].title} />
       {data.allContentstackPage.nodes[0].page_components && (
         <RenderComponents
           components={data.allContentstackPage.nodes[0].page_components}

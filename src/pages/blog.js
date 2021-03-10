@@ -21,7 +21,7 @@ const Blog = props => {
 
   return (
     <Layout>
-      <SEO title="Blog" />
+      <SEO title={data.allContentstackPage.nodes[0].title} />
       <HeroBanner />
       <div className="blog-container">
         <div className="blog-column-left">

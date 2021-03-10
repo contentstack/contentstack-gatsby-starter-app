@@ -12,7 +12,7 @@ export default function blogPost(props) {
   let { data } = props
   return (
     <Layout property={props}>
-      <SEO title="Home" />
+      <SEO title={data.contentstackBlogPost.title} />
       <HeroBanner />
       <div className="blog-container">
         <div className="blog-detail">
