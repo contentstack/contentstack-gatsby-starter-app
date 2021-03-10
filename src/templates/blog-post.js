@@ -29,11 +29,11 @@ export default function blogPost(props) {
         </div>
         <div className="blog-column-right">
           <div className="related-post">
-            {data.contentstackPage.page_components[2].widget && (
-              <h2>
-                {data.contentstackPage.page_components[2].widget.title_h2}
-              </h2>
-            )}
+            {data.contentstackPage.page_components?.map((component, index) => {
+              if (component.widget && index === 2) {
+                return <h2>{component.widget.title_h2}</h2>
+              }
+            })}
             <FromBlog
               data={
                 data.contentstackBlogPost.related_post
