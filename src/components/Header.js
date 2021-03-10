@@ -1,19 +1,6 @@
-import {Link, graphql, useStaticQuery } from "gatsby"
+import { Link, graphql, useStaticQuery } from "gatsby"
 import React from "react"
 import ReactHtmlParser from "react-html-parser"
-
-const NavLink = props => (
-  <Link
-    {...props}
-    getProps={({ isCurrent }) => {
-      return {
-        style: {
-          color: isCurrent ? "#715cdd" : "#222"
-        }
-      };
-    }}
-  />
-);
 
 const queryHeader = () => {
   const query = graphql`
@@ -73,12 +60,21 @@ const Header = props => {
             {data.contentstackHeader.navigation_menu.map((menu, index) => {
               return (
                 <li className="nav-li" key={index}>
-                  <NavLink
-                    to={menu.page_reference[0].url}
-                    activeClassName="active"
-                  >
-                    {menu.label}
-                  </NavLink>
+                  {menu.label === "Home" ? (
+                    <Link
+                      to={`${menu.page_reference[0].url}`}
+                      activeClassName="active"
+                    >
+                      {menu.label}
+                    </Link>
+                  ) : (
+                    <Link
+                      to={`${menu.page_reference[0].url}/`}
+                      activeClassName="active"
+                    >
+                      {menu.label}
+                    </Link>
+                  )}
                 </li>
               )
             })}
