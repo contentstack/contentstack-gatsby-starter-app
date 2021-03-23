@@ -10,7 +10,7 @@ About this project: Create professional marketing-themed website using Gatsby.
 
 ## Live Demo
 
-You can check the [live demo](https://gatsby-starter-app-contentstack.vercel.app/) to get first-hand experience of the website.
+You can check the [live demo](https://contentstack-gatsby-starter-app.vercel.app/) to get first-hand experience of the website.
 
 ## Prerequisites
 
