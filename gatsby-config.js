@@ -29,7 +29,7 @@ module.exports = {
       options: {
         host: hostedUrl,
         sitemap: `${hostedUrl}/sitemap.xml`,
-        policy: [{ userAgent: "*", disallow: ["/"] }],
+        policy: [{ userAgent: "*" }],
       },
     },
     {

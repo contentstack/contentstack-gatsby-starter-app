@@ -41,7 +41,7 @@ const Hero = props => {
       </div>
       {data.hero_banner.banner_image ? (
         <img
-          alt={data.hero_banner.banner_image.filename}
+          alt="hero-banner-image"
           src={data.hero_banner.banner_image.url}
         />
       ) : (

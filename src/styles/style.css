@@ -33,7 +33,7 @@ body a {
 }
 
 body p {
-  color: #737b7d;
+  color: #444444;
 }
 
 .max-width {
@@ -447,7 +447,7 @@ footer a {
 }
 
 .about-desc {
-  color: #737b7d;
+  color: #444444;
 }
 
 .mission-content-section {
@@ -554,7 +554,7 @@ footer a {
 
 .contact-page-content > p {
   font-size: 16px;
-  color: #737b7d;
+  color: #444444;
 }
 
 .input-fields,
@@ -956,7 +956,7 @@ footer a {
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   body p {
-    color: #737b7d;
+    color: #444444;
   }
   .btn {
     border: none;

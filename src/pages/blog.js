@@ -31,7 +31,7 @@ const Blog = props => {
                 {blog.featured_image && (
                   <Link to={blog.url}>
                     <img
-                      alt="blog img"
+                      alt="blog-img"
                       className="blog-list-img"
                       src={blog.featured_image.url}
                     />
@@ -145,9 +145,6 @@ export const pageQuery = graphql`
                 url
               }
             }
-          }
-          rich_text {
-            rte
           }
           section {
             title_h2

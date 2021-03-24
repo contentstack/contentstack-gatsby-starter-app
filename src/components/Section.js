@@ -24,7 +24,7 @@ const Section = ({ data }) => {
 
   function imageContent(data) {
     return (
-      <img src={data.section.image.url} alt={data.section.image.filename} />
+      <img src={data.section.image.url} alt="section-image" />
     )
   }
 

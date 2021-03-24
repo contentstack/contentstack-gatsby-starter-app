@@ -85,9 +85,6 @@ export const pageQuery = graphql`
               }
             }
           }
-          rich_text {
-            rte
-          }
           section {
             title_h2
             description

@@ -13,14 +13,12 @@ const queryLayout = () => {
           title
         }
         navigation {
-          navigation_title
           link {
             href
             title
           }
         }
         social {
-          social_share_title
           social_share {
             link {
               href
@@ -78,7 +76,7 @@ const Footer = () => {
                     key={index}
                     className="footer-social-links"
                   >
-                    <img src={social.icon.url} />
+                    <img src={social.icon.url} alt='social-icon' />
                   </a>
                 )
               }

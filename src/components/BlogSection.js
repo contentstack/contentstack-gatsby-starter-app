@@ -25,7 +25,7 @@ const BlogSection = ({ data }) => {
               {blog.featured_image ? (
                 <img
                   src={blog.featured_image.url}
-                  alt={blog.featured_image.filename}
+                  alt={blog.featured_image.title}
                   className="blog-post-img"
                 />
               ) : (

@@ -12,10 +12,10 @@ const TeamSection = ({ data }) => {
           return (
             <div className="team-details" key={index}>
               {employee.image && (
-                <img alt={employee.image.filename} src={employee.image.url} />
+                <img alt={employee.image.title} src={employee.image.url} />
               )}
               <div className="team-details">
-                {employee.name && <h4>{employee.name}</h4>}
+                {employee.name && <h3>{employee.name}</h3>}
                 {employee.designation && <p>{employee.designation}</p>}
               </div>
             </div>

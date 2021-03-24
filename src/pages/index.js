@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from 'gatsby'
+import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
@@ -8,7 +8,7 @@ const Home = props => {
   let { data } = props
   return (
     <Layout>
-      <SEO title={data.allContentstackPage.nodes[0].title}/>
+      <SEO title={data.allContentstackPage.nodes[0].title} />
       {data.allContentstackPage.nodes[0].page_components ? (
         <RenderComponents
           components={data.allContentstackPage.nodes[0].page_components}
@@ -86,9 +86,6 @@ export const pageQuery = graphql`
                 url
               }
             }
-          }
-          rich_text {
-            rte
           }
           section {
             title_h2
