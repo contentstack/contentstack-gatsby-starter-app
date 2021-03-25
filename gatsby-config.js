@@ -44,7 +44,6 @@ module.exports = {
         icon: "src/images/contentstack.png", // This path is relative to the root of the site.
       },
     },
-
     {
       resolve: "gatsby-source-contentstack",
       options: {
