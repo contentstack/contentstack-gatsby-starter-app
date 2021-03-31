@@ -16,8 +16,8 @@ const SectionWithEmbedObject = ({ data }) => {
             : ""}{" "}
         </div>
         <div className="contact-page-form">
-          {data.section_with_embed_object.embed_object ? (
-            <>{ReactHtmlParser(data.section_with_embed_object.embed_object)}</>
+          {data.section_with_embed_object.html_code ? (
+            <>{ReactHtmlParser(data.section_with_embed_object.html_code)}</>
           ) : (
             ""
           )}
@@ -28,7 +28,7 @@ const SectionWithEmbedObject = ({ data }) => {
   return (
     <div className="contact-maps-section max-width">
       <div className="maps-details">
-        {ReactHtmlParser(data.section_with_embed_object.embed_object)}
+        {ReactHtmlParser(data.section_with_embed_object.html_code)}
       </div>
       <div className="contact-maps-content">
         {data.section_with_embed_object.title ? (

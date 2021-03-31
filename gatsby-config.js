@@ -24,7 +24,7 @@ module.exports = {
   plugins: [
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
-    'gatsby-plugin-offline',
+    "gatsby-plugin-offline",
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
@@ -43,6 +43,9 @@ module.exports = {
         theme_color: "#663399",
         display: "minimal-ui",
         icon: "src/images/contentstack.png", // This path is relative to the root of the site.
+        icon_options: {
+          purpose: `any maskable`,
+        },
       },
     },
     {
