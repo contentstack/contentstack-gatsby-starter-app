@@ -10,9 +10,7 @@ const Home = props => {
     <Layout>
       <SEO title={data.contentstackPage.title} />
       {data.contentstackPage.page_components ? (
-        <RenderComponents
-          components={data.contentstackPage.page_components}
-        />
+        <RenderComponents components={data.contentstackPage.page_components} />
       ) : (
         ""
       )}
@@ -124,12 +122,6 @@ export const pageQuery = graphql`
               href
             }
           }
-        }
-        section_with_embed_object {
-          title
-          embed_object_alignment
-          embed_object
-          description
         }
       }
     }

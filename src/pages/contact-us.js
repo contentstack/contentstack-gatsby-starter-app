@@ -121,9 +121,9 @@ export const pageQuery = graphql`
             }
           }
         }
-        section_with_embed_object {
+        section_with_html_code {
           title
-          embed_object_alignment
+          html_code_alignment
           html_code
           description
         }

@@ -2,22 +2,22 @@ import React from "react"
 import ReactHtmlParser from "react-html-parser"
 
 const SectionWithEmbedObject = ({ data }) => {
-  if (data.section_with_embed_object.embed_object_alignment === "Left") {
+  if (data.section_with_html_code.html_code_alignment === "Left") {
     return (
       <div className="contact-page-section max-width">
         <div className="contact-page-content">
-          {data.section_with_embed_object.title ? (
-            <h1>{data.section_with_embed_object.title}</h1>
+          {data.section_with_html_code.title ? (
+            <h1>{data.section_with_html_code.title}</h1>
           ) : (
             ""
           )}
-          {data.section_with_embed_object.description
-            ? ReactHtmlParser(data.section_with_embed_object.description)
+          {data.section_with_html_code.description
+            ? ReactHtmlParser(data.section_with_html_code.description)
             : ""}{" "}
         </div>
         <div className="contact-page-form">
-          {data.section_with_embed_object.html_code ? (
-            <>{ReactHtmlParser(data.section_with_embed_object.html_code)}</>
+          {data.section_with_html_code.html_code ? (
+            <>{ReactHtmlParser(data.section_with_html_code.html_code)}</>
           ) : (
             ""
           )}
@@ -28,16 +28,16 @@ const SectionWithEmbedObject = ({ data }) => {
   return (
     <div className="contact-maps-section max-width">
       <div className="maps-details">
-        {ReactHtmlParser(data.section_with_embed_object.html_code)}
+        {ReactHtmlParser(data.section_with_html_code.html_code)}
       </div>
       <div className="contact-maps-content">
-        {data.section_with_embed_object.title ? (
-          <h2>{data.section_with_embed_object.title}</h2>
+        {data.section_with_html_code.title ? (
+          <h2>{data.section_with_html_code.title}</h2>
         ) : (
           ""
         )}
-        {data.section_with_embed_object.description
-          ? ReactHtmlParser(data.section_with_embed_object.description)
+        {data.section_with_html_code.description
+          ? ReactHtmlParser(data.section_with_html_code.description)
           : ""}{" "}
       </div>
     </div>

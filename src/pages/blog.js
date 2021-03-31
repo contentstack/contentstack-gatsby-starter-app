@@ -65,12 +65,7 @@ const Blog = props => {
           })}
         </div>
         <div className="blog-column-right">
-          <h2>
-            {
-              data.contentstackPage.page_components[1].widget
-                .title_h2
-            }
-          </h2>
+          <h2>{data.contentstackPage.page_components[1].widget.title_h2}</h2>
           <FromBlog data={archived} />
         </div>
       </div>
@@ -180,13 +175,6 @@ export const pageQuery = graphql`
             }
           }
         }
-        section_with_embed_object {
-          title
-          embed_object_alignment
-          embed_object
-          description
-        }
-
         widget {
           title_h2
           type

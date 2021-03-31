@@ -35,7 +35,7 @@ const RenderComponents = props => {
         if (component["section_with_cards"]) {
           return <CardSection data={component} key={index} />
         }
-        if (component["section_with_embed_object"]) {
+        if (component["section_with_html_code"]) {
           return <SectionWithEmbedObject data={component} key={index} />
         }
         if (component["our_team"]) {

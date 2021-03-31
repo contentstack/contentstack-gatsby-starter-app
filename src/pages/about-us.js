@@ -127,12 +127,6 @@ export const pageQuery = graphql`
             }
           }
         }
-        section_with_embed_object {
-          title
-          embed_object_alignment
-          embed_object
-          description
-        }
       }
     }
   }
