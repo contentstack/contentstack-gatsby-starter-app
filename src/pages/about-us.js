@@ -53,7 +53,6 @@ export const pageQuery = graphql`
             body
             author {
               title
-              url
               uid
               bio
             }

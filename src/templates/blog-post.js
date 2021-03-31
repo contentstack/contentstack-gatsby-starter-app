@@ -56,7 +56,6 @@ export const postQuery = graphql`
       body
       date
       author {
-        url
         title
         bio
         picture {
