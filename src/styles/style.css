@@ -262,6 +262,7 @@ footer a {
 
 .blog-content {
   width: 60%;
+  padding: 15px;
 }
 
 .blog-column-left .blog-content a {
@@ -272,10 +273,6 @@ footer a {
 
 .blog-detail {
   width: 690px;
-}
-
-.blog-content {
-  padding: 15px;
 }
 
 /* home page */
@@ -295,10 +292,6 @@ footer a {
 .card-cta {
   display: flex;
   margin-top: auto;
-}
-
-.blog-roll .blog-entry {
-  font-size: 0.9em;
 }
 
 /* New Custom */
