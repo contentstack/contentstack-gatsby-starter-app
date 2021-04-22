@@ -1,4 +1,4 @@
-[![Contentstack](https://camo.githubusercontent.com/d24f513afa94a4a762533d54a0f590300dbd0413/68747470733a2f2f7777772e636f6e74656e74737461636b2e636f6d2f646f63732f7374617469632f696d616765732f636f6e74656e74737461636b2e706e67)](https://www.contentstack.com/)
+[![Contentstack](/src/images/contentstack-readme-logo.png)](https://www.contentstack.com/)
 
 # Create a marketing website using Gatsby
 
@@ -41,9 +41,9 @@ Copy the `.env.sample` file to `.env.development` and `.env.production` and upda
 It should end up looking something like:
 
 ```
-CONTENTSTACK_API_KEY='hunter2'
-CONTENTSTACK_DELIVERY_TOKEN='***REDACTED***'
-CONTENTSTACK_ENVIRONMENT='publishing environment'
+CONTENTSTACK_API_KEY='stack_api_ley'
+CONTENTSTACK_DELIVERY_TOKEN='delivery_token'
+CONTENTSTACK_ENVIRONMENT='publishing_environment'
 CONTENTSTACK_HOSTED_URL='hosted site url'
 CONTENTSTACK_CDN="optional"
 ```
