@@ -23,13 +23,13 @@ You can check the [live demo](https://contentstack-gatsby-starter-app.vercel.app
 
 Clone the following repo. It contains all the required dependencies.
 
-`git clone https://github.com/contentstack/gatsby-starter-contentstack.git`
+`git clone https://github.com/contentstack/contentstack-gatsby-starter-app.git`
 
 ## Install dependencies
 
 Go to the gatsby-starter-contentstack folder, and run the following:
 
-- `cd gatsby-starter-contentstack`
+- `cd contentstack-gatsby-starter-app`
 - `npm install`
 
 This downloads the required files and initializes the site.
