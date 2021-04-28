@@ -3,15 +3,13 @@ import React from "react"
 
 const queryBlogBanner = () => {
   const data = useStaticQuery(graphql`
-    query myQuery {
-      allContentstackPage(filter: { title: { eq: "Blog" } }) {
-        nodes {
-          title
-          page_components {
-            hero_banner {
-              banner_title
-              banner_description
-            }
+    query MyQuery {
+      contentstackPage(title: { eq: "Blog" }) {
+        title
+        page_components {
+          hero_banner {
+            banner_description
+            banner_title
           }
         }
       }
@@ -26,11 +24,10 @@ const blogHero = () => {
     <>
       <div className="blog-page-banner">
         <div className="blog-page-content">
-          {data.allContentstackPage.nodes[0].page_components[0].hero_banner
-            .banner_title ? (
+          {data.contentstackPage.page_components[0].hero_banner.banner_title ? (
             <h1 className="hero-title">
               {
-                data.allContentstackPage.nodes[0].page_components[0].hero_banner
+                data.contentstackPage.page_components[0].hero_banner
                   .banner_title
               }
             </h1>
@@ -38,11 +35,11 @@ const blogHero = () => {
             ""
           )}
 
-          {data.allContentstackPage.nodes[0].page_components[0].hero_banner
+          {data.contentstackPage.page_components[0].hero_banner
             .banner_description ? (
             <p className="hero-description">
               {
-                data.allContentstackPage.nodes[0].page_components[0].hero_banner
+                data.contentstackPage.page_components[0].hero_banner
                   .banner_description
               }
             </p>
