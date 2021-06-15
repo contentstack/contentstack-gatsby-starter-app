@@ -14,7 +14,7 @@ export default function blogPost(props) {
     <Layout property={props}>
       <SEO title={data.contentstackBlogPost.title} />
       <HeroBanner />
-      <div className="blog-container">
+      <div className="blog-container" data-pageref={data.contentstackBlogPost.uid} data-contenttype="blog_post" data-locale={data.contentstackBlogPost.locale}>
         <div className="blog-detail">
           <h2>
             {data.contentstackBlogPost.title
@@ -54,6 +54,8 @@ export const postQuery = graphql`
       url
       title
       body
+      uid
+      locale
       date
       author {
         title

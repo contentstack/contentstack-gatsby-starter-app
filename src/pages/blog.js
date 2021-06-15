@@ -23,7 +23,7 @@ const Blog = props => {
     <Layout>
       <SEO title={data.contentstackPage.title} />
       <HeroBanner />
-      <div className="blog-container">
+      <div className="blog-container" data-pageref={data.contentstackPage.uid} data-contenttype="page" data-locale={data.contentstackPage.locale}>
         <div className="blog-column-left">
           {blogList.map((blog, index) => {
             return (
@@ -79,6 +79,7 @@ export const pageQuery = graphql`
       title
       url
       uid
+      locale
       seo {
         enable_search_indexing
         keywords

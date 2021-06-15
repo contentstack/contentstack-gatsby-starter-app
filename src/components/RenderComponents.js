@@ -10,9 +10,9 @@ import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
 
 const RenderComponents = props => {
-  const { components, about } = props
+  const { components, about, entryUid, contentTypeUid, locale } = props
   return (
-    <>
+    <div data-pageref={entryUid} data-contenttype={contentTypeUid} data-locale={locale}>
       {components?.map((component, index) => {
         if (component["hero_banner"]) {
           return (
@@ -42,7 +42,7 @@ const RenderComponents = props => {
           return <TeamSection data={component} key={index} />
         }
       })}
-    </>
+    </div>
   )
 }
 export default RenderComponents

@@ -15,6 +15,9 @@ const About = props => {
           <RenderComponents
             components={data.contentstackPage.page_components}
             about
+            contentTypeUid="page"
+            entryUid={data.contentstackPage.uid}
+            locale={data.contentstackPage.locale}
           />
         )}
       </div>
@@ -28,6 +31,7 @@ export const pageQuery = graphql`
       title
       url
       uid
+      locale
       seo {
         enable_search_indexing
         keywords
