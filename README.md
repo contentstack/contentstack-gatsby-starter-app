@@ -4,7 +4,7 @@
 
 About Contentstack: Contentstack is a headless CMS with an API-first approach that puts content at the centre. It is designed to simplify the process of publication by separating code from content.
 
-About this project: Create professional marketing-themed website using Gatsby.
+About this project: Gatsby is a framework to build static websites.This Gatsby starter guide will help you to build a website using Gatsby and power its content from Contentstack.
 
 ![contentstack-gatsby-starter-app](/src/images/readme.png)
 
@@ -12,38 +12,13 @@ About this project: Create professional marketing-themed website using Gatsby.
 
 You can check the [live demo](https://contentstack-gatsby-starter-app.vercel.app/) to get first-hand experience of the website.
 
-## Prerequisites
+## Tutorial
 
-- Install [nodejs](https://nodejs.org/en/) on your system.
-- Install Gatsby CLI.
+We have created an in-depth tutorial on how you can create a Gatsby starter website using the 'gatsby-source-contentstack' plugin and fetch its content from Contentstack. 
 
-`npm install -g gatsby-cli`
+[Build a Starter Website with Gatsby and Contentstack](https://www.contentstack.com/docs/developers/sample-apps/build-a-starter-website-with-gatsby-and-contentstack/)
 
-## Clone the repo
+**More Resources**
 
-Clone the following repo. It contains all the required dependencies.
-
-`git clone https://github.com/contentstack/contentstack-gatsby-starter-app.git`
-
-## Install dependencies
-
-Go to the gatsby-starter-contentstack folder, and run the following:
-
-- `cd contentstack-gatsby-starter-app`
-- `npm install`
-
-This downloads the required files and initializes the site.
-
-## Update Contentstack secrets
-
-Copy the `.env.sample` file to `.env.development` and `.env.production` and update with your Contentstack details, including your API key and delivery token.
-
-It should end up looking something like:
-
-```
-CONTENTSTACK_API_KEY='stack_api_ley'
-CONTENTSTACK_DELIVERY_TOKEN='delivery_token'
-CONTENTSTACK_ENVIRONMENT='publishing_environment'
-CONTENTSTACK_HOSTED_URL='hosted site url'
-CONTENTSTACK_CDN="optional"
-```
+- [Contentstack documentation](https://www.contentstack.com/docs/)
+- [Gatsby documentation](https://www.gatsbyjs.com/docs/)
