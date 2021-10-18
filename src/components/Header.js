@@ -1,6 +1,8 @@
 import { Link, graphql, useStaticQuery } from "gatsby"
 import React from "react"
-import ReactHtmlParser from "react-html-parser"
+import parse from "html-react-parser"
+import { connect } from "react-redux"
+import { actionHeader } from "../store/actions/state.action"
 
 const queryHeader = () => {
   const query = graphql`
@@ -9,7 +11,6 @@ const queryHeader = () => {
         title
         uid
         logo {
-          title
           url
         }
         navigation_menu {
@@ -28,25 +29,30 @@ const queryHeader = () => {
   `
   return useStaticQuery(query)
 }
-const Header = props => {
-  let data = queryHeader()
+const Header = ({ dispatch }) => {
+  const { contentstackHeader } = queryHeader()
+  dispatch(actionHeader(contentstackHeader))
   return (
     <header className="header">
-      {data.contentstackHeader.notification_bar.show_announcement ? (
-        <div className="note-div">
-          {ReactHtmlParser(
-            data.contentstackHeader.notification_bar.announcement_text
-          )}
-        </div>
-      ) : null}
+      <div className="note-div">
+        {contentstackHeader.notification_bar.show_announcement &&
+          parse(contentstackHeader.notification_bar.announcement_text)}
+        <span
+          className="devtools"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          <i className="fas fa-tools fa-lg" />
+        </span>
+      </div>
       <div className="max-width header-div">
         <div className="wrapper-logo">
           <Link to="/" className="logo-tag" title="Contentstack">
             <img
               className="logo"
-              src={data.contentstackHeader.logo.url}
-              alt={data.contentstackHeader.title}
-              title={data.contentstackHeader.title}
+              src={contentstackHeader.logo.url}
+              alt={contentstackHeader.title}
+              title={contentstackHeader.title}
             />
           </Link>
         </div>
@@ -57,7 +63,7 @@ const Header = props => {
 
         <nav className="menu">
           <ul className="nav-ul header-ul">
-            {data.contentstackHeader.navigation_menu.map((menu, index) => {
+            {contentstackHeader.navigation_menu.map((menu, index) => {
               return (
                 <li className="nav-li" key={index}>
                   {menu.label === "Home" ? (
@@ -85,4 +91,4 @@ const Header = props => {
   )
 }
 
-export default Header
+export default connect()(Header)

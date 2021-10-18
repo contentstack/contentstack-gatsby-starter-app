@@ -1,5 +1,5 @@
 import React from "react"
-import ReactHtmlParser from "react-html-parser"
+import parser from "html-react-parser"
 
 const AboutSectionBucket = ({ data }) => {
   function bucketContent(bucket, index) {
@@ -11,7 +11,7 @@ const AboutSectionBucket = ({ data }) => {
 
         <div className="mission-section-content">
           {bucket.title_h3 && <h3>{bucket.title_h3}</h3>}
-          {bucket.description && <p>{ReactHtmlParser(bucket.description)}</p>}
+          {bucket.description && <p>{parser(bucket.description)}</p>}
         </div>
       </div>
     )

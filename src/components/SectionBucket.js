@@ -1,6 +1,6 @@
 import { Link } from "gatsby"
 import React from "react"
-import ReactHtmlParser from "react-html-parser"
+import parser from "html-react-parser"
 
 const SectionBucket = ({ data }) => {
   return (
@@ -21,11 +21,10 @@ const SectionBucket = ({ data }) => {
         {data.section_with_buckets.buckets.map((bucket, index) => {
           return (
             <div className="content-section" key={index}>
-              {bucket.icon && <img src={bucket.icon.url} alt="bucket icon" />}
-
-              {bucket.title_h3 ? <h3>{bucket.title_h3}</h3> : ""}
-              {bucket.description && ReactHtmlParser(bucket.description)}
-              {bucket.call_to_action.title ? (
+              {/* {bucket.icon && <img src={bucket.icon.url} alt="bucket icon" />} */}
+              {/* {bucket.title_h3 ? <h3>{bucket.title_h3}</h3> : ""} */}
+              {/* {bucket.description && parser(bucket.description)} */}
+              {/* {bucket.call_to_action.title ? (
                 <Link
                   to={
                     bucket.call_to_action.href
@@ -37,7 +36,7 @@ const SectionBucket = ({ data }) => {
                 </Link>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
           )
         })}

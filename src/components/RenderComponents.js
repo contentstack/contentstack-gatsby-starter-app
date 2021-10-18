@@ -9,8 +9,7 @@ import SectionBucket from "./SectionBucket"
 import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
 
-const RenderComponents = props => {
-  const { components, about, entryUid, contentTypeUid, locale } = props
+const RenderComponents = ({ components, about, entryUid, contentTypeUid, locale }) => {
   return (
     <div data-pageref={entryUid} data-contenttype={contentTypeUid} data-locale={locale}>
       {components?.map((component, index) => {

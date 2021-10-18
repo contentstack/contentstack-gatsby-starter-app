@@ -7,16 +7,27 @@
 import React from "react"
 import Header from "./Header"
 import Footer from "./Footer"
+import DevTools from "./devtools"
+import { connect } from "react-redux"
 import "../styles/style.css"
 
-const Layout = props => {
+const mapStateToProps = ({ header, footer, page, blog_post }) => {
+  return { header, footer, page, blog_post }
+}
+
+const Layout = ({ header, footer, page, blog_post, children }) => {
+  const json = { header, footer }
+  page && (json.page = page)
+  blog_post && (json.blog_post = blog_post)
+
   return (
     <>
       <Header />
-      <main>{props.children}</main>
+      <DevTools response={json} />
+      <main>{children}</main>
       <Footer />
     </>
   )
 }
 
-export default Layout
+export default connect(mapStateToProps)(Layout)
