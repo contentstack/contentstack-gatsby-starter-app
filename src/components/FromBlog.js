@@ -1,4 +1,4 @@
-import { useStaticQuery, graphql, Link } from "gatsby"
+import { Link } from "gatsby"
 import React from "react"
 import parser from "html-react-parser"
 
