@@ -2,9 +2,9 @@ import React from "react"
 import parser from "html-react-parser"
 
 const AboutSectionBucket = ({ data }) => {
-  function bucketContent(bucket, index) {
+  function bucketContent(bucket) {
     return (
-      <div className="mission-content-section" key={index}>
+      <div className="mission-content-section" key={bucket.title_h3}>
         {bucket.icon && (
           <img className="mission-icon" src={bucket.icon.url} alt="art work" />
         )}
@@ -27,12 +27,12 @@ const AboutSectionBucket = ({ data }) => {
       <div className="mission-section">
         <div className="mission-content-top">
           {data.section_with_buckets.buckets.map(
-            (bucket, index) => index < 2 && bucketContent(bucket, index)
+            (bucket, index) => index < 2 && bucketContent(bucket)
           )}
         </div>
         <div className="mission-content-bottom">
           {data.section_with_buckets.buckets.map(
-            (bucket, index) => index >= 2 && bucketContent(bucket, index)
+            (bucket, index) => index >= 2 && bucketContent(bucket)
           )}
         </div>
       </div>

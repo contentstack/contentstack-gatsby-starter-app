@@ -56,7 +56,7 @@ const Blog = ({
                   )}
                   <p>
                     {moment(blog.date).format("ddd, MMM D YYYY")},{" "}
-                    <strong>{blog.author[0].title}</strong>
+                    <strong>{blog.author[0]?.title}</strong>
                   </p>
                   {blog.body ? (
                     <p>{parser(blog.body.slice(0, 300))}</p>

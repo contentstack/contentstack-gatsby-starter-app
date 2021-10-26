@@ -10,11 +10,11 @@ import HeroBanner from "../components/BlogBanner"
 import { connect } from "react-redux"
 import { actionPage, actionBlogpost } from "../store/actions/state.action"
 
-const blogPost = ({
-  data: { contentstackBlogPost, contentstackPage },
-  dispatch,
-}) => {
-  dispatch(actionPage(contentstackPage))
+const blogPost = props => {
+  const {
+    data: { contentstackBlogPost, contentstackPage },
+    dispatch,
+  } = props
   dispatch(actionBlogpost(contentstackBlogPost))
   return (
     <Layout property={props}>
@@ -32,7 +32,7 @@ const blogPost = ({
           </h2>
           <p>
             {moment(contentstackBlogPost.date).format("ddd, MMM D YYYY")},{" "}
-            <strong>{contentstackBlogPost.author[0].title}</strong>
+            <strong>{contentstackBlogPost.author[0]?.title}</strong>
           </p>
           {parser(contentstackBlogPost.body)}
         </div>
