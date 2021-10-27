@@ -9,7 +9,10 @@ import Header from "./Header"
 import Footer from "./Footer"
 import DevTools from "./devtools"
 import { connect } from "react-redux"
-import "../styles/style.css"
+
+typeof window !== "undefined" && require("bootstrap/dist/css/bootstrap.min.css")
+typeof window !== "undefined" && require("bootstrap/dist/js/bootstrap")
+require("../styles/style.css")
 
 const mapStateToProps = ({ header, footer, page, blog_post }) => {
   return { header, footer, page, blog_post }

@@ -8,7 +8,7 @@ import SEO from "../components/SEO"
 import FromBlog from "../components/FromBlog"
 import HeroBanner from "../components/BlogBanner"
 import { connect } from "react-redux"
-import { actionPage, actionBlogpost } from "../store/actions/state.action"
+import { actionBlogpost } from "../store/actions/state.action"
 
 const blogPost = props => {
   const {

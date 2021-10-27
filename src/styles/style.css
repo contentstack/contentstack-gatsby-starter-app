@@ -274,6 +274,10 @@ footer a {
   width: 360px;
 }
 
+.blog-column-right a:hover{
+color: #222222;
+}
+
 .blog-content h3 {
   color: #222222;
 }
