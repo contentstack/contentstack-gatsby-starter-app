@@ -3,6 +3,7 @@ import React from "react"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
 import { actionHeader } from "../store/actions/state.action"
+import DevtoolsIcon from "../images/devtools.gif"
 
 const queryHeader = () => {
   const query = graphql`
@@ -35,14 +36,18 @@ const Header = ({ dispatch }) => {
   return (
     <header className="header">
       <div className="note-div">
-        {contentstackHeader.notification_bar.show_announcement &&
-          parse(contentstackHeader.notification_bar.announcement_text)}
+        {contentstackHeader.notification_bar.show_announcement ? (
+          parse(contentstackHeader.notification_bar.announcement_text)
+        ) : (
+          <div style={{ visibility: "hidden" }}>Dev tools section</div>
+        )}
         <span
           className="devtools"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
-          <i className="fas fa-tools fa-lg" />
+          <img src={DevtoolsIcon} alt="dev tools icon" title="json preview"/>
+          {/* <i className="fas fa-tools fa-lg" /> */}
         </span>
       </div>
       <div className="max-width header-div">
