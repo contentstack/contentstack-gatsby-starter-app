@@ -1,11 +1,6 @@
 import React from "react"
-// import ReactJson from "react-json-view";
-// const ReactJson =typeof window !== "undefined" && require("react-json-view");
 
-
-const ReactJson = React.lazy(() =>
-  import("react-json-view")
-)
+const ReactJson = React.lazy(() => import("react-json-view"))
 
 const DevTools = ({ response }) => {
   const isSSR = typeof window === "undefined"
@@ -36,12 +31,12 @@ const DevTools = ({ response }) => {
             <pre id="jsonViewer">
               {response && !isSSR && (
                 <React.Suspense fallback={<div />}>
-                <ReactJson
-                  src={response}
-                  collapsed={1}
-                  name="response"
-                  enableClipboard={false}
-                />
+                  <ReactJson
+                    src={response}
+                    collapsed={1}
+                    name="response"
+                    enableClipboard={false}
+                  />
                 </React.Suspense>
               )}
             </pre>

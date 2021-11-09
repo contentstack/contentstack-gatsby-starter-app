@@ -46,8 +46,7 @@ const Header = ({ dispatch }) => {
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
-          <img src={DevtoolsIcon} alt="dev tools icon" title="json preview"/>
-          {/* <i className="fas fa-tools fa-lg" /> */}
+          <img src={DevtoolsIcon} alt="dev tools icon" title="json preview" />
         </span>
       </div>
       <div className="max-width header-div">
