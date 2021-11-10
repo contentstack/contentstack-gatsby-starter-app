@@ -1,43 +1,52 @@
 import React from "react"
 import { graphql } from "gatsby"
-import ReactHtmlParser from "react-html-parser"
+import parser from "html-react-parser"
 import moment from "moment"
 
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import FromBlog from "../components/FromBlog"
 import HeroBanner from "../components/BlogBanner"
+import { connect } from "react-redux"
+import { actionBlogpost } from "../store/actions/state.action"
 
-export default function blogPost(props) {
-  let { data } = props
+const blogPost = props => {
+  const {
+    data: { contentstackBlogPost, contentstackPage },
+    dispatch,
+  } = props
+  dispatch(actionBlogpost(contentstackBlogPost))
   return (
     <Layout property={props}>
-      <SEO title={data.contentstackBlogPost.title} />
+      <SEO title={contentstackBlogPost.title} />
       <HeroBanner />
-      <div className="blog-container" data-pageref={data.contentstackBlogPost.uid} data-contenttype="blog_post" data-locale={data.contentstackBlogPost.locale}>
+      <div
+        className="blog-container"
+        data-pageref={contentstackBlogPost.uid}
+        data-contenttype="blog_post"
+        data-locale={contentstackBlogPost.locale}
+      >
         <div className="blog-detail">
           <h2>
-            {data.contentstackBlogPost.title
-              ? data.contentstackBlogPost.title
-              : ""}
+            {contentstackBlogPost.title ? contentstackBlogPost.title : ""}
           </h2>
           <p>
-            {moment(data.contentstackBlogPost.date).format("ddd, MMM D YYYY")},{" "}
-            <strong>{data.contentstackBlogPost.author[0].title}</strong>
+            {moment(contentstackBlogPost.date).format("ddd, MMM D YYYY")},{" "}
+            <strong>{contentstackBlogPost.author[0]?.title}</strong>
           </p>
-          {ReactHtmlParser(data.contentstackBlogPost.body)}
+          {parser(contentstackBlogPost.body)}
         </div>
         <div className="blog-column-right">
           <div className="related-post">
-            {data.contentstackPage.page_components?.map((component, index) => {
+            {contentstackPage.page_components?.map((component, index) => {
               if (component.widget && index === 2) {
                 return <h2>{component.widget.title_h2}</h2>
               }
             })}
             <FromBlog
               data={
-                data.contentstackBlogPost.related_post
-                  ? data.contentstackBlogPost.related_post
+                contentstackBlogPost.related_post
+                  ? contentstackBlogPost.related_post
                   : ""
               }
             />
@@ -49,7 +58,7 @@ export default function blogPost(props) {
 }
 
 export const postQuery = graphql`
-  query($title: String!) {
+  query ($title: String!) {
     contentstackBlogPost(title: { eq: $title }) {
       url
       title
@@ -62,7 +71,6 @@ export const postQuery = graphql`
         bio
         picture {
           url
-          title
         }
       }
       related_post {
@@ -78,7 +86,6 @@ export const postQuery = graphql`
         meta_title
       }
     }
-
     contentstackPage {
       page_components {
         widget {
@@ -89,3 +96,4 @@ export const postQuery = graphql`
     }
   }
 `
+export default connect()(blogPost)

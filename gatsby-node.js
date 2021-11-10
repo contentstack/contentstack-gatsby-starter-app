@@ -1,5 +1,3 @@
-// Module dependency
-
 const path = require("path")
 
 module.exports.createPages = async ({ graphql, actions }) => {
@@ -15,9 +13,9 @@ module.exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
-  const createNewPage = (path, comp, title) => {
+  const createNewPage = (route, comp, title) => {
     createPage({
-      path: `${path}`,
+      path: `${route}`,
       component: comp,
       context: {
         title: title,

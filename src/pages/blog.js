@@ -1,29 +1,40 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-import ReactHtmlParser from "react-html-parser"
+import parser from "html-react-parser"
 import moment from "moment"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import HeroBanner from "../components/BlogBanner"
 import FromBlog from "../components/FromBlog"
+import { connect } from "react-redux"
+import { actionPage, actionBlogpost } from "../store/actions/state.action"
 
-const Blog = props => {
-  let { data } = props
+const Blog = ({
+  data: { allContentstackBlogPost, contentstackPage },
+  dispatch,
+}) => {
   let archived = [],
     blogList = []
-  data.allContentstackBlogPost.nodes.forEach(blogs => {
+  allContentstackBlogPost.nodes.forEach(blogs => {
     if (blogs.is_archived) {
       archived.push(blogs)
     } else {
       blogList.push(blogs)
     }
   })
+  dispatch(actionPage(contentstackPage))
+  dispatch(actionBlogpost(allContentstackBlogPost.nodes))
 
   return (
     <Layout>
-      <SEO title={data.contentstackPage.title} />
+      <SEO title={contentstackPage.title} />
       <HeroBanner />
-      <div className="blog-container" data-pageref={data.contentstackPage.uid} data-contenttype="page" data-locale={data.contentstackPage.locale}>
+      <div
+        className="blog-container"
+        data-pageref={contentstackPage.uid}
+        data-contenttype="page"
+        data-locale={contentstackPage.locale}
+      >
         <div className="blog-column-left">
           {blogList.map((blog, index) => {
             return (
@@ -45,10 +56,10 @@ const Blog = props => {
                   )}
                   <p>
                     {moment(blog.date).format("ddd, MMM D YYYY")},{" "}
-                    <strong>{blog.author[0].title}</strong>
+                    <strong>{blog.author[0]?.title}</strong>
                   </p>
                   {blog.body ? (
-                    <p>{ReactHtmlParser(blog.body.slice(0, 300))}</p>
+                    <p>{parser(blog.body.slice(0, 300))}</p>
                   ) : (
                     ""
                   )}
@@ -65,7 +76,7 @@ const Blog = props => {
           })}
         </div>
         <div className="blog-column-right">
-          <h2>{data.contentstackPage.page_components[1].widget.title_h2}</h2>
+          <h2>{contentstackPage.page_components[1].widget.title_h2}</h2>
           <FromBlog data={archived} />
         </div>
       </div>
@@ -100,7 +111,6 @@ export const pageQuery = graphql`
             url
             is_archived
             featured_image {
-              title
               url
             }
             body
@@ -131,7 +141,6 @@ export const pageQuery = graphql`
             name
             designation
             image {
-              title
               url
             }
           }
@@ -140,7 +149,6 @@ export const pageQuery = graphql`
           title_h2
           description
           image {
-            title
             url
           }
           image_alignment
@@ -156,7 +164,6 @@ export const pageQuery = graphql`
             title_h3
             description
             icon {
-              title
               url
             }
             call_to_action {
@@ -205,4 +212,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default Blog
+export default connect()(Blog)
