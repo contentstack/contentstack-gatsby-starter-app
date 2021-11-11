@@ -3,18 +3,25 @@ import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
+import { connect } from "react-redux"
+import { actionPage, actionBlogpost } from "../store/actions/state.action"
 
 const Home = props => {
-  let { data } = props
+  let {
+    data: { contentstackPage },
+    dispatch,
+  } = props
+  dispatch(actionPage(contentstackPage))
+  dispatch(actionBlogpost(null))
   return (
     <Layout>
-      <SEO title={data.contentstackPage.title} />
-      {data.contentstackPage.page_components ? (
+      <SEO title={contentstackPage.title} />
+      {contentstackPage.page_components ? (
         <RenderComponents
-          components={data.contentstackPage.page_components}
+          components={contentstackPage.page_components}
           contentTypeUid="page"
-          entryUid={data.contentstackPage.uid}
-          locale={data.contentstackPage.locale}
+          entryUid={contentstackPage.uid}
+          locale={contentstackPage.locale}
         />
       ) : (
         ""
@@ -49,7 +56,6 @@ export const pageQuery = graphql`
             uid
             url
             featured_image {
-              title
               url
             }
             body
@@ -69,7 +75,6 @@ export const pageQuery = graphql`
           banner_title
           bg_color
           banner_image {
-            title
             url
           }
           call_to_action {
@@ -84,7 +89,6 @@ export const pageQuery = graphql`
             name
             designation
             image {
-              title
               url
             }
           }
@@ -93,7 +97,6 @@ export const pageQuery = graphql`
           title_h2
           description
           image {
-            title
             url
           }
           image_alignment
@@ -109,7 +112,6 @@ export const pageQuery = graphql`
             title_h3
             description
             icon {
-              title
               url
             }
             call_to_action {
@@ -133,4 +135,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default Home
+export default connect()(Home)

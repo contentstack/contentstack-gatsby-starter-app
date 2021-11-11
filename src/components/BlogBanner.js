@@ -1,5 +1,7 @@
 import { useStaticQuery, graphql } from "gatsby"
 import React from "react"
+import { connect } from "react-redux"
+import { actionPage } from "../store/actions/state.action"
 
 const queryBlogBanner = () => {
   const data = useStaticQuery(graphql`
@@ -18,8 +20,9 @@ const queryBlogBanner = () => {
   return data
 }
 
-const blogHero = () => {
+const blogHero = ({dispatch}) => {
   let data = queryBlogBanner()
+  dispatch(actionPage(data.contentstackPage.page_components))
   return (
     <>
       <div className="blog-page-banner">
@@ -52,4 +55,4 @@ const blogHero = () => {
   )
 }
 
-export default blogHero
+export default connect()(blogHero)

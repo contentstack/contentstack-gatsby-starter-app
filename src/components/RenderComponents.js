@@ -9,37 +9,52 @@ import SectionBucket from "./SectionBucket"
 import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
 
-const RenderComponents = props => {
-  const { components, about, entryUid, contentTypeUid, locale } = props
+const RenderComponents = ({
+  components,
+  about,
+  entryUid,
+  contentTypeUid,
+  locale,
+}) => {
   return (
-    <div data-pageref={entryUid} data-contenttype={contentTypeUid} data-locale={locale}>
+    <div
+      data-pageref={entryUid}
+      data-contenttype={contentTypeUid}
+      data-locale={locale}
+    >
       {components?.map((component, index) => {
         if (component["hero_banner"]) {
           return (
-            <Hero data={component} title={about ? "about" : ""} key={index} />
+            <Hero
+              data={component}
+              title={about ? "about" : ""}
+              key={"render" + index}
+            />
           )
         }
         if (component["section"]) {
-          return <Section data={component} key={index} />
+          return <Section data={component} key={"render" + index} />
         }
         if (component["section_with_buckets"]) {
           return about ? (
-            <AboutSectionBucket data={component} key={index} />
+            <AboutSectionBucket data={component} key={"render" + index} />
           ) : (
-            <SectionBucket data={component} key={index} />
+            <SectionBucket data={component} key={"render" + index} />
           )
         }
         if (component["from_blog"]) {
-          return <BlogSection data={component} key={index} />
+          return <BlogSection data={component} key={"render" + index} />
         }
         if (component["section_with_cards"]) {
-          return <CardSection data={component} key={index} />
+          return <CardSection data={component} key={"render" + index} />
         }
         if (component["section_with_html_code"]) {
-          return <SectionWithEmbedObject data={component} key={index} />
+          return (
+            <SectionWithEmbedObject data={component} key={"render" + index} />
+          )
         }
         if (component["our_team"]) {
-          return <TeamSection data={component} key={index} />
+          return <TeamSection data={component} key={"render" + index} />
         }
       })}
     </div>

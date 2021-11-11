@@ -2,22 +2,25 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
+import { connect } from "react-redux"
+import { actionPage, actionBlogpost } from "../store/actions/state.action"
 
 import RenderComponents from "../components/RenderComponents"
 
-const About = props => {
-  let { data } = props
+const About = ({ data: { contentstackPage }, dispatch }) => {
+  dispatch(actionPage(contentstackPage))
+  dispatch(actionBlogpost(null))
   return (
     <Layout>
-      <SEO title={data.contentstackPage.title} />
+      <SEO title={contentstackPage.title} />
       <div className="about">
-        {data.contentstackPage.page_components && (
+        {contentstackPage.page_components && (
           <RenderComponents
-            components={data.contentstackPage.page_components}
+            components={contentstackPage.page_components}
             about
             contentTypeUid="page"
-            entryUid={data.contentstackPage.uid}
-            locale={data.contentstackPage.locale}
+            entryUid={contentstackPage.uid}
+            locale={contentstackPage.locale}
           />
         )}
       </div>
@@ -51,7 +54,6 @@ export const pageQuery = graphql`
             uid
             url
             featured_image {
-              title
               url
             }
             body
@@ -71,7 +73,6 @@ export const pageQuery = graphql`
           banner_title
           bg_color
           banner_image {
-            title
             url
           }
           call_to_action {
@@ -86,7 +87,6 @@ export const pageQuery = graphql`
             name
             designation
             image {
-              title
               url
             }
           }
@@ -95,7 +95,6 @@ export const pageQuery = graphql`
           title_h2
           description
           image {
-            title
             url
           }
           image_alignment
@@ -111,7 +110,6 @@ export const pageQuery = graphql`
             title_h3
             description
             icon {
-              title
               url
             }
             call_to_action {
@@ -135,4 +133,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default About
+export default connect()(About)
