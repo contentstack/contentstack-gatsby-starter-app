@@ -9,7 +9,7 @@ const FromBlog = props => {
       <Link to={index.url} key={key}>
         <div>
           <h4>{index.title}</h4>
-          {parser(index.body.slice(0, 80))}
+          {typeof index.body === "string" && parser(index.body.slice(0, 80))}
         </div>
       </Link>
     )

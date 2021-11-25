@@ -33,7 +33,8 @@ const BlogSection = ({ data }) => {
               )}
               <div className="featured-content">
                 {blog.title ? <h3>{blog.title}</h3> : ""}
-                {blog.body && parser(blog.body.slice(0, 300))}
+                {typeof blog.body === "string" &&
+                  parser(blog.body.slice(0, 300))}
                 <Link className="blogpost-readmore" to={blog.url}>
                   {"Read More -->"}
                 </Link>

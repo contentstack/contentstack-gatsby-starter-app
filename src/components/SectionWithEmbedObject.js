@@ -11,16 +11,14 @@ const SectionWithEmbedObject = ({ data }) => {
           ) : (
             ""
           )}
-          {data.section_with_html_code.description
+          {typeof data.section_with_html_code.description === "string"
             ? parser(data.section_with_html_code.description)
             : ""}{" "}
         </div>
         <div className="contact-page-form">
-          {data.section_with_html_code.html_code ? (
-            <>{parser(data.section_with_html_code.html_code)}</>
-          ) : (
-            ""
-          )}
+          {typeof data.section_with_html_code.html_code === "string"
+            ? parser(data.section_with_html_code.html_code)
+            : ""}
         </div>
       </div>
     )
@@ -28,7 +26,8 @@ const SectionWithEmbedObject = ({ data }) => {
   return (
     <div className="contact-maps-section max-width">
       <div className="maps-details">
-        {parser(data.section_with_html_code.html_code)}
+        {typeof data.section_with_html_code.html_code === "string" &&
+          parser(data.section_with_html_code.html_code)}
       </div>
       <div className="contact-maps-content">
         {data.section_with_html_code.title ? (
@@ -36,7 +35,7 @@ const SectionWithEmbedObject = ({ data }) => {
         ) : (
           ""
         )}
-        {data.section_with_html_code.description
+        {typeof data.section_with_html_code.description === "string"
           ? parser(data.section_with_html_code.description)
           : ""}{" "}
       </div>

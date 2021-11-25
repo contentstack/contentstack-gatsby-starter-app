@@ -5,8 +5,13 @@ import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
 import { connect } from "react-redux"
 import { actionPage, actionBlogpost } from "../store/actions/state.action"
+import * as Utils from "@contentstack/utils"
 
 const Contact = ({ data: { contentstackPage }, dispatch }) => {
+  Utils.jsonToHTML({
+    entry: contentstackPage,
+    paths: ["page_components.section_with_html_code.description"],
+  })
   dispatch(actionPage(contentstackPage))
   dispatch(actionBlogpost(null))
 
