@@ -12,13 +12,18 @@ const Home = props => {
     data: { contentstackPage },
     dispatch,
   } = props
-
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: [
       "page_components.from_blog.featured_blogs.body",
       "page_components.section_with_buckets.buckets.description",
     ],
+    renderOption
   })
   dispatch(actionPage(contentstackPage))
   dispatch(actionBlogpost(null))

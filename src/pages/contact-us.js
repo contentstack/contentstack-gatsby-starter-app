@@ -8,9 +8,16 @@ import { actionPage, actionBlogpost } from "../store/actions/state.action"
 import * as Utils from "@contentstack/utils"
 
 const Contact = ({ data: { contentstackPage }, dispatch }) => {
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
+
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: ["page_components.section_with_html_code.description"],
+    renderOption
   })
   dispatch(actionPage(contentstackPage))
   dispatch(actionBlogpost(null))
