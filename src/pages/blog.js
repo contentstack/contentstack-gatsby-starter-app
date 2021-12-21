@@ -8,11 +8,23 @@ import HeroBanner from "../components/BlogBanner"
 import FromBlog from "../components/FromBlog"
 import { connect } from "react-redux"
 import { actionPage, actionBlogpost } from "../store/actions/state.action"
+import * as Utils from "@contentstack/utils"
 
 const Blog = ({
   data: { allContentstackBlogPost, contentstackPage },
   dispatch,
 }) => {
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
+
+  Utils.jsonToHTML({
+    entry: allContentstackBlogPost.nodes,
+    paths: ["body"],
+    renderOption,
+  })
   let archived = [],
     blogList = []
   allContentstackBlogPost.nodes.forEach(blogs => {
@@ -22,6 +34,7 @@ const Blog = ({
       blogList.push(blogs)
     }
   })
+
   dispatch(actionPage(contentstackPage))
   dispatch(actionBlogpost(allContentstackBlogPost.nodes))
 
@@ -58,11 +71,9 @@ const Blog = ({
                     {moment(blog.date).format("ddd, MMM D YYYY")},{" "}
                     <strong>{blog.author[0]?.title}</strong>
                   </p>
-                  {blog.body ? (
-                    <p>{parser(blog.body.slice(0, 300))}</p>
-                  ) : (
-                    ""
-                  )}
+                  {typeof blog.body === "string"
+                    ? parser(blog.body.slice(0, 300))
+                    : ""}
                   {blog.url ? (
                     <Link to={blog.url}>
                       <span>{"Read more -->"}</span>
