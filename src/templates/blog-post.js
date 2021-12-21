@@ -9,12 +9,25 @@ import FromBlog from "../components/FromBlog"
 import HeroBanner from "../components/BlogBanner"
 import { connect } from "react-redux"
 import { actionBlogpost } from "../store/actions/state.action"
+import * as Utils from "@contentstack/utils"
 
 const blogPost = props => {
   const {
     data: { contentstackBlogPost, contentstackPage },
     dispatch,
   } = props
+
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
+
+  Utils.jsonToHTML({
+    entry: contentstackBlogPost,
+    paths: ["body", "related_post.body"],
+    renderOption,
+  })
   dispatch(actionBlogpost(contentstackBlogPost))
   return (
     <Layout property={props}>

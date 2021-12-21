@@ -2,6 +2,7 @@ import { Link, graphql, useStaticQuery } from "gatsby"
 import React from "react"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
+import * as Utils from "@contentstack/utils"
 import { actionHeader } from "../store/actions/state.action"
 import DevtoolsIcon from "../images/devtools.gif"
 
@@ -32,11 +33,17 @@ const queryHeader = () => {
 }
 const Header = ({ dispatch }) => {
   const { contentstackHeader } = queryHeader()
+  Utils.jsonToHTML({
+    entry: contentstackHeader,
+    paths: ["notification_bar.announcement_text"],
+  })
+
   dispatch(actionHeader(contentstackHeader))
   return (
     <header className="header">
       <div className="note-div">
         {contentstackHeader.notification_bar.show_announcement ? (
+          typeof contentstackHeader.notification_bar.announcement_text &&
           parse(contentstackHeader.notification_bar.announcement_text)
         ) : (
           <div style={{ visibility: "hidden" }}>Dev tools section</div>

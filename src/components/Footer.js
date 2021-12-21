@@ -3,6 +3,7 @@ import React from "react"
 import parser from "html-react-parser"
 import { connect } from "react-redux"
 import { actionFooter } from "../store/actions/state.action"
+import * as Utils from "@contentstack/utils"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -37,10 +38,19 @@ const queryLayout = () => {
   return data
 }
 
-const Footer = ({dispatch}) => {
-  const {contentstackFooter} = queryLayout();
+const Footer = ({ dispatch }) => {
+  const { contentstackFooter } = queryLayout()
   dispatch(actionFooter(contentstackFooter))
-
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
+  Utils.jsonToHTML({
+    entry: contentstackFooter,
+    paths: ["copyright"],
+    renderOption,
+  })
   return (
     <footer>
       <div className="max-width footer-div">
@@ -69,25 +79,23 @@ const Footer = ({dispatch}) => {
         </div>
         <div className="col-quarter social-link">
           <div className="social-nav">
-            {contentstackFooter.social.social_share.map(
-              (social, index) => {
-                return (
-                  <a
-                    href={social.link.href}
-                    title={social.link.title.toLowerCase()}
-                    key={index}
-                    className="footer-social-links"
-                  >
-                    <img src={social.icon.url} alt='social-icon' />
-                  </a>
-                )
-              }
-            )}
+            {contentstackFooter.social.social_share.map((social, index) => {
+              return (
+                <a
+                  href={social.link.href}
+                  title={social.link.title.toLowerCase()}
+                  key={index}
+                  className="footer-social-links"
+                >
+                  <img src={social.icon.url} alt="social-icon" />
+                </a>
+              )
+            })}
           </div>
         </div>
       </div>
       <div className="copyright">
-        {contentstackFooter.copyright
+        {typeof contentstackFooter.copyright === "string"
           ? parser(contentstackFooter.copyright)
           : ""}
       </div>
