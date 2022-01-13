@@ -25,6 +25,7 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
     "gatsby-plugin-offline",
+    "gatsby-plugin-remove-trailing-slashes",
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {

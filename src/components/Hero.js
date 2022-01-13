@@ -2,47 +2,48 @@ import { Link } from "gatsby"
 import React from "react"
 
 const Hero = props => {
-  const data = props.data
+  const {hero_banner} = props.data
   return (
     <div
       className="hero-banner"
       style={{
-        background: data.hero_banner.bg_color ? data.hero_banner.bg_color : "",
+        background: hero_banner.bg_color ? hero_banner.bg_color : "",
       }}
     >
       <div className={`${props.title == "about" ? "about" : "home"}-content`}>
-        {data.hero_banner.banner_title ? (
-          <h1 className="hero-title">{data.hero_banner.banner_title}</h1>
-        ) : (
-          ""
+        {hero_banner.banner_title && (
+          <h1 className="hero-title" {...hero_banner.$?.banner_title}>{hero_banner.banner_title}</h1>
         )}
-        {data.hero_banner.banner_description ? (
+        {hero_banner.banner_description ? (
           <p
             className={`hero-description ${
               props.title == "about" && "about-desc"
             }`}
+            {...hero_banner.$?.banner_description}
           >
-            {data.hero_banner.banner_description}
+            {hero_banner.banner_description}
           </p>
         ) : (
           ""
         )}
-        {data.hero_banner.call_to_action.title &&
-        data.hero_banner.call_to_action.href ? (
+        {hero_banner.call_to_action.title &&
+        hero_banner.call_to_action.href ? (
           <Link
-            to={data.hero_banner.call_to_action.href}
+            to={hero_banner.call_to_action.href}
             className="btn tertiary-btn"
+            {...hero_banner.call_to_action.$?.title}
           >
-            {data.hero_banner.call_to_action.title}
+            {hero_banner.call_to_action.title}
           </Link>
         ) : (
           ""
         )}
       </div>
-      {data.hero_banner.banner_image ? (
+      {hero_banner.banner_image ? (
         <img
           alt="hero-banner-image"
-          src={data.hero_banner.banner_image.url}
+          src={hero_banner.banner_image.url}
+          {...hero_banner.banner_image.$?.url}
         />
       ) : (
         ""

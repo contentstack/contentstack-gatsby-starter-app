@@ -6,12 +6,22 @@ const AboutSectionBucket = ({ data }) => {
     return (
       <div className="mission-content-section" key={bucket.title_h3}>
         {bucket.icon && (
-          <img className="mission-icon" src={bucket.icon.url} alt="art work" />
+          <img
+            className="mission-icon"
+            {...bucket.icon.$?.url}
+            src={bucket.icon.url}
+            alt="art work"
+          />
         )}
 
         <div className="mission-section-content">
-          {bucket.title_h3 && <h3>{bucket.title_h3}</h3>}
-          {typeof bucket.description === "string" && parser(bucket.description)}
+          {bucket.title_h3 && (
+            <h3 {...bucket.$?.title_h3}>{bucket.title_h3}</h3>
+          )}
+          <div {...bucket.$?.description}>
+            {typeof bucket.description === "string" &&
+              parser(bucket.description)}
+          </div>
         </div>
       </div>
     )
@@ -21,7 +31,9 @@ const AboutSectionBucket = ({ data }) => {
     <div className="member-main-section">
       <div className="member-head">
         {data.section_with_buckets.title_h2 && (
-          <h2>{data.section_with_buckets.title_h2}</h2>
+          <h2 {...data.section_with_buckets.$?.title_h2}>
+            {data.section_with_buckets.title_h2}
+          </h2>
         )}
       </div>
       <div className="mission-section">

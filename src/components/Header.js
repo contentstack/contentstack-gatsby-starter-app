@@ -1,10 +1,13 @@
+import * as Utils from "@contentstack/utils"
+import React, { useState, useEffect } from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
-import React from "react"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
-import * as Utils from "@contentstack/utils"
 import { actionHeader } from "../store/actions/state.action"
-import DevtoolsIcon from "../images/devtools.gif"
+import jsonIcon from "../images/json.svg"
+import Tooltip from "./tool-tip";
+import { onEntryChange } from "../live-preview-sdk/index"
+import { getHeaderRes } from "../helper/index"
 
 const queryHeader = () => {
   const query = graphql`
@@ -31,6 +34,7 @@ const queryHeader = () => {
   `
   return useStaticQuery(query)
 }
+
 const Header = ({ dispatch }) => {
   const { contentstackHeader } = queryHeader()
   Utils.jsonToHTML({
@@ -38,32 +42,39 @@ const Header = ({ dispatch }) => {
     paths: ["notification_bar.announcement_text"],
   })
 
+  const [getHeader, setHeader] = useState(contentstackHeader)
+
+  async function getHeaderData() {
+    const headerRes = await getHeaderRes();
+    setHeader(headerRes)
+  }
   dispatch(actionHeader(contentstackHeader))
+
+  useEffect(() => {
+    onEntryChange(() => getHeaderData())
+  }, [onEntryChange])
+
+  useEffect(() => {
+    Utils.addEditableTags(getHeader, "header", true)
+  }, [getHeader])
+
   return (
     <header className="header">
-      <div className="note-div">
-        {contentstackHeader.notification_bar.show_announcement ? (
-          typeof contentstackHeader.notification_bar.announcement_text &&
-          parse(contentstackHeader.notification_bar.announcement_text)
-        ) : (
-          <div style={{ visibility: "hidden" }}>Dev tools section</div>
+      <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
+        {getHeader.notification_bar.show_announcement && (
+          typeof getHeader.notification_bar.announcement_text === "string" &&
+          parse(getHeader.notification_bar.announcement_text)
         )}
-        <span
-          className="devtools"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-        >
-          <img src={DevtoolsIcon} alt="dev tools icon" title="json preview" />
-        </span>
       </div>
       <div className="max-width header-div">
         <div className="wrapper-logo">
           <Link to="/" className="logo-tag" title="Contentstack">
             <img
+              {...getHeader.logo.$?.url}
               className="logo"
-              src={contentstackHeader.logo.url}
-              alt={contentstackHeader.title}
-              title={contentstackHeader.title}
+              src={getHeader.logo?.url}
+              alt={getHeader.title}
+              title={getHeader.title}
             />
           </Link>
         </div>
@@ -74,20 +85,22 @@ const Header = ({ dispatch }) => {
 
         <nav className="menu">
           <ul className="nav-ul header-ul">
-            {contentstackHeader.navigation_menu.map((menu, index) => {
+            {getHeader.navigation_menu.map((menu, index) => {
               return (
                 <li className="nav-li" key={index}>
                   {menu.label === "Home" ? (
                     <Link
-                      to={`${menu.page_reference[0].url}`}
+                      to={`${menu.page_reference[0]?.url}`}
                       activeClassName="active"
+                      {...menu.$?.label}
                     >
                       {menu.label}
                     </Link>
                   ) : (
                     <Link
-                      to={`${menu.page_reference[0].url}/`}
+                      to={`${menu.page_reference[0]?.url}/`}
                       activeClassName="active"
+                      {...menu.$?.label}
                     >
                       {menu.label}
                     </Link>
@@ -97,6 +110,16 @@ const Header = ({ dispatch }) => {
             })}
           </ul>
         </nav>
+        <div className="json-preview">
+          <Tooltip content="JSON Preview" direction="top">
+            <span
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              <img src={jsonIcon} alt="JSON Preview icon" />
+            </span>
+          </Tooltip>
+        </div>
       </div>
     </header>
   )

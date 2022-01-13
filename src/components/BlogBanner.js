@@ -1,7 +1,7 @@
 import { useStaticQuery, graphql } from "gatsby"
-import React from "react"
-import { connect } from "react-redux"
-import { actionPage } from "../store/actions/state.action"
+import React, { useState, useEffect } from "react"
+import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import * as Utils from "@contentstack/utils"
 
 const queryBlogBanner = () => {
   const data = useStaticQuery(graphql`
@@ -20,31 +20,48 @@ const queryBlogBanner = () => {
   return data
 }
 
-const blogHero = ({dispatch}) => {
-  let data = queryBlogBanner()
-  dispatch(actionPage(data.contentstackPage.page_components))
+const blogHero = () => {
+  const { contentstackPage } = queryBlogBanner()
+
+  const [getBanner, setBanner] = useState(contentstackPage)
+
+  async function getBannerData() {
+    const bannerRes = await Stack.getEntryByUrl({
+      contentTypeUid: "page",
+      entryUrl: "/blog",
+    })
+    setBanner(bannerRes[0])
+  }
+  useEffect(() => {
+    onEntryChange(getBannerData)
+  }, [])
+
+  useEffect(() => {
+    Utils.addEditableTags(getBanner, "page", true)
+  }, [getBanner])
+  const banner = getBanner.page_components
+console.log(banner[0]);
   return (
     <>
-      <div className="blog-page-banner">
+      <div className="blog-page-banner" style={{"background":`${banner[0]?.hero_banner.bg_color}`}}>
         <div className="blog-page-content">
-          {data.contentstackPage.page_components[0].hero_banner.banner_title ? (
-            <h1 className="hero-title">
-              {
-                data.contentstackPage.page_components[0].hero_banner
-                  .banner_title
-              }
+          {banner[0]?.hero_banner.banner_title ? (
+            <h1
+              className="hero-title"
+              {...banner[0]?.hero_banner.$?.banner_title}
+            >
+              {banner[0]?.hero_banner.banner_title}
             </h1>
           ) : (
             ""
           )}
 
-          {data.contentstackPage.page_components[0].hero_banner
-            .banner_description ? (
-            <p className="hero-description">
-              {
-                data.contentstackPage.page_components[0].hero_banner
-                  .banner_description
-              }
+          {banner[0]?.hero_banner.banner_description ? (
+            <p
+              className="hero-description"
+              {...banner[0]?.hero_banner.$?.banner_description}
+            >
+              {banner[0]?.hero_banner.banner_description}
             </p>
           ) : (
             ""
@@ -55,4 +72,4 @@ const blogHero = ({dispatch}) => {
   )
 }
 
-export default connect()(blogHero)
+export default blogHero
