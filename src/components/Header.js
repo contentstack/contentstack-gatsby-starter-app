@@ -54,13 +54,9 @@ const Header = ({ dispatch }) => {
     onEntryChange(() => getHeaderData())
   }, [onEntryChange])
 
-  useEffect(() => {
-    Utils.addEditableTags(getHeader, "header", true)
-  }, [getHeader])
-
   return (
     <header className="header">
-      <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
+      <div className="note-div">
         {getHeader.notification_bar.show_announcement && (
           typeof getHeader.notification_bar.announcement_text === "string" &&
           parse(getHeader.notification_bar.announcement_text)
@@ -70,7 +66,6 @@ const Header = ({ dispatch }) => {
         <div className="wrapper-logo">
           <Link to="/" className="logo-tag" title="Contentstack">
             <img
-              {...getHeader.logo.$?.url}
               className="logo"
               src={getHeader.logo?.url}
               alt={getHeader.title}
@@ -92,7 +87,6 @@ const Header = ({ dispatch }) => {
                     <Link
                       to={`${menu.page_reference[0]?.url}`}
                       activeClassName="active"
-                      {...menu.$?.label}
                     >
                       {menu.label}
                     </Link>
@@ -100,7 +94,6 @@ const Header = ({ dispatch }) => {
                     <Link
                       to={`${menu.page_reference[0]?.url}/`}
                       activeClassName="active"
-                      {...menu.$?.label}
                     >
                       {menu.label}
                     </Link>

@@ -58,13 +58,6 @@ const blogPost = props => {
     })
   }, [])
 
-  useEffect(() => {
-    if (process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true") {
-      Utils.addEditableTags(getBanner, "page", true)
-      Utils.addEditableTags(getEntry, "blog_post", true)
-    }
-  }, [getEntry])
-
   return (
     <Layout property={props} blogPost={getEntry} banner={getBanner}>
       <SEO title={getEntry.title} />
@@ -76,23 +69,23 @@ const blogPost = props => {
         data-locale={getEntry.locale}
       >
         <div className="blog-detail">
-          <h2 {...getEntry.$?.title}>{getEntry.title ? getEntry.title : ""}</h2>
+          <h2>{getEntry.title ? getEntry.title : ""}</h2>
           <span>
-            <p {...getEntry.$?.date}>
+            <p>
               {moment(getEntry.date).format("ddd, MMM D YYYY")},{" "}
-              <strong {...getEntry.author[0].$?.title}>
+              <strong>
                 {getEntry.author[0]?.title}
               </strong>
             </p>
           </span>
-          <span {...getEntry.$?.body}>{parser(getEntry.body)}</span>
+          <span>{parser(getEntry.body)}</span>
         </div>
         <div className="blog-column-right">
           <div className="related-post">
             {contentstackPage.page_components?.map((component, index) => {
               if (component.widget && index === 2) {
                 return (
-                  <h2 {...component.widget.$?.title_h2}>
+                  <h2>
                     {component.widget.title_h2}
                   </h2>
                 )

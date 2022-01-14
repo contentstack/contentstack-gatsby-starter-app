@@ -64,17 +64,12 @@ const Footer = ({ dispatch }) => {
     onEntryChange(() => getFooterData())
   }, [onEntryChange])
 
-  useEffect(() => {
-    Utils.addEditableTags(getFooter, "footer", true)
-  }, [getFooter])
-
   return (
     <footer>
       <div className="max-width footer-div">
         <div className="col-quarter">
           <Link to="/" className="logo-tag">
             <img
-              {...getFooter.logo.$?.url}
               src={getFooter.logo?.url}
               alt={getFooter.title}
               title={getFooter.title}
@@ -88,7 +83,7 @@ const Footer = ({ dispatch }) => {
               {getFooter.navigation.link.map((menu, index) => {
                 return (
                   <li className="footer-nav-li" key={index}>
-                    <Link to={menu.href} {...menu.$?.title}>
+                    <Link to={menu.href}>
                       {menu.title}
                     </Link>
                   </li>
@@ -108,7 +103,6 @@ const Footer = ({ dispatch }) => {
                   className="footer-social-links"
                 >
                   <img
-                    {...social.icon.$?.url}
                     src={social.icon?.url}
                     alt="social-icon"
                   />
@@ -120,7 +114,7 @@ const Footer = ({ dispatch }) => {
       </div>
       <div className="copyright">
         {typeof getFooter.copyright === "string"
-          ? <div {...getFooter.$?.copyright}>{parser(getFooter?.copyright)}</div>
+          ? <div>{parser(getFooter?.copyright)}</div>
           : ""}
       </div>
     </footer>

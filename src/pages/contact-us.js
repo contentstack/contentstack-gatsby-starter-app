@@ -23,7 +23,7 @@ const Contact = props => {
     try {
       const entryRes = await Stack.getEntryByUrl({
         contentTypeUid: 'page',
-        entryUrl: props.location.pathname,
+        entryUrl: "/contact-us",
         referenceFieldPath: ['page_components.from_blog.featured_blogs'],
         jsonRtePath: ['page_components.section_with_html_code.description'],
       });
@@ -40,12 +40,6 @@ const Contact = props => {
       }
     })
   }, [])
-
-  useEffect(() => {
-    if (process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true") {
-      Utils.addEditableTags(getEntry, "page", true)
-    }
-  }, [getEntry])
 
   Utils.jsonToHTML({
     entry: contentstackPage,

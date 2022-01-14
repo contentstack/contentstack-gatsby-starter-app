@@ -46,12 +46,6 @@ const About = props => {
     })
   }, [])
 
-  useEffect(() => {
-    if (process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true") {
-      Utils.addEditableTags(getEntry, "page", true)
-    }
-  }, [getEntry])
-
   return (
     <Layout pageComponent={getEntry}>
       <SEO title={getEntry.title} />

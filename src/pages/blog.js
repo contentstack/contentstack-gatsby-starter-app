@@ -14,6 +14,12 @@ const Blog = props => {
     data: { allContentstackBlogPost, contentstackPage },
   } = props
 
+  const renderOption = {
+    ["span"]: (node, next) => {
+      return next(node.children)
+    },
+  }
+
   Utils.jsonToHTML({
     entry: allContentstackBlogPost.nodes,
     paths: ["body"],
@@ -21,11 +27,6 @@ const Blog = props => {
   })
 
   const [getBlogList, setBlogList] = useState(allContentstackBlogPost.nodes)
-  const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
 
   async function fetchData() {
     try {
@@ -47,12 +48,6 @@ const Blog = props => {
       }
     })
   }, [])
-
-  useEffect(() => {
-    if (process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true") {
-      Utils.addEditableTags(getBlogList, "blog_post", true)
-    }
-  }, [getBlogList])
 
   const newBlogList = []
   const newArchivedList = []
@@ -80,7 +75,6 @@ const Blog = props => {
                 {blog.featured_image && (
                   <Link to={blog.url}>
                     <img
-                      {...blog.featured_image.$?.url}
                       alt="blog-img"
                       className="blog-list-img"
                       src={blog.featured_image.url}
@@ -90,19 +84,19 @@ const Blog = props => {
                 <div className="blog-content">
                   {blog.title && (
                     <Link to={blog.url}>
-                      <h3 {...blog.$?.title}>{blog.title}</h3>
+                      <h3>{blog.title}</h3>
                     </Link>
                   )}
-                  <p {...blog.$?.date}>
+                  <p>
                     {moment(blog.date).format("ddd, MMM D YYYY")},{" "}
                     {blog.author && (
-                      <strong {...blog.author[0].$?.title}>
+                      <strong>
                         {blog.author[0]?.title}
                       </strong>
                     )}
                   </p>
                   {typeof blog.body === "string" ? (
-                    <div {...blog.$?.body}>
+                    <div>
                       {parser(blog.body.slice(0, 300))}
                     </div>
                   ) : (
@@ -121,7 +115,7 @@ const Blog = props => {
           })}
         </div>
         <div className="blog-column-right">
-          <h2 {...contentstackPage.page_components[1].widget.$?.title_h2}>
+          <h2>
             {contentstackPage.page_components[1].widget.title_h2}
           </h2>
           <FromBlog data={newArchivedList} />

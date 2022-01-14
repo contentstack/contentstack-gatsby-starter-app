@@ -1,7 +1,6 @@
 import { useStaticQuery, graphql } from "gatsby"
 import React, { useState, useEffect } from "react"
 import Stack, { onEntryChange } from "../live-preview-sdk/index"
-import * as Utils from "@contentstack/utils"
 
 const queryBlogBanner = () => {
   const data = useStaticQuery(graphql`
@@ -36,11 +35,8 @@ const blogHero = () => {
     onEntryChange(getBannerData)
   }, [])
 
-  useEffect(() => {
-    Utils.addEditableTags(getBanner, "page", true)
-  }, [getBanner])
   const banner = getBanner.page_components
-console.log(banner[0]);
+
   return (
     <>
       <div className="blog-page-banner" style={{"background":`${banner[0]?.hero_banner.bg_color}`}}>
@@ -48,7 +44,6 @@ console.log(banner[0]);
           {banner[0]?.hero_banner.banner_title ? (
             <h1
               className="hero-title"
-              {...banner[0]?.hero_banner.$?.banner_title}
             >
               {banner[0]?.hero_banner.banner_title}
             </h1>
@@ -59,7 +54,6 @@ console.log(banner[0]);
           {banner[0]?.hero_banner.banner_description ? (
             <p
               className="hero-description"
-              {...banner[0]?.hero_banner.$?.banner_description}
             >
               {banner[0]?.hero_banner.banner_description}
             </p>

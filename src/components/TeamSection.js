@@ -21,17 +21,16 @@ const TeamSection = ({ data: { our_team } }) => {
             <div className="team-details" key={index}>
               {employee.image && (
                 <img
-                  {...employee.image.$?.url}
                   alt={employee.image.title}
                   src={employee.image.url}
                 />
               )}
               <div className="team-details">
                 {employee.name && (
-                  <h3 {...employee.$?.name}>{employee.name}</h3>
+                  <h3>{employee.name}</h3>
                 )}
                 {employee.designation && (
-                  <p {...employee.$?.designation}>{employee.designation}</p>
+                  <p>{employee.designation}</p>
                 )}
               </div>
             </div>

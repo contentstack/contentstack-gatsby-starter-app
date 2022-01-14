@@ -12,14 +12,13 @@ const Hero = props => {
     >
       <div className={`${props.title == "about" ? "about" : "home"}-content`}>
         {hero_banner.banner_title && (
-          <h1 className="hero-title" {...hero_banner.$?.banner_title}>{hero_banner.banner_title}</h1>
+          <h1 className="hero-title">{hero_banner.banner_title}</h1>
         )}
         {hero_banner.banner_description ? (
           <p
             className={`hero-description ${
               props.title == "about" && "about-desc"
             }`}
-            {...hero_banner.$?.banner_description}
           >
             {hero_banner.banner_description}
           </p>
@@ -31,7 +30,6 @@ const Hero = props => {
           <Link
             to={hero_banner.call_to_action.href}
             className="btn tertiary-btn"
-            {...hero_banner.call_to_action.$?.title}
           >
             {hero_banner.call_to_action.title}
           </Link>
@@ -43,7 +41,6 @@ const Hero = props => {
         <img
           alt="hero-banner-image"
           src={hero_banner.banner_image.url}
-          {...hero_banner.banner_image.$?.url}
         />
       ) : (
         ""

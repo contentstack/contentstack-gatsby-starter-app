@@ -7,14 +7,14 @@ const SectionBucket = ({ data:{section_with_buckets} }) => {
     <div className="member-main-section">
       <div className="member-head">
         {section_with_buckets.title_h2 ? (
-          <h2 {...section_with_buckets.$?.title_h2}>
+          <h2>
             {section_with_buckets.title_h2}
           </h2>
         ) : (
           ""
         )}
         {section_with_buckets.description ? (
-          <p {...section_with_buckets.$?.description}>
+          <p>
             {section_with_buckets.description}
           </p>
         ) : (
@@ -27,18 +27,17 @@ const SectionBucket = ({ data:{section_with_buckets} }) => {
             <div className="content-section" key={index}>
               {bucket.icon && (
                 <img
-                  {...bucket.icon.$?.url}
                   src={bucket.icon.url}
                   alt="bucket icon"
                 />
               )}
               {bucket.title_h3 ? (
-                <h3 {...bucket.$?.title_h3}>{bucket.title_h3}</h3>
+                <h3>{bucket.title_h3}</h3>
               ) : (
                 ""
               )}
               {typeof bucket.description === "string" && (
-                <div {...bucket.$?.description}>
+                <div>
                   {" "}
                   {parser(bucket.description)}
                 </div>
@@ -50,7 +49,6 @@ const SectionBucket = ({ data:{section_with_buckets} }) => {
                       ? bucket.call_to_action.href
                       : "#"
                   }
-                  {...bucket.call_to_action.$?.title}
                 >
                   {`${bucket.call_to_action.title} -->`}
                 </Link>
