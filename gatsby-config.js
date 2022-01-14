@@ -26,6 +26,9 @@ module.exports = {
     "gatsby-plugin-sitemap",
     "gatsby-plugin-offline",
     "gatsby-plugin-remove-trailing-slashes",
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
