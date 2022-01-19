@@ -47,6 +47,7 @@ const DevTools = ({ response }) => {
                 content={forceUpdate === 0 ? "Copy" : "Copied"}
                 direction="top"
                 dynamic
+                delay={200}
                 status={forceUpdate}
               >
                 <img src={copyIcon} alt="copy icon" />

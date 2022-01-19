@@ -7,7 +7,7 @@
 import React from "react"
 import Header from "./Header"
 import Footer from "./Footer"
-import DevTools from "./devtools"
+import DevTools from "./Devtools"
 import { connect } from "react-redux"
 
 typeof window !== "undefined" && require("bootstrap/dist/css/bootstrap.min.css")
