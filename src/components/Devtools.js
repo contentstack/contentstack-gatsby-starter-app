@@ -36,7 +36,7 @@ const DevTools = ({ response }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h2 className="modal-title" id="staticBackdropLabel">
-              Json Response
+              JSON Preview
             </h2>
             <span
               className="json-copy"
