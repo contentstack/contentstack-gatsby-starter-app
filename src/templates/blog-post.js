@@ -8,7 +8,6 @@ import SEO from "../components/SEO"
 import FromBlog from "../components/FromBlog"
 import HeroBanner from "../components/BlogBanner"
 import * as Utils from "@contentstack/utils"
-import { getBlogBannerRes, getBlogPostRes } from "../helper/index"
 import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const blogPost = props => {

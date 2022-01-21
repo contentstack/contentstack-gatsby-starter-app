@@ -5,9 +5,8 @@ import parse from "html-react-parser"
 import { connect } from "react-redux"
 import { actionHeader } from "../store/actions/state.action"
 import jsonIcon from "../images/json.svg"
-import Tooltip from "./tool-tip";
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getHeaderRes } from "../helper/index"
+import Tooltip from "./tool-tip"
+import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const queryHeader = () => {
   const query = graphql`
@@ -45,10 +44,14 @@ const Header = ({ dispatch }) => {
   const [getHeader, setHeader] = useState(contentstackHeader)
 
   async function getHeaderData() {
-    const headerRes = await getHeaderRes();
-    setHeader(headerRes)
+    const headerRes = await Stack.getEntry({
+      contentTypeUid: "header",
+      referenceFieldPath: ["navigation_menu.page_reference"],
+      jsonRtePath: ["notification_bar.announcement_text"],
+    })
+    setHeader(headerRes[0][0])
+    dispatch(actionHeader(headerRes[0][0]))
   }
-  dispatch(actionHeader(contentstackHeader))
 
   useEffect(() => {
     onEntryChange(() => getHeaderData())
@@ -57,10 +60,9 @@ const Header = ({ dispatch }) => {
   return (
     <header className="header">
       <div className="note-div">
-        {getHeader.notification_bar.show_announcement && (
+        {getHeader.notification_bar.show_announcement &&
           typeof getHeader.notification_bar.announcement_text === "string" &&
-          parse(getHeader.notification_bar.announcement_text)
-        )}
+          parse(getHeader.notification_bar.announcement_text)}
       </div>
       <div className="max-width header-div">
         <div className="wrapper-logo">
@@ -105,10 +107,7 @@ const Header = ({ dispatch }) => {
         </nav>
         <div className="json-preview">
           <Tooltip content="JSON Preview" direction="top">
-            <span
-              data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
-            >
+            <span data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               <img src={jsonIcon} alt="JSON Preview icon" />
             </span>
           </Tooltip>

@@ -4,8 +4,7 @@ import parser from "html-react-parser"
 import { connect } from "react-redux"
 import { actionFooter } from "../store/actions/state.action"
 import * as Utils from "@contentstack/utils"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getFooterRes } from "../helper/index"
+import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -42,7 +41,6 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }) => {
   const { contentstackFooter } = queryLayout()
-  dispatch(actionFooter(contentstackFooter))
   const renderOption = {
     ["span"]: (node, next) => {
       return next(node.children)
@@ -56,8 +54,12 @@ const Footer = ({ dispatch }) => {
   const [getFooter, setFooter] = useState(contentstackFooter)
 
   async function getFooterData() {
-    const footerRes = await getFooterRes();
-    setFooter(footerRes)
+    const footerRes = await Stack.getEntry({
+      contentTypeUid: 'footer',
+      jsonRtePath: ['copyright'],
+    });;
+    setFooter(footerRes[0][0])
+    dispatch(actionFooter(footerRes[0][0]))
   }
 
   useEffect(() => {
