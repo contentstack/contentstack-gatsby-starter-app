@@ -59,7 +59,7 @@ module.exports = {
         api_key: CONTENTSTACK_API_KEY,
         delivery_token: CONTENTSTACK_DELIVERY_TOKEN,
         environment: CONTENTSTACK_ENVIRONMENT,
-        cdn: CONTENTSTACK_API_HOST,
+        cdn: `https://${CONTENTSTACK_API_HOST}/v3`,
         expediteBuild: true,
         enableSchemaGeneration: true,
         type_prefix: "Contentstack", // (default),
