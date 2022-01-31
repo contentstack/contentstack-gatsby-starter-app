@@ -9,13 +9,7 @@ import SectionBucket from "./SectionBucket"
 import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
 
-const RenderComponents = ({
-  components,
-  about,
-  entryUid,
-  contentTypeUid,
-  locale,
-}) => {
+const RenderComponents = ({ components, about, entryUid, contentTypeUid, locale }) => {
   return (
     <div
       data-pageref={entryUid}
@@ -49,9 +43,7 @@ const RenderComponents = ({
           return <CardSection data={component} key={"render" + index} />
         }
         if (component["section_with_html_code"]) {
-          return (
-            <SectionWithEmbedObject data={component} key={"render" + index} />
-          )
+          return <SectionWithEmbedObject data={component} key={"render" + index} />
         }
         if (component["our_team"]) {
           return <TeamSection data={component} key={"render" + index} />

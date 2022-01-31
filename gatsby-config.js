@@ -63,5 +63,8 @@ module.exports = {
         type_prefix: "Contentstack", // (default),
       },
     },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    `gatsby-plugin-image`,
   ],
 }

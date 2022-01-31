@@ -8,15 +8,11 @@ import { actionPage, actionBlogpost } from "../store/actions/state.action"
 import * as Utils from "@contentstack/utils"
 
 const Home = props => {
-  let {
-    data: { contentstackPage },
-    dispatch,
-  } = props
+  let { data: { contentstackPage }, dispatch } = props
   const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
+    ["span"]: (node, next) =>  next(node.children),
+  };
+
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: [

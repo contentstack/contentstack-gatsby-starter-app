@@ -10,19 +10,19 @@ import RenderComponents from "../components/RenderComponents"
 
 const About = ({ data: { contentstackPage }, dispatch }) => {
   const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
+    ["span"]: (node, next) => next(node.children),
+  };
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: [
       "page_components.section_with_buckets.buckets.description"
     ],
     renderOption
-  })
-  dispatch(actionPage(contentstackPage))
-  dispatch(actionBlogpost(null))
+  });
+
+  dispatch(actionPage(contentstackPage));
+  dispatch(actionBlogpost(null));
+
   return (
     <Layout>
       <SEO title={contentstackPage.title} />
@@ -38,8 +38,8 @@ const About = ({ data: { contentstackPage }, dispatch }) => {
         )}
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const pageQuery = graphql`
   query {
