@@ -57,7 +57,7 @@ const Footer = ({ dispatch }) => {
     const footerRes = await Stack.getEntry({
       contentTypeUid: 'footer',
       jsonRtePath: ['copyright'],
-    });;
+    });
     setFooter(footerRes[0][0])
     dispatch(actionFooter(footerRes[0][0]))
   }
