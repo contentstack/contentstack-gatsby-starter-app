@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 import parser from "html-react-parser"
 import moment from "moment"
@@ -7,14 +7,12 @@ import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import FromBlog from "../components/FromBlog"
 import HeroBanner from "../components/BlogBanner"
-import { connect } from "react-redux"
-import { actionBlogpost } from "../store/actions/state.action"
 import * as Utils from "@contentstack/utils"
+import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const blogPost = props => {
   const {
     data: { contentstackBlogPost, contentstackPage },
-    dispatch,
   } = props
 
   const renderOption = {
@@ -28,40 +26,72 @@ const blogPost = props => {
     paths: ["body", "related_post.body"],
     renderOption,
   })
-  dispatch(actionBlogpost(contentstackBlogPost))
+
+  const [getEntry, setEntry] = useState(contentstackBlogPost)
+  const [getBanner, setBanner] = useState(contentstackPage)
+
+  async function fetchData() {
+    try {
+      const entryRes = await Stack.getEntryByUrl({
+        contentTypeUid: "blog_post",
+        entryUrl: props.location.pathname,
+        referenceFieldPath: ["author", "related_post"],
+        jsonRtePath: ["body", "related_post.body"],
+      })
+      const bannerRes = await Stack.getEntryByUrl({
+        contentTypeUid: "page",
+        entryUrl: "/blog",
+      })
+      setEntry(entryRes[0])
+      setBanner(bannerRes[0])
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    onEntryChange(() => {
+      if (process.env.CONTENTSTACK_LIVE_PREVIEW === "true") {
+        return fetchData()
+      }
+    })
+  }, [])
+
   return (
-    <Layout property={props}>
-      <SEO title={contentstackBlogPost.title} />
+    <Layout property={props} blogPost={getEntry} banner={getBanner}>
+      <SEO title={getEntry.title} />
       <HeroBanner />
       <div
         className="blog-container"
-        data-pageref={contentstackBlogPost.uid}
+        data-pageref={getEntry.uid}
         data-contenttype="blog_post"
-        data-locale={contentstackBlogPost.locale}
+        data-locale={getEntry.locale}
       >
         <div className="blog-detail">
-          <h2>
-            {contentstackBlogPost.title ? contentstackBlogPost.title : ""}
-          </h2>
-          <p>
-            {moment(contentstackBlogPost.date).format("ddd, MMM D YYYY")},{" "}
-            <strong>{contentstackBlogPost.author[0]?.title}</strong>
-          </p>
-          {parser(contentstackBlogPost.body)}
+          <h2>{getEntry.title ? getEntry.title : ""}</h2>
+          <span>
+            <p>
+              {moment(getEntry.date).format("ddd, MMM D YYYY")},{" "}
+              <strong>
+                {getEntry.author[0]?.title}
+              </strong>
+            </p>
+          </span>
+          <span>{parser(getEntry.body)}</span>
         </div>
         <div className="blog-column-right">
           <div className="related-post">
             {contentstackPage.page_components?.map((component, index) => {
               if (component.widget && index === 2) {
-                return <h2>{component.widget.title_h2}</h2>
+                return (
+                  <h2>
+                    {component.widget.title_h2}
+                  </h2>
+                )
               }
             })}
             <FromBlog
-              data={
-                contentstackBlogPost.related_post
-                  ? contentstackBlogPost.related_post
-                  : ""
-              }
+              data={getEntry.related_post ? getEntry.related_post : ""}
             />
           </div>
         </div>
@@ -109,4 +139,4 @@ export const postQuery = graphql`
     }
   }
 `
-export default connect()(blogPost)
+export default blogPost

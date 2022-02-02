@@ -1,39 +1,62 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
-import { connect } from "react-redux"
-import { actionPage, actionBlogpost } from "../store/actions/state.action"
 import * as Utils from "@contentstack/utils"
-
+import Stack, { onEntryChange } from "../live-preview-sdk/index"
 import RenderComponents from "../components/RenderComponents"
 
-const About = ({ data: { contentstackPage }, dispatch }) => {
+const About = props => {
+  let {
+    data: { contentstackPage },
+  } = props
+
   const renderOption = {
     ["span"]: (node, next) => {
       return next(node.children)
     },
   }
+
   Utils.jsonToHTML({
     entry: contentstackPage,
-    paths: [
-      "page_components.section_with_buckets.buckets.description"
-    ],
-    renderOption
+    paths: ["page_components.section_with_buckets.buckets.description"],
+    renderOption,
   })
-  dispatch(actionPage(contentstackPage))
-  dispatch(actionBlogpost(null))
+  const [getEntry, setEntry] = useState(contentstackPage)
+
+  async function fetchData() {
+    try {
+      const entryRes = await Stack.getEntryByUrl({
+        contentTypeUid: "page",
+        entryUrl: "/about-us",
+        jsonRtePath: [
+          "page_components.section_with_buckets.buckets.description",
+        ],
+      })
+      setEntry(entryRes[0])
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  useEffect(() => {
+    onEntryChange(() => {
+      if (process.env.CONTENTSTACK_LIVE_PREVIEW === "true") {
+        return fetchData()
+      }
+    })
+  }, [])
+
   return (
-    <Layout>
-      <SEO title={contentstackPage.title} />
+    <Layout pageComponent={getEntry}>
+      <SEO title={getEntry.title} />
       <div className="about">
-        {contentstackPage.page_components && (
+        {getEntry.page_components && (
           <RenderComponents
-            components={contentstackPage.page_components}
+            components={getEntry.page_components}
             about
             contentTypeUid="page"
-            entryUid={contentstackPage.uid}
-            locale={contentstackPage.locale}
+            entryUid={getEntry.uid}
+            locale={getEntry.locale}
           />
         )}
       </div>
@@ -146,4 +169,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default connect()(About)
+export default About
