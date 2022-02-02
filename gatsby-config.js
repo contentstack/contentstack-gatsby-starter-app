@@ -4,13 +4,15 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 
-const {
+let {
   CONTENTSTACK_API_KEY,
   CONTENTSTACK_DELIVERY_TOKEN,
   CONTENTSTACK_ENVIRONMENT,
-  CONTENTSTACK_CDN,
+  CONTENTSTACK_API_HOST,
   CONTENTSTACK_HOSTED_URL,
 } = process.env
+
+CONTENTSTACK_API_HOST = CONTENTSTACK_API_HOST.replace(/api/g, "cdn")
 
 const hostedUrl = CONTENTSTACK_HOSTED_URL || "http://localhost:9000"
 
@@ -24,6 +26,9 @@ module.exports = {
   plugins: [
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     "gatsby-plugin-offline",
     {
       resolve: "gatsby-plugin-robots-txt",
@@ -54,12 +59,9 @@ module.exports = {
         api_key: CONTENTSTACK_API_KEY,
         delivery_token: CONTENTSTACK_DELIVERY_TOKEN,
         environment: CONTENTSTACK_ENVIRONMENT,
-        cdn: CONTENTSTACK_CDN,
-        // Optional: expediteBuild set this to either true or false
+        cdn: `https://${CONTENTSTACK_API_HOST}/v3`,
         expediteBuild: true,
-        // Optional: Specify true if you want to generate custom schema
         enableSchemaGeneration: true,
-        // Optional: Specify a different prefix for types. This is useful in cases where you have multiple instances of the plugin to be connected to different stacks.
         type_prefix: "Contentstack", // (default),
       },
     },
