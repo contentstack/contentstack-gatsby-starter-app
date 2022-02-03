@@ -11,7 +11,10 @@ const AboutSectionBucket = ({ data }) => {
 
         <div className="mission-section-content">
           {bucket.title_h3 && <h3>{bucket.title_h3}</h3>}
-          {typeof bucket.description === "string" && parser(bucket.description)}
+          <div>
+            {typeof bucket.description === "string" &&
+              parser(bucket.description)}
+          </div>
         </div>
       </div>
     )

@@ -1,36 +1,61 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
-import { connect } from "react-redux"
-import { actionPage, actionBlogpost } from "../store/actions/state.action"
+import Stack, { onEntryChange } from "../live-preview-sdk"
 import * as Utils from "@contentstack/utils"
 
-const Contact = ({ data: { contentstackPage }, dispatch }) => {
+const Contact = props => {
+  const {
+    data: { contentstackPage }
+  } = props
+
   const renderOption = {
     ["span"]: (node, next) => {
       return next(node.children)
     },
   }
 
+  const [getEntry, setEntry] = useState(contentstackPage)
+
+  async function fetchData() {
+    try {
+      const entryRes = await Stack.getEntryByUrl({
+        contentTypeUid: 'page',
+        entryUrl: "/contact-us",
+        referenceFieldPath: ['page_components.from_blog.featured_blogs'],
+        jsonRtePath: ['page_components.section_with_html_code.description'],
+      });
+      setEntry(entryRes[0])
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    onEntryChange(() => {
+      if (process.env.CONTENTSTACK_LIVE_PREVIEW === "true") {
+        return fetchData()
+      }
+    })
+  }, [])
+
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: ["page_components.section_with_html_code.description"],
-    renderOption
+    renderOption,
   })
-  dispatch(actionPage(contentstackPage))
-  dispatch(actionBlogpost(null))
 
   return (
-    <Layout>
-      <SEO title={contentstackPage.title} />
-      {contentstackPage.page_components && (
+    <Layout pageComponent={getEntry}>
+      <SEO title={getEntry.title} />
+      {getEntry.page_components && (
         <RenderComponents
-          components={contentstackPage.page_components}
+          components={getEntry.page_components}
           contentTypeUid="page"
-          entryUid={contentstackPage.uid}
-          locale={contentstackPage.locale}
+          entryUid={getEntry.uid}
+          locale={getEntry.locale}
         />
       )}
     </Layout>
@@ -148,4 +173,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default connect()(Contact)
+export default Contact
