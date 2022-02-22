@@ -11,10 +11,9 @@ const Home = props => {
     data: { contentstackPage },
   } = props
   const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
+    ["span"]: (node, next) =>  next(node.children),
+  };
+
   Utils.jsonToHTML({
     entry: contentstackPage,
     paths: [
