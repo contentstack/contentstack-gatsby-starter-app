@@ -61,8 +61,8 @@ const About = props => {
         )}
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const pageQuery = graphql`
   query {
