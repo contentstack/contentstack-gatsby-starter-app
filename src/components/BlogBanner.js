@@ -1,6 +1,11 @@
-import { useStaticQuery, graphql } from "gatsby"
-import React, { useState, useEffect } from "react"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import React, { useState } from "react"
+
+import {
+  graphql,
+  useStaticQuery,
+} from "gatsby"
+
+import Stack from "../live-preview-sdk/index"
 
 const queryBlogBanner = () => {
   const data = useStaticQuery(graphql`
@@ -31,9 +36,9 @@ const blogHero = () => {
     })
     setBanner(bannerRes[0])
   }
-  useEffect(() => {
-    onEntryChange(getBannerData)
-  }, [])
+  // useEffect(() => {
+  //   onEntryChange(getBannerData)
+  // }, [])
 
   const banner = getBanner.page_components
 

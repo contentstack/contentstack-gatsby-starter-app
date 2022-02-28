@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, {
+  useEffect,
+  useState,
+} from "react"
+
 import { graphql } from "gatsby"
-import Layout from "../components/Layout"
-import SEO from "../components/SEO"
-import RenderComponents from "../components/RenderComponents"
+
 import * as Utils from "@contentstack/utils"
+
+import Layout from "../components/Layout"
+import RenderComponents from "../components/RenderComponents"
+import SEO from "../components/SEO"
 import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const Home = props => {

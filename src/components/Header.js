@@ -1,12 +1,19 @@
-import * as Utils from "@contentstack/utils"
-import React, { useState, useEffect } from "react"
-import { Link, graphql, useStaticQuery } from "gatsby"
+import React, { useState } from "react"
+
+import {
+  graphql,
+  Link,
+  useStaticQuery,
+} from "gatsby"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
-import { actionHeader } from "../store/actions/state.action"
+
+import * as Utils from "@contentstack/utils"
+
 import jsonIcon from "../images/json.svg"
+import Stack from "../live-preview-sdk/index"
+import { actionHeader } from "../store/actions/state.action"
 import Tooltip from "./tool-tip"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
 
 const queryHeader = () => {
   const query = graphql`
@@ -53,9 +60,9 @@ const Header = ({ dispatch }) => {
     dispatch(actionHeader(headerRes[0][0]))
   }
 
-  useEffect(() => {
-    onEntryChange(() => getHeaderData())
-  }, [onEntryChange])
+  // useEffect(() => {
+  //   onEntryChange(() => getHeaderData())
+  // }, [onEntryChange])
 
   return (
     <header className="header">

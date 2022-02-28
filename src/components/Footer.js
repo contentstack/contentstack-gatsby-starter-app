@@ -1,10 +1,17 @@
-import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
+
+import {
+  graphql,
+  Link,
+  useStaticQuery,
+} from "gatsby"
 import parser from "html-react-parser"
 import { connect } from "react-redux"
-import { actionFooter } from "../store/actions/state.action"
+
 import * as Utils from "@contentstack/utils"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+
+import Stack from "../live-preview-sdk/index"
+import { actionFooter } from "../store/actions/state.action"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -62,9 +69,9 @@ const Footer = ({ dispatch }) => {
     dispatch(actionFooter(footerRes[0][0]))
   }
 
-  useEffect(() => {
-    onEntryChange(() => getFooterData())
-  }, [onEntryChange])
+  // useEffect(() => {
+  //   onEntryChange(() => getFooterData())
+  // }, [onEntryChange])
 
   return (
     <footer>

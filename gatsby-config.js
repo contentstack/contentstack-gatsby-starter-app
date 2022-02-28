@@ -8,12 +8,12 @@ const {
   CONTENTSTACK_API_KEY,
   CONTENTSTACK_DELIVERY_TOKEN,
   CONTENTSTACK_ENVIRONMENT,
-  CONTENTSTACK_API_HOST,
   CONTENTSTACK_HOSTED_URL,
+  CONTENTSTACK_CDN
 } = process.env
 
 const hostedUrl = CONTENTSTACK_HOSTED_URL || "http://localhost:9000"
-const cdnHost = CONTENTSTACK_API_HOST?.replace(/api/g, "cdn")
+const cdnHost = CONTENTSTACK_CDN
 
 module.exports = {
   siteMetadata: {
@@ -27,8 +27,8 @@ module.exports = {
     "gatsby-plugin-sitemap",
     "gatsby-plugin-offline",
     `gatsby-plugin-image`,
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
+    // `gatsby-plugin-sharp`,
+    // `gatsby-transformer-sharp`,
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
@@ -58,7 +58,7 @@ module.exports = {
         api_key: CONTENTSTACK_API_KEY,
         delivery_token: CONTENTSTACK_DELIVERY_TOKEN,
         environment: CONTENTSTACK_ENVIRONMENT,
-        cdn: `https://${cdnHost}/v3`,
+        cdn: cdnHost,
         // Optional: expediteBuild set this to either true or false
         expediteBuild: true,
         // Optional: Specify true if you want to generate custom schema
