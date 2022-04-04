@@ -1,97 +1,74 @@
 import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import parser from "html-react-parser"
 import moment from "moment"
-
-import Layout from "../components/Layout"
+import { graphql } from "gatsby"
 import SEO from "../components/SEO"
-import FromBlog from "../components/FromBlog"
-import HeroBanner from "../components/BlogBanner"
-import * as Utils from "@contentstack/utils"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import parser from "html-react-parser"
+import Layout from "../components/Layout"
+import { useLocation } from "@reach/router"
+import { onEntryChange } from "../live-preview-sdk/index"
+import ArchiveRelative from "../components/ArchiveRelative"
+import RenderComponents from "../components/RenderComponents"
+import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper"
 
-const blogPost = props => {
-  const {
-    data: { contentstackBlogPost, contentstackPage },
-  } = props
+const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }) => {
+  const { pathname } = useLocation()
+  jsonToHtmlParse(contentstackBlogPost)
 
-  const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
-
-  Utils.jsonToHTML({
-    entry: contentstackBlogPost,
-    paths: ["body", "related_post.body"],
-    renderOption,
+  const [getEntry, setEntry] = useState({
+    banner: contentstackPage,
+    post: contentstackBlogPost,
   })
-
-  const [getEntry, setEntry] = useState(contentstackBlogPost)
-  const [getBanner, setBanner] = useState(contentstackPage)
 
   async function fetchData() {
     try {
-      const entryRes = await Stack.getEntryByUrl({
-        contentTypeUid: "blog_post",
-        entryUrl: props.location.pathname,
-        referenceFieldPath: ["author", "related_post"],
-        jsonRtePath: ["body", "related_post.body"],
-      })
-      const bannerRes = await Stack.getEntryByUrl({
-        contentTypeUid: "page",
-        entryUrl: "/blog",
-      })
-      setEntry(entryRes[0])
-      setBanner(bannerRes[0])
+      const entryRes = await getBlogPostRes(pathname)
+      const bannerRes = await getPageRes("/blog")
+      if (!entryRes || !bannerRes) throw new Error("Error 404")
+      setEntry({ banner: bannerRes, post: entryRes })
     } catch (error) {
       console.error(error)
     }
   }
 
   useEffect(() => {
-    onEntryChange(() => {
-      if (process.env.CONTENTSTACK_LIVE_PREVIEW === "true") {
-        return fetchData()
-      }
-    })
-  }, [])
-
+    onEntryChange(() => fetchData())
+  }, [contentstackBlogPost, contentstackPage])
   return (
-    <Layout property={props} blogPost={getEntry} banner={getBanner}>
-      <SEO title={getEntry.title} />
-      <HeroBanner />
-      <div
-        className="blog-container"
-        data-pageref={getEntry.uid}
-        data-contenttype="blog_post"
-        data-locale={getEntry.locale}
-      >
+    <Layout blogPost={getEntry.post} banner={getEntry.banner}>
+      <SEO title={getEntry.post.title} />
+      <RenderComponents
+        components={getEntry.banner.page_components}
+        blogPage
+        contentTypeUid="blog_post"
+        entryUid={getEntry.banner.uid}
+        locale={getEntry.banner.locale}
+      />
+      <div className="blog-container">
         <div className="blog-detail">
-          <h2>{getEntry.title ? getEntry.title : ""}</h2>
+          <h2 {...getEntry.post.$?.title}>
+            {getEntry.post.title ? getEntry.post.title : ""}
+          </h2>
           <span>
             <p>
-              {moment(getEntry.date).format("ddd, MMM D YYYY")},{" "}
-              <strong>
-                {getEntry.author[0]?.title}
+              {moment(getEntry.post.date).format("ddd, MMM D YYYY")},{" "}
+              <strong {...getEntry.post.author[0]?.$?.title}>
+                {getEntry.post.author[0]?.title}
               </strong>
             </p>
           </span>
-          <span>{parser(getEntry.body)}</span>
+          <span {...getEntry.post.$?.body}>{parser(getEntry.post.body)}</span>
         </div>
         <div className="blog-column-right">
           <div className="related-post">
-            {contentstackPage.page_components?.map((component, index) => {
-              if (component.widget && index === 2) {
-                return (
-                  <h2>
-                    {component.widget.title_h2}
-                  </h2>
-                )
+            {getEntry.banner.page_components[2].widget && (
+              <h2 {...getEntry.banner.page_components[2]?.widget.$?.title_h2}>
+                {getEntry.banner.page_components[2].widget.title_h2}
+              </h2>
+            )}
+            <ArchiveRelative
+              data={
+                getEntry.post.related_post ? getEntry.post.related_post : ""
               }
-            })}
-            <FromBlog
-              data={getEntry.related_post ? getEntry.related_post : ""}
             />
           </div>
         </div>

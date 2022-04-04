@@ -1,57 +1,34 @@
 import React, { useState, useEffect } from "react"
-import { Link, graphql } from "gatsby"
-import parser from "html-react-parser"
-import moment from "moment"
+import { graphql } from "gatsby"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
-import HeroBanner from "../components/BlogBanner"
-import FromBlog from "../components/FromBlog"
-import * as Utils from "@contentstack/utils"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import RenderComponents from "../components/RenderComponents"
+import ArchiveRelative from "../components/ArchiveRelative"
+import { onEntryChange } from "../live-preview-sdk/index"
+import { getPageRes, jsonToHtmlParse } from "../helper"
+import BlogList from "../components/BlogList"
 
-const Blog = props => {
-  const {
-    data: { allContentstackBlogPost, contentstackPage },
-  } = props
-
-  const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
-
-  Utils.jsonToHTML({
-    entry: allContentstackBlogPost.nodes,
-    paths: ["body"],
-    renderOption,
-  })
-
-  const [getBlogList, setBlogList] = useState(allContentstackBlogPost.nodes)
+const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
+  jsonToHtmlParse(allContentstackBlogPost.nodes)
+  const [getBanner, setBanner] = useState(contentstackPage)
 
   async function fetchData() {
     try {
-      const blogListRes = await Stack.getEntry({
-        contentTypeUid: "blog_post",
-        referenceFieldPath: ["author", "related_post"],
-        jsonRtePath: ["body"],
-      })
-      setBlogList(blogListRes[0])
+      const banner = await getPageRes("/blog")
+      if (!banner) throw new Error("Error 404")
+      setBanner(banner)
     } catch (error) {
       console.error(error)
     }
   }
 
   useEffect(() => {
-    onEntryChange(() => {
-      if (process.env.CONTENTSTACK_LIVE_PREVIEW === "true") {
-        return fetchData()
-      }
-    })
-  }, [])
+    onEntryChange(() => fetchData())
+  }, [contentstackPage])
 
   const newBlogList = []
   const newArchivedList = []
-  getBlogList?.forEach(post => {
+  allContentstackBlogPost.nodes?.forEach(post => {
     if (post.is_archived) {
       newArchivedList.push(post)
     } else {
@@ -59,66 +36,24 @@ const Blog = props => {
     }
   })
   return (
-    <Layout blogPost={getBlogList} banner={contentstackPage}>
+    <Layout blogPost={allContentstackBlogPost.nodes} banner={contentstackPage}>
       <SEO title={contentstackPage.title} />
-      <HeroBanner />
-      <div
-        className="blog-container"
-        data-pageref={contentstackPage.uid}
-        data-contenttype="page"
-        data-locale={contentstackPage.locale}
-      >
+      <RenderComponents
+        components={getBanner.page_components}
+        blogPage
+        contentTypeUid="page"
+        entryUid={getBanner.uid}
+        locale={getBanner.locale}
+      />
+      <div className="blog-container">
         <div className="blog-column-left">
           {newBlogList?.map((blog, index) => {
-            return (
-              <div className="blog-list" key={index}>
-                {blog.featured_image && (
-                  <Link to={blog.url}>
-                    <img
-                      alt="blog-img"
-                      className="blog-list-img"
-                      src={blog.featured_image.url}
-                    />
-                  </Link>
-                )}
-                <div className="blog-content">
-                  {blog.title && (
-                    <Link to={blog.url}>
-                      <h3>{blog.title}</h3>
-                    </Link>
-                  )}
-                  <p>
-                    {moment(blog.date).format("ddd, MMM D YYYY")},{" "}
-                    {blog.author && (
-                      <strong>
-                        {blog.author[0]?.title}
-                      </strong>
-                    )}
-                  </p>
-                  {typeof blog.body === "string" ? (
-                    <div>
-                      {parser(blog.body.slice(0, 300))}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {blog?.url ? (
-                    <Link to={blog.url}>
-                      <span>{"Read more -->"}</span>
-                    </Link>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-            )
+            return <BlogList blogList={blog} key={index} />
           })}
         </div>
         <div className="blog-column-right">
-          <h2>
-            {contentstackPage.page_components[1].widget.title_h2}
-          </h2>
-          <FromBlog data={newArchivedList} />
+          <h2>{contentstackPage.page_components[1].widget.title_h2}</h2>
+          <ArchiveRelative data={newArchivedList} />
         </div>
       </div>
     </Layout>
@@ -127,7 +62,7 @@ const Blog = props => {
 
 export const pageQuery = graphql`
   query {
-    contentstackPage(title: { eq: "Blog" }) {
+    contentstackPage(url: { eq: "/blog" }) {
       title
       url
       uid
@@ -241,10 +176,12 @@ export const pageQuery = graphql`
         uid
         author {
           title
+          uid
         }
         related_post {
           title
           body
+          uid
         }
         date
         featured_image {

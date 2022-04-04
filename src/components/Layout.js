@@ -19,8 +19,14 @@ const mapStateToProps = ({ header, footer, page, blog_post }) => {
   return { header, footer, page, blog_post }
 }
 
-const Layout = props => {
-  const { header, footer, children, pageComponent, blogPost, banner } = props
+const Layout = ({
+  header,
+  footer,
+  children,
+  pageComponent,
+  blogPost,
+  banner,
+}) => {
   const json = { header, footer }
   pageComponent && (json.page = pageComponent)
   banner && (json.banner = banner)
