@@ -17,7 +17,6 @@ const RenderComponents = ({
   blogPage,
   locale,
 }) => {
-  console.log("render components", components);
   return (
     <div
       data-pageref={entryUid}

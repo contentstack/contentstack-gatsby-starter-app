@@ -2,7 +2,6 @@ import React from "react"
 
 const BlogBanner = props => {
   const banner = props.data.hero_banner
-  console.log("banner...", banner)
   return (
     <>
       <div

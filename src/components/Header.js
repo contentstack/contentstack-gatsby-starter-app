@@ -75,8 +75,6 @@ const Header = ({ dispatch }) => {
     onEntryChange(() => getHeaderData())
   }, [onEntryChange])
 
-  console.log("header...", getHeader)
-
   return (
     <header className="header">
       <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
