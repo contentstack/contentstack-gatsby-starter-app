@@ -15,11 +15,6 @@ const Stack = contentstack.Stack({
     apiKey: process.env.CONTENTSTACK_API_KEY,
     environment: process.env.CONTENTSTACK_ENVIRONMENT,
   },
-  clientUrlParams: {
-    protocol: "https",
-    host: process.env.CONTENTSTACK_APP_HOST,
-    port: 443,
-  },
 })
 
 if (process.env.CONTENTSTACK_API_HOST) {
@@ -29,6 +24,9 @@ if (process.env.CONTENTSTACK_API_HOST) {
 ContentstackLivePreview.init({
   enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",
   stackSdk: Stack,
+  clientUrlParams: {
+    host: process.env.CONTENTSTACK_APP_HOST,
+  },
   ssr: false,
 })
 
