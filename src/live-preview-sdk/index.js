@@ -1,41 +1,44 @@
-import * as contentstack from "contentstack";
-import * as Utils from "@contentstack/utils";
-import ContentstackLivePreview from '@contentstack/live-preview-utils';
+import * as contentstack from "contentstack"
+import * as Utils from "@contentstack/utils"
+import ContentstackLivePreview from "@contentstack/live-preview-utils"
 
 const Stack = contentstack.Stack({
   api_key: process.env.CONTENTSTACK_API_KEY,
   delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
   environment: process.env.CONTENTSTACK_ENVIRONMENT,
-  region: process.env.CONTENTSTACK_REGION ? process.env.CONTENTSTACK_REGION : "us",
   live_preview: {
     management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN,
     enable: true,
-    host: process.env.CONTENTSTACK_API_HOST
+    host: process.env.CONTENTSTACK_API_HOST,
   },
   stackDetails: {
     apiKey: process.env.CONTENTSTACK_API_KEY,
     environment: process.env.CONTENTSTACK_ENVIRONMENT,
   },
   clientUrlParams: {
-    protocol: 'https',
+    protocol: "https",
     host: process.env.CONTENTSTACK_APP_HOST,
     port: 443,
   },
-});
+})
 
 if (process.env.CONTENTSTACK_API_HOST) {
-  Stack.setHost(process.env.CONTENTSTACK_API_HOST);
+  Stack.setHost(process.env.CONTENTSTACK_API_HOST)
 }
 
-ContentstackLivePreview.init({enable: true, stackSdk: Stack, ssr:false});
+ContentstackLivePreview.init({
+  enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",
+  stackSdk: Stack,
+  ssr: false,
+})
 
-export const onEntryChange = ContentstackLivePreview.onEntryChange;
+export const onEntryChange = ContentstackLivePreview.onEntryChange
 
 const renderOption = {
   ["span"]: (node, next) => {
-    return next(node.children);
+    return next(node.children)
   },
-};
+}
 
 export default {
   /**
@@ -48,27 +51,27 @@ export default {
    */
   getEntry({ contentTypeUid, referenceFieldPath, jsonRtePath }) {
     return new Promise((resolve, reject) => {
-      const query = Stack.ContentType(contentTypeUid).Query();
-      if (referenceFieldPath) query.includeReference(referenceFieldPath);
+      const query = Stack.ContentType(contentTypeUid).Query()
+      if (referenceFieldPath) query.includeReference(referenceFieldPath)
       query
         .includeOwner()
         .toJSON()
         .find()
         .then(
-          (result) => {
+          result => {
             jsonRtePath &&
               Utils.jsonToHTML({
                 entry: result,
                 paths: jsonRtePath,
                 renderOption,
-              });
-            resolve(result);
+              })
+            resolve(result)
           },
-          (error) => {
-            reject(error);
+          error => {
+            reject(error)
           }
-        );
-    });
+        )
+    })
   },
 
   /**
@@ -82,24 +85,24 @@ export default {
    */
   getEntryByUrl({ contentTypeUid, entryUrl, referenceFieldPath, jsonRtePath }) {
     return new Promise((resolve, reject) => {
-      const blogQuery = Stack.ContentType(contentTypeUid).Query();
-      if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath);
-      blogQuery.includeOwner().toJSON();
-      const data = blogQuery.where("url", `${entryUrl}`).find();
+      const blogQuery = Stack.ContentType(contentTypeUid).Query()
+      if (referenceFieldPath) blogQuery.includeReference(referenceFieldPath)
+      blogQuery.includeOwner().toJSON()
+      const data = blogQuery.where("url", `${entryUrl}`).find()
       data.then(
-        (result) => {
+        result => {
           jsonRtePath &&
             Utils.jsonToHTML({
               entry: result,
               paths: jsonRtePath,
               renderOption,
-            });
-          resolve(result[0]);
+            })
+          resolve(result[0])
         },
-        (error) => {
-          reject(error);
+        error => {
+          reject(error)
         }
-      );
-    });
+      )
+    })
   },
-};
+}

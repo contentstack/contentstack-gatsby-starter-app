@@ -5,18 +5,19 @@ import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
 import ArchiveRelative from "../components/ArchiveRelative"
 import { onEntryChange } from "../live-preview-sdk/index"
-import { getPageRes, jsonToHtmlParse } from "../helper"
+import { getPageRes,getBlogListRes ,jsonToHtmlParse } from "../helper"
 import BlogList from "../components/BlogList"
 
 const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
   jsonToHtmlParse(allContentstackBlogPost.nodes)
-  const [getBanner, setBanner] = useState(contentstackPage)
+  const [getEntry, setEntry] = useState({banner:contentstackPage, blogList:allContentstackBlogPost.nodes})
 
   async function fetchData() {
     try {
       const banner = await getPageRes("/blog")
-      if (!banner) throw new Error("Error 404")
-      setBanner(banner)
+      const blogList = await getBlogListRes();
+      if (!banner || !blogList) throw new Error("Error 404")
+      setEntry({ banner, blogList });
     } catch (error) {
       console.error(error)
     }
@@ -28,7 +29,7 @@ const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
 
   const newBlogList = []
   const newArchivedList = []
-  allContentstackBlogPost.nodes?.forEach(post => {
+  getEntry.blogList?.forEach(post => {
     if (post.is_archived) {
       newArchivedList.push(post)
     } else {
@@ -36,14 +37,14 @@ const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
     }
   })
   return (
-    <Layout blogPost={allContentstackBlogPost.nodes} banner={contentstackPage}>
-      <SEO title={contentstackPage.title} />
+    <Layout blogPost={getEntry.blogList} banner={getEntry.banner}>
+      <SEO title={getEntry.banner.title} />
       <RenderComponents
-        components={getBanner.page_components}
+        components={getEntry.banner.page_components}
         blogPage
         contentTypeUid="page"
-        entryUid={getBanner.uid}
-        locale={getBanner.locale}
+        entryUid={getEntry.banner.uid}
+        locale={getEntry.banner.locale}
       />
       <div className="blog-container">
         <div className="blog-column-left">
