@@ -11,7 +11,7 @@ const reducer = (state, action) => {
   }
 }
 
-const initialState = { header: {}, footer: {}}
+const initialState = { header: {}, footer: {} }
 
 const createStore = () => reduxCreateStore(reducer, initialState)
 export default createStore

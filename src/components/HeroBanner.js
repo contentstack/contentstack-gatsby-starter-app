@@ -1,8 +1,8 @@
 import { Link } from "gatsby"
 import React from "react"
 
-const Hero = props => {
-  const {hero_banner} = props.data
+const HeroBanner = props => {
+  const { hero_banner } = props.data
   return (
     <div
       className="hero-banner"
@@ -10,26 +10,28 @@ const Hero = props => {
         background: hero_banner.bg_color ? hero_banner.bg_color : "",
       }}
     >
-      <div className={`${props.title == "about" ? "about" : "home"}-content`}>
+      <div className="home-content" style={{ color: hero_banner.text_color }}>
         {hero_banner.banner_title && (
-          <h1 className="hero-title">{hero_banner.banner_title}</h1>
+          <h1 className="hero-title" {...hero_banner.$?.banner_title}>
+            {hero_banner.banner_title}
+          </h1>
         )}
         {hero_banner.banner_description ? (
           <p
-            className={`hero-description ${
-              props.title == "about" && "about-desc"
-            }`}
+            className="hero-description"
+            style={{ color: hero_banner.text_color }}
+            {...hero_banner.$?.banner_description}
           >
             {hero_banner.banner_description}
           </p>
         ) : (
           ""
         )}
-        {hero_banner.call_to_action.title &&
-        hero_banner.call_to_action.href ? (
+        {hero_banner.call_to_action.title && hero_banner.call_to_action.href ? (
           <Link
             to={hero_banner.call_to_action.href}
             className="btn tertiary-btn"
+            {...hero_banner.call_to_action.$?.title}
           >
             {hero_banner.call_to_action.title}
           </Link>
@@ -40,6 +42,7 @@ const Hero = props => {
       {hero_banner.banner_image ? (
         <img
           alt="hero-banner-image"
+          {...hero_banner.banner_image.$?.url}
           src={hero_banner.banner_image.url}
         />
       ) : (
@@ -49,4 +52,4 @@ const Hero = props => {
   )
 }
 
-export default Hero
+export default HeroBanner

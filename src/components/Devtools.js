@@ -1,12 +1,34 @@
 import React, { useState, useEffect } from "react"
 import Tooltip from "./tool-tip"
-import copyIcon from "../images/copy.svg";
+import copyIcon from "../images/copy.svg"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
 
 const DevTools = ({ response }) => {
   const isSSR = typeof window === "undefined"
   const [forceUpdate, setForceUpdate] = useState(0)
+
+  function filterObject(inputObject) {
+    const unWantedProps = [
+      "_version",
+      "ACL",
+      "_owner",
+      "_in_progress",
+      "created_at",
+      "created_by",
+      "updated_at",
+      "updated_by",
+      "publish_details",
+    ]
+    for (const key in inputObject) {
+      unWantedProps.includes(key) && delete inputObject[key]
+      if (typeof inputObject[key] !== "object") {
+        continue
+      }
+      inputObject[key] = filterObject(inputObject[key])
+    }
+    return inputObject
+  }
 
   function copyObject(object) {
     navigator.clipboard.writeText(object)
@@ -40,7 +62,7 @@ const DevTools = ({ response }) => {
             </h2>
             <span
               className="json-copy"
-              onClick={e => copyObject(JSON.stringify(response))}
+              onClick={e => copyObject(JSON.stringify(filterObject(response)))}
               aria-hidden="true"
             >
               <Tooltip
@@ -65,7 +87,7 @@ const DevTools = ({ response }) => {
               {response && !isSSR && (
                 <React.Suspense fallback={<div />}>
                   <ReactJson
-                    src={response}
+                    src={filterObject(response)}
                     collapsed={1}
                     name="response"
                     enableClipboard={false}

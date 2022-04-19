@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react"
 import parser from "html-react-parser"
 import { connect } from "react-redux"
 import { actionFooter } from "../store/actions/state.action"
-import * as Utils from "@contentstack/utils"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import { onEntryChange } from "../live-preview-sdk/index"
+import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -41,25 +41,34 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }) => {
   const { contentstackFooter } = queryLayout()
-  const renderOption = {
-    ["span"]: (node, next) => {
-      return next(node.children)
-    },
-  }
-  Utils.jsonToHTML({
-    entry: contentstackFooter,
-    paths: ["copyright"],
-    renderOption,
-  })
+  jsonToHtmlParse(contentstackFooter)
   const [getFooter, setFooter] = useState(contentstackFooter)
 
+  function buildNavigation(ent, ft) {
+    let newFooter = { ...ft }
+    if (ent.length !== newFooter.navigation.link.length) {
+      ent.forEach(entry => {
+        const fFound = newFooter?.navigation.link.find(
+          nlink => nlink.title === entry.title
+        )
+        if (!fFound) {
+          newFooter.navigation.link?.push({
+            title: entry.title,
+            href: entry.url,
+            $: entry.$,
+          })
+        }
+      })
+    }
+    return newFooter
+  }
+
   async function getFooterData() {
-    const footerRes = await Stack.getEntry({
-      contentTypeUid: 'footer',
-      jsonRtePath: ['copyright'],
-    });
-    setFooter(footerRes[0][0])
-    dispatch(actionFooter(footerRes[0][0]))
+    const footerRes = await getFooterRes()
+    const allEntries = await getAllEntries()
+    const nFooter = buildNavigation(allEntries, footerRes)
+    setFooter(nFooter)
+    dispatch(actionFooter(nFooter))
   }
 
   useEffect(() => {
@@ -72,6 +81,7 @@ const Footer = ({ dispatch }) => {
         <div className="col-quarter">
           <Link to="/" className="logo-tag">
             <img
+              {...getFooter.logo.$?.url}
               src={getFooter.logo?.url}
               alt={getFooter.title}
               title={getFooter.title}
@@ -84,10 +94,8 @@ const Footer = ({ dispatch }) => {
             <ul className="nav-ul">
               {getFooter.navigation.link.map((menu, index) => {
                 return (
-                  <li className="footer-nav-li" key={index}>
-                    <Link to={menu.href}>
-                      {menu.title}
-                    </Link>
+                  <li className="footer-nav-li" key={index} {...menu.$?.title}>
+                    <Link to={menu.href}>{menu.title}</Link>
                   </li>
                 )
               })}
@@ -105,6 +113,7 @@ const Footer = ({ dispatch }) => {
                   className="footer-social-links"
                 >
                   <img
+                    {...social.icon.$?.url}
                     src={social.icon?.url}
                     alt="social-icon"
                   />
@@ -115,9 +124,11 @@ const Footer = ({ dispatch }) => {
         </div>
       </div>
       <div className="copyright">
-        {typeof getFooter.copyright === "string"
-          ? <div>{parser(getFooter?.copyright)}</div>
-          : ""}
+        {typeof getFooter.copyright === "string" ? (
+          <div {...getFooter.$?.copyright}>{parser(getFooter?.copyright)}</div>
+        ) : (
+          ""
+        )}
       </div>
     </footer>
   )

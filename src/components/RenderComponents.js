@@ -1,6 +1,7 @@
 import React from "react"
 
-import Hero from "./Hero"
+import HeroBanner from "./HeroBanner"
+import BlogBanner from "./BlogBanner"
 import Section from "./Section"
 import BlogSection from "./BlogSection"
 import CardSection from "./CardSection"
@@ -9,7 +10,13 @@ import SectionBucket from "./SectionBucket"
 import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
 
-const RenderComponents = ({ components, about, entryUid, contentTypeUid, locale }) => {
+const RenderComponents = ({
+  components,
+  entryUid,
+  contentTypeUid,
+  blogPage,
+  locale,
+}) => {
   return (
     <div
       data-pageref={entryUid}
@@ -18,19 +25,17 @@ const RenderComponents = ({ components, about, entryUid, contentTypeUid, locale 
     >
       {components?.map((component, index) => {
         if (component["hero_banner"]) {
-          return (
-            <Hero
-              data={component}
-              title={about ? "about" : ""}
-              key={"render" + index}
-            />
+          return !blogPage ? (
+            <HeroBanner data={component} key={"render" + index} />
+          ) : (
+            <BlogBanner data={component} key={"render" + index} />
           )
         }
         if (component["section"]) {
           return <Section data={component} key={"render" + index} />
         }
         if (component["section_with_buckets"]) {
-          return about ? (
+          return component.section_with_buckets.bucket_tabular ? (
             <AboutSectionBucket data={component} key={"render" + index} />
           ) : (
             <SectionBucket data={component} key={"render" + index} />
@@ -43,7 +48,9 @@ const RenderComponents = ({ components, about, entryUid, contentTypeUid, locale 
           return <CardSection data={component} key={"render" + index} />
         }
         if (component["section_with_html_code"]) {
-          return <SectionWithEmbedObject data={component} key={"render" + index} />
+          return (
+            <SectionWithEmbedObject data={component} key={"render" + index} />
+          )
         }
         if (component["our_team"]) {
           return <TeamSection data={component} key={"render" + index} />
