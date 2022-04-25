@@ -7,14 +7,14 @@ const SectionWithEmbedObject = ({ data: { section_with_html_code } }) => {
       <div className="contact-page-section max-width">
         <div className="contact-page-content">
           {section_with_html_code.title ? (
-            <h1>
+            <h1 {...section_with_html_code.$?.title}>
               {section_with_html_code.title}
             </h1>
           ) : (
             ""
           )}
           {typeof section_with_html_code.description === "string" ? (
-            <div>
+            <div {...section_with_html_code.$?.description}>
               {parser(section_with_html_code.description)}
             </div>
           ) : (
@@ -23,7 +23,7 @@ const SectionWithEmbedObject = ({ data: { section_with_html_code } }) => {
         </div>
         <div className="contact-page-form">
           {typeof section_with_html_code.html_code === "string" ? (
-            <div>
+            <div {...section_with_html_code.$?.html_code}>
               {parser(section_with_html_code.html_code)}
             </div>
           ) : (
@@ -37,21 +37,21 @@ const SectionWithEmbedObject = ({ data: { section_with_html_code } }) => {
     <div className="contact-maps-section max-width">
       <div className="maps-details">
         {typeof section_with_html_code.html_code === "string" && (
-          <div>
+          <div {...section_with_html_code.$?.html_code}>
             {parser(section_with_html_code.html_code)}
           </div>
         )}
       </div>
       <div className="contact-maps-content">
         {section_with_html_code.title ? (
-          <h2>
+          <h2 {...section_with_html_code.$?.title}>
             {section_with_html_code.title}
           </h2>
         ) : (
           ""
         )}
         {typeof section_with_html_code.description === "string" ? (
-          <div>
+          <div {...section_with_html_code.$?.description}>
             {parser(section_with_html_code.description)}
           </div>
         ) : (

@@ -1,12 +1,12 @@
-import * as Utils from "@contentstack/utils"
 import React, { useState, useEffect } from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
-import { actionHeader } from "../store/actions/state.action"
-import jsonIcon from "../images/json.svg"
 import Tooltip from "./tool-tip"
-import Stack, { onEntryChange } from "../live-preview-sdk/index"
+import jsonIcon from "../images/json.svg"
+import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper"
+import { onEntryChange } from "../live-preview-sdk/index"
+import { actionHeader } from "../store/actions/state.action"
 
 const queryHeader = () => {
   const query = graphql`
@@ -15,13 +15,16 @@ const queryHeader = () => {
         title
         uid
         logo {
+          uid
           url
+          filename
         }
         navigation_menu {
           label
           page_reference {
             title
             url
+            uid
           }
         }
         notification_bar {
@@ -36,21 +39,36 @@ const queryHeader = () => {
 
 const Header = ({ dispatch }) => {
   const { contentstackHeader } = queryHeader()
-  Utils.jsonToHTML({
-    entry: contentstackHeader,
-    paths: ["notification_bar.announcement_text"],
-  })
-
+  jsonToHtmlParse(contentstackHeader)
   const [getHeader, setHeader] = useState(contentstackHeader)
 
+  function buildNavigation(ent, hd) {
+    let newHeader = { ...hd }
+    if (ent.length !== newHeader.navigation_menu.length) {
+      ent.forEach(entry => {
+        const hFound = newHeader?.navigation_menu.find(
+          navLink => navLink.label === entry.title
+        )
+        if (!hFound) {
+          newHeader.navigation_menu?.push({
+            label: entry.title,
+            page_reference: [
+              { title: entry.title, url: entry.url, $: entry.$ },
+            ],
+            $: {},
+          })
+        }
+      })
+    }
+    return newHeader
+  }
+
   async function getHeaderData() {
-    const headerRes = await Stack.getEntry({
-      contentTypeUid: "header",
-      referenceFieldPath: ["navigation_menu.page_reference"],
-      jsonRtePath: ["notification_bar.announcement_text"],
-    })
-    setHeader(headerRes[0][0])
-    dispatch(actionHeader(headerRes[0][0]))
+    const headerRes = await getHeaderRes()
+    const allEntries = await getAllEntries()
+    const nHeader = buildNavigation(allEntries, headerRes)
+    setHeader(nHeader)
+    dispatch(actionHeader(nHeader))
   }
 
   useEffect(() => {
@@ -59,7 +77,7 @@ const Header = ({ dispatch }) => {
 
   return (
     <header className="header">
-      <div className="note-div">
+      <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
         {getHeader.notification_bar.show_announcement &&
           typeof getHeader.notification_bar.announcement_text === "string" &&
           parse(getHeader.notification_bar.announcement_text)}
@@ -69,6 +87,7 @@ const Header = ({ dispatch }) => {
           <Link to="/" className="logo-tag" title="Contentstack">
             <img
               className="logo"
+              {...getHeader.logo.$?.url}
               src={getHeader.logo?.url}
               alt={getHeader.title}
               title={getHeader.title}
@@ -84,7 +103,7 @@ const Header = ({ dispatch }) => {
           <ul className="nav-ul header-ul">
             {getHeader.navigation_menu.map((menu, index) => {
               return (
-                <li className="nav-li" key={index}>
+                <li className="nav-li" key={index} {...menu.$?.label}>
                   {menu.label === "Home" ? (
                     <Link
                       to={`${menu.page_reference[0]?.url}`}
