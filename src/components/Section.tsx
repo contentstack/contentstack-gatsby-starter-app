@@ -1,8 +1,25 @@
 import { Link } from "gatsby"
 import React from "react"
+import { SectionProps } from "../typescript/component"
 
-const Section = ({ data }) => {
-  function contentSection(dataSection, index) {
+type Data = {
+  section: SectionProps;
+}
+
+type DataSection = {
+  section: SectionProps
+}
+
+type DataImg = {
+  section: SectionProps
+}
+
+type BucketProps = {
+  data: Data;
+}
+
+const Section = ({ data }: BucketProps) => {
+  function contentSection(dataSection: DataSection, index: string) {
     return (
       <div className="home-content" key={index}>
         {dataSection.section.title_h2 && (
@@ -17,13 +34,13 @@ const Section = ({ data }) => {
         )}
         {dataSection.section.call_to_action.title &&
         dataSection.section.call_to_action.href ? (
-          <Link
+          <a
             {...dataSection.section.call_to_action.$?.href}
-            to={dataSection.section.call_to_action.href}
+            href={dataSection.section.call_to_action.href}
             className="btn secondary-btn"
           >
             {dataSection.section.call_to_action.title}
-          </Link>
+          </a>
         ) : (
           ""
         )}
@@ -31,7 +48,7 @@ const Section = ({ data }) => {
     )
   }
 
-  function imageContent(dataImg, index) {
+  function imageContent(dataImg: DataImg, index:string) {
     return (
       <img
         {...dataImg.section.image.$?.url}

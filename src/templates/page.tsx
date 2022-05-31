@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
-import Layout from "../components/Layout"
 import SEO from "../components/SEO"
+import Layout from "../components/Layout"
+import { useLocation } from "@reach/router"
+import { onEntryChange } from "../live-preview-sdk/index.d"
+import { getPageRes, jsonToHtmlParse } from "../helper/index.d"
 import RenderComponents from "../components/RenderComponents"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getPageRes, jsonToHtmlParse } from "../helper"
+import { PageProps } from "../typescript/template"
 
-const Home = ({ data: { contentstackPage } }) => {
+const Page = ({ data: { contentstackPage } }: PageProps) => {
+  const { pathname } = useLocation()
   jsonToHtmlParse(contentstackPage)
   const [getEntry, setEntry] = useState(contentstackPage)
 
   async function fetchData() {
     try {
-      const entryRes = await getPageRes("/")
+      const entryRes = await getPageRes(`/${pathname.split("/")[1]}`)
       if (!entryRes) throw new Error("Error 404")
       setEntry(entryRes)
     } catch (error) {
       console.error(error)
     }
   }
-
   useEffect(() => {
     onEntryChange(() => fetchData())
   }, [])
@@ -27,31 +29,33 @@ const Home = ({ data: { contentstackPage } }) => {
   return (
     <Layout pageComponent={getEntry}>
       <SEO title={getEntry.title} />
-      {getEntry.page_components && (
-        <RenderComponents
-          components={getEntry.page_components}
-          contentTypeUid="page"
-          entryUid={getEntry.uid}
-          locale={getEntry.locale}
-        />
-      )}
+      <div className="about">
+        {getEntry.page_components && (
+          <RenderComponents
+            components={getEntry.page_components}
+            contentTypeUid="page"
+            entryUid={getEntry.uid}
+            locale={getEntry.locale}
+          />
+        )}
+      </div>
     </Layout>
   )
 }
 
 export const pageQuery = graphql`
-  query {
-    contentstackPage(url: { eq: "/" }) {
+  query ($url: String!) {
+    contentstackPage(url: { eq: $url }) {
+      uid
       title
       url
-      uid
-      locale
       seo {
-        enable_search_indexing
-        keywords
-        meta_description
         meta_title
+        meta_description
+        keywords
+        enable_search_indexing
       }
+      locale
       page_components {
         contact_details {
           address
@@ -61,19 +65,15 @@ export const pageQuery = graphql`
         from_blog {
           title_h2
           featured_blogs {
-            title
             uid
+            title
             url
-            featured_image {
-              url
-              uid
-            }
-            body
             author {
               title
               uid
-              bio
             }
+            body
+            date
           }
           view_articles {
             title
@@ -84,10 +84,7 @@ export const pageQuery = graphql`
           banner_description
           banner_title
           bg_color
-          banner_image {
-            url
-            uid
-          }
+          text_color
           call_to_action {
             title
             href
@@ -100,19 +97,21 @@ export const pageQuery = graphql`
             name
             designation
             image {
-              url
               uid
+              title
+              url
             }
           }
         }
         section {
           title_h2
           description
-          image {
-            url
-            uid
-          }
           image_alignment
+          image {
+            uid
+            title
+            url
+          }
           call_to_action {
             title
             href
@@ -121,12 +120,14 @@ export const pageQuery = graphql`
         section_with_buckets {
           title_h2
           description
+          bucket_tabular
           buckets {
             title_h3
             description
             icon {
-              url
               uid
+              title
+              url
             }
             call_to_action {
               title
@@ -144,9 +145,19 @@ export const pageQuery = graphql`
             }
           }
         }
+        section_with_html_code {
+          title
+          html_code_alignment
+          html_code
+          description
+        }
+        widget {
+          type
+          title_h2
+        }
       }
     }
   }
 `
 
-export default Home
+export default Page

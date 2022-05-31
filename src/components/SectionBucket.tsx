@@ -1,8 +1,17 @@
 import { Link } from "gatsby"
 import React from "react"
 import parser from "html-react-parser"
+import { SectionWithBucket } from "../typescript/component";
 
-const SectionBucket = ({ data: { section_with_buckets } }) => {
+type Data = {
+  section_with_buckets: SectionWithBucket;
+}
+
+type BucketProps = {
+  data: Data;
+}
+
+const SectionBucket = ({ data: { section_with_buckets } }: BucketProps) => {
   return (
     <div className="member-main-section">
       <div className="member-head">

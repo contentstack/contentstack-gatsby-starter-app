@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react"
 import { Link, graphql, useStaticQuery } from "gatsby"
 import parse from "html-react-parser"
 import { connect } from "react-redux"
-import Tooltip from "./tool-tip"
+import Tooltip from "./ToolTip"
 import jsonIcon from "../images/json.svg"
-import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper"
-import { onEntryChange } from "../live-preview-sdk/index"
+import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper/index.d"
+import { onEntryChange } from "../live-preview-sdk/index.d"
 import { actionHeader } from "../store/actions/state.action"
+import { DispatchData, Entry, HeaderProps, Menu } from "../typescript/layout";
 
 const queryHeader = () => {
   const query = graphql`
@@ -37,17 +38,17 @@ const queryHeader = () => {
   return useStaticQuery(query)
 }
 
-const Header = ({ dispatch }) => {
+const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader()
   jsonToHtmlParse(contentstackHeader)
   const [getHeader, setHeader] = useState(contentstackHeader)
 
-  function buildNavigation(ent, hd) {
+  function buildNavigation(ent: Entry, hd: HeaderProps) {
     let newHeader = { ...hd }
     if (ent.length !== newHeader.navigation_menu.length) {
       ent.forEach(entry => {
         const hFound = newHeader?.navigation_menu.find(
-          navLink => navLink.label === entry.title
+          (navLink) => navLink.label === entry.title
         )
         if (!hFound) {
           newHeader.navigation_menu?.push({
@@ -101,7 +102,7 @@ const Header = ({ dispatch }) => {
 
         <nav className="menu">
           <ul className="nav-ul header-ul">
-            {getHeader.navigation_menu.map((menu, index) => {
+            {getHeader.navigation_menu.map((menu: Menu, index: number) => {
               return (
                 <li className="nav-li" key={index} {...menu.$?.label}>
                   {menu.label === "Home" ? (
@@ -125,7 +126,7 @@ const Header = ({ dispatch }) => {
           </ul>
         </nav>
         <div className="json-preview">
-          <Tooltip content="JSON Preview" direction="top">
+          <Tooltip content="JSON Preview" direction='top' dynamic={false} delay={200} status={0}>
             <span data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               <img src={jsonIcon} alt="JSON Preview icon" />
             </span>
