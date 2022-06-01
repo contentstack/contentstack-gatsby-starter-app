@@ -21,4 +21,5 @@ We have created an in-depth tutorial on how you can create a Gatsby starter webs
 **More Resources**
 
 - [Contentstack documentation](https://www.contentstack.com/docs/)
+- [Region support documentation](https://www.contentstack.com/docs/developers/selecting-region-in-contentstack-starter-apps)
 - [Gatsby documentation](https://www.gatsbyjs.com/docs/)
