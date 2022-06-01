@@ -43,8 +43,8 @@ const Header = ({ dispatch }: DispatchData) => {
   jsonToHtmlParse(contentstackHeader)
   const [getHeader, setHeader] = useState(contentstackHeader)
 
-  function buildNavigation(ent: Entry, hd: HeaderProps) {
-    let newHeader = { ...hd }
+  function buildNavigation(ent: Entry, head: HeaderProps) {
+    let newHeader = { ...head }
     if (ent.length !== newHeader.navigation_menu.length) {
       ent.forEach(entry => {
         const hFound = newHeader?.navigation_menu.find(

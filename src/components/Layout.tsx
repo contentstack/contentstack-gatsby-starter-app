@@ -17,6 +17,14 @@ typeof window !== "undefined" && require("bootstrap/dist/js/bootstrap")
 require("../styles/style.css")
 require("@contentstack/live-preview-utils/dist/main.css")
 
+type JsonContent = {
+  header: {};
+  footer: {};
+  page?: {};
+  banner?: {};
+  blog_post?: {};
+}
+
 const mapStateToProps = ({ header, footer, page, blog_post }: {header: HeaderProps, footer: FooterProps, page: PageProps, blog_post: Posts}) => {
   return { header, footer, page, blog_post }
 }
@@ -33,10 +41,10 @@ const Layout = ({
   footer: FooterProps
   children: any
   pageComponent?: Component
-  blogPost?: [Posts]
+  blogPost?: Posts| [Posts]
   banner?: Banner
 }) => {
-  const json: any = { header, footer }
+  const json: JsonContent = { header, footer }
   pageComponent && (json.page = pageComponent)
   banner && (json.banner = banner)
   blogPost && (json.blog_post = blogPost)

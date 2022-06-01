@@ -45,8 +45,8 @@ const Footer = ({ dispatch }: DispatchData) => {
   jsonToHtmlParse(contentstackFooter)
   const [getFooter, setFooter] = useState(contentstackFooter)
 
-  function buildNavigation(ent: Entry, ft: FooterProps) {
-    let newFooter = { ...ft }
+  function buildNavigation(ent: Entry, footer: FooterProps) {
+    let newFooter = { ...footer }
     if (ent.length !== newFooter.navigation.link.length) {
       ent.forEach(entry => {
         const fFound = newFooter?.navigation.link.find(

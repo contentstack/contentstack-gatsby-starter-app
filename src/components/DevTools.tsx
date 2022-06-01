@@ -30,8 +30,8 @@ const DevTools = ({ response }: any) => {
     return inputObject
   }
 
-  function copyObject(object: string) {
-    navigator.clipboard.writeText(object)
+  function copyObject(copyText: string) {
+    navigator.clipboard.writeText(copyText)
     setForceUpdate(1)
   }
 
