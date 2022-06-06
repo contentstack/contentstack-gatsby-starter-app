@@ -9,6 +9,7 @@ import TeamSection from "./TeamSection"
 import SectionBucket from "./SectionBucket"
 import AboutSectionBucket from "./AboutSectionBucket"
 import SectionWithEmbedObject from "./SectionWithEmbedObject"
+import { Component } from "../typescript/component";
 
 const RenderComponents = ({
   components,
@@ -16,6 +17,12 @@ const RenderComponents = ({
   contentTypeUid,
   blogPage,
   locale,
+}:{
+  components: Component[],
+  entryUid: string;
+  contentTypeUid: string;
+  blogPage?: boolean;
+  locale: string;
 }) => {
   return (
     <div

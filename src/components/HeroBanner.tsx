@@ -1,7 +1,16 @@
 import { Link } from "gatsby"
 import React from "react"
+import { Banner } from "../typescript/component";
 
-const HeroBanner = props => {
+type Data = {
+  hero_banner: Banner;
+}
+
+type BannerProps = {
+  data: Data;
+}
+
+const HeroBanner = (props: BannerProps) => {
   const { hero_banner } = props.data
   return (
     <div

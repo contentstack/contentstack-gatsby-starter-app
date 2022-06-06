@@ -2,7 +2,7 @@
   "name": "contentstack-gatsby-starter-app",
   "private": true,
   "description": "A simple starter app build using Gatsby and Contentstack",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "author": "Contentstack",
   "dependencies": {
     "@contentstack/live-preview-utils": "^1.0.1",
@@ -20,7 +20,7 @@
     "gatsby-plugin-robots-txt": "^1.7.0",
     "gatsby-plugin-sharp": "^4.10.2",
     "gatsby-plugin-sitemap": "^5.10.2",
-    "gatsby-source-contentstack": "^4.0.1",
+    "gatsby-source-contentstack": "^4.0.2",
     "gatsby-source-filesystem": "^4.10.1",
     "gatsby-transformer-sharp": "^4.10.0",
     "html-react-parser": "^1.4.4",
@@ -31,7 +31,9 @@
     "react-helmet": "^6.1.0",
     "react-json-view": "^1.21.3",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2"
+    "redux": "^4.1.2",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.6.4"
   },
   "keywords": [
     "gatsby",
@@ -52,5 +54,11 @@
   },
   "bugs": {
     "url": "https://github.com/contentstack/contentstack-gatsby-starter-app"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "@types/react-helmet": "^6.1.5"
   }
 }

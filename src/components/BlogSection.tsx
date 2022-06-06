@@ -1,8 +1,17 @@
 import { Link } from "gatsby"
 import React from "react"
 import parser from "html-react-parser"
+import { FeaturedBlogData } from "../typescript/component"
 
-const BlogSection = ({ data: { from_blog } }) => {
+type Data = {
+  from_blog: FeaturedBlogData
+}
+
+type FeaturedBlogProps = {
+  data: Data;
+}
+
+const BlogSection = ({ data: { from_blog } }: FeaturedBlogProps) => {
   return (
     <div className="community-section">
       <div className="community-head">
@@ -12,13 +21,13 @@ const BlogSection = ({ data: { from_blog } }) => {
           ""
         )}
         {from_blog.view_articles ? (
-          <Link
-            to={from_blog.view_articles.href}
+          <a
+            href={from_blog.view_articles.href}
             className="btn secondary-btn article-btn"
             {...from_blog.view_articles.$?.title}
           >
             {from_blog.view_articles.title}
-          </Link>
+          </a>
         ) : (
           ""
         )}

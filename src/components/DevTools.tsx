@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
-import Tooltip from "./tool-tip"
+import Tooltip from "./ToolTip"
 import copyIcon from "../images/copy.svg"
 
 const ReactJson = React.lazy(() => import("react-json-view"))
 
-const DevTools = ({ response }) => {
+const DevTools = ({ response }: any) => {
   const isSSR = typeof window === "undefined"
   const [forceUpdate, setForceUpdate] = useState(0)
 
-  function filterObject(inputObject) {
+  function filterObject(inputObject: any) {
     const unWantedProps = [
       "_version",
       "ACL",
@@ -30,8 +30,8 @@ const DevTools = ({ response }) => {
     return inputObject
   }
 
-  function copyObject(object) {
-    navigator.clipboard.writeText(object)
+  function copyObject(copyText: string) {
+    navigator.clipboard.writeText(copyText)
     setForceUpdate(1)
   }
 
@@ -47,7 +47,7 @@ const DevTools = ({ response }) => {
       id="staticBackdrop"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
-      tabIndex="-1"
+      tabIndex={-1}
       aria-labelledby="staticBackdropLabel"
       aria-hidden="true"
     >

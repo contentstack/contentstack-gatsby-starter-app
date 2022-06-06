@@ -1,6 +1,15 @@
 import React from "react"
+import { TeamProps } from "../typescript/component";
 
-const TeamSection = ({ data: { our_team } }) => {
+type Data = {
+  our_team: TeamProps;
+}
+
+type OurTeam = {
+  data: Data;
+}
+
+const TeamSection = ({ data: { our_team } }: OurTeam) => {
   return (
     <div className="about-team-section">
       <div className="team-head-section">

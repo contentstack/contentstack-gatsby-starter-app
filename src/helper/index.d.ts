@@ -1,4 +1,4 @@
-import Stack from "../live-preview-sdk"
+import Stack from "../live-preview-sdk/index.d"
 import * as Utils from "@contentstack/utils"
 
 const liveEdit = process.env.CONTENTSTACK_LIVE_EDIT_TAGS === "true"

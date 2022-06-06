@@ -1,7 +1,20 @@
 import { Link } from "gatsby"
 import React from "react"
+import { CardData } from "../typescript/component";
 
-const CardSection = ({ data }) => {
+type CardSection = {
+  cards: [CardData]
+}
+
+type Data = {
+  section_with_cards: CardSection
+}
+
+type CardProps = {
+  data: Data
+}
+
+const CardSection = ({ data }: CardProps) => {
   return (
     <div className="demo-section">
       {data.section_with_cards.cards.map((card, index) => {
@@ -13,13 +26,13 @@ const CardSection = ({ data }) => {
             )}
             <div className="card-cta">
               {card.call_to_action.title && card.call_to_action.href ? (
-                <Link
+                <a
                   {...card.call_to_action.$?.href}
-                  to={card.call_to_action.href}
+                  href={card.call_to_action.href}
                   className="btn primary-btn"
                 >
                   {card.call_to_action.title}
-                </Link>
+                </a>
               ) : (
                 ""
               )}
