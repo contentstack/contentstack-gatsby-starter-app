@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react"
 import parser from "html-react-parser"
 import { connect } from "react-redux"
 import { actionFooter } from "../store/actions/state.action"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper"
+import { onEntryChange } from "../live-preview-sdk/index.d"
+import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index.d"
+import { DispatchData, Entry, FooterProps, Links, Social, Menu } from "../typescript/layout";
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -39,17 +40,17 @@ const queryLayout = () => {
   return data
 }
 
-const Footer = ({ dispatch }) => {
+const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout()
   jsonToHtmlParse(contentstackFooter)
   const [getFooter, setFooter] = useState(contentstackFooter)
 
-  function buildNavigation(ent, ft) {
-    let newFooter = { ...ft }
+  function buildNavigation(ent: Entry, footer: FooterProps) {
+    let newFooter = { ...footer }
     if (ent.length !== newFooter.navigation.link.length) {
       ent.forEach(entry => {
         const fFound = newFooter?.navigation.link.find(
-          nlink => nlink.title === entry.title
+          (nlink: Links) => nlink.title === entry.title
         )
         if (!fFound) {
           newFooter.navigation.link?.push({
@@ -92,7 +93,7 @@ const Footer = ({ dispatch }) => {
         <div className="col-half">
           <nav>
             <ul className="nav-ul">
-              {getFooter.navigation.link.map((menu, index) => {
+              {getFooter.navigation.link.map((menu: Menu, index: number) => {
                 return (
                   <li className="footer-nav-li" key={index} {...menu.$?.title}>
                     <Link to={menu.href}>{menu.title}</Link>
@@ -104,7 +105,7 @@ const Footer = ({ dispatch }) => {
         </div>
         <div className="col-quarter social-link">
           <div className="social-nav">
-            {getFooter.social.social_share.map((social, index) => {
+            {getFooter.social.social_share.map((social: Social, index: number) => {
               return (
                 <a
                   href={social.link?.href}

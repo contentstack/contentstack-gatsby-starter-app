@@ -489,6 +489,7 @@ footer a {
 .mission-content-section {
   display: flex;
   width: 380px;
+  margin-top: 20px;
 }
 
 .mission-icon, .mission-section-content {

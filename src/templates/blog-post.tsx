@@ -5,12 +5,13 @@ import SEO from "../components/SEO"
 import parser from "html-react-parser"
 import Layout from "../components/Layout"
 import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index"
+import { onEntryChange } from "../live-preview-sdk/index.d"
 import ArchiveRelative from "../components/ArchiveRelative"
 import RenderComponents from "../components/RenderComponents"
-import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper"
+import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper/index.d"
+import { PageProps } from "../typescript/template"
 
-const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }) => {
+const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProps) => {
   const { pathname } = useLocation()
   jsonToHtmlParse(contentstackBlogPost)
 
@@ -67,7 +68,7 @@ const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }) => {
             )}
             <ArchiveRelative
               data={
-                getEntry.post.related_post ? getEntry.post.related_post : ""
+                getEntry.post.related_post && (getEntry.post.related_post)
               }
             />
           </div>

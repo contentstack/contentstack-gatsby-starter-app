@@ -4,11 +4,14 @@ import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
 import ArchiveRelative from "../components/ArchiveRelative"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getPageRes,getBlogListRes ,jsonToHtmlParse } from "../helper"
+import { onEntryChange } from "../live-preview-sdk/index.d"
+import { getPageRes,getBlogListRes ,jsonToHtmlParse } from "../helper/index.d"
+import { PageProps } from "../typescript/template"
 import BlogList from "../components/BlogList"
 
-const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
+
+const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }: PageProps) => {
+  
   jsonToHtmlParse(allContentstackBlogPost.nodes)
   const [getEntry, setEntry] = useState({banner:contentstackPage, blogList:allContentstackBlogPost.nodes})
 
@@ -27,8 +30,8 @@ const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
     onEntryChange(() => fetchData())
   }, [contentstackPage])
 
-  const newBlogList = []
-  const newArchivedList = []
+  const newBlogList = [] as any
+  const newArchivedList = [] as any
   getEntry.blogList?.forEach(post => {
     if (post.is_archived) {
       newArchivedList.push(post)
@@ -48,7 +51,7 @@ const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }) => {
       />
       <div className="blog-container">
         <div className="blog-column-left">
-          {newBlogList?.map((blog, index) => {
+          {newBlogList?.map((blog: BlogList, index: number) => {
             return <BlogList blogList={blog} key={index} />
           })}
         </div>

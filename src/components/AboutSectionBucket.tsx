@@ -1,8 +1,31 @@
 import React from "react"
 import parser from "html-react-parser"
+import { Image } from '../typescript/action';
+import { SectionWithBucket } from "../typescript/component"
 
-const AboutSectionBucket = ({ data }) => {
-  function bucketContent(bucket) {
+type AdditionalParam = {
+  title_h2?: string;
+  title_h3?: string;
+  description?: string;
+}
+
+type Bucket = {
+  title_h3: string;
+  description: string;
+  icon: Image;
+  $: AdditionalParam;
+}
+
+type Data = {
+  section_with_buckets: SectionWithBucket;
+}
+
+type BucketProps = {
+  data: Data;
+}
+
+const AboutSectionBucket = ({ data }: BucketProps) => {
+  function bucketContent(bucket: Bucket) {
     return (
       <div className="mission-content-section" key={bucket.title_h3}>
         {bucket.icon && (
@@ -39,12 +62,12 @@ const AboutSectionBucket = ({ data }) => {
       <div className="mission-section">
         <div className="mission-content-top">
           {data.section_with_buckets.buckets.map(
-            (bucket, index) => index < 2 && bucketContent(bucket)
+            (bucket, index: number) => index < 2 && bucketContent(bucket)
           )}
         </div>
         <div className="mission-content-bottom">
           {data.section_with_buckets.buckets.map(
-            (bucket, index) => index >= 2 && bucketContent(bucket)
+            (bucket, index: number) => index >= 2 && bucketContent(bucket)
           )}
         </div>
       </div>
