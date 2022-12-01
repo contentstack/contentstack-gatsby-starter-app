@@ -53,6 +53,6 @@
     "url": "https://github.com/contentstack/contentstack-gatsby-starter-app"
   },
   "engines": {
-    "node": "=16.17.0"
+    "node": "=16.16.0"
   }
 }
