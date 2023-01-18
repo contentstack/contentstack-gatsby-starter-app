@@ -30,7 +30,6 @@ module.exports = {
     siteUrl: hostedUrl,
   },
   plugins: [
-    "gatsby-plugin-react-helmet",
     "gatsby-plugin-sitemap",
     "gatsby-plugin-offline",
     `gatsby-plugin-image`,
