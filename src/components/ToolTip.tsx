@@ -1,18 +1,17 @@
-import React, { useRef, useEffect, MutableRefObject } from 'react';
+import React, { useRef, useEffect, MutableRefObject } from "react";
 
 type TooltipProps = {
-  children?: JSX.Element|JSX.Element[];
+  children?: JSX.Element | JSX.Element[];
   content: string;
   direction: string;
   status: number;
   delay: number;
   dynamic: boolean;
-}
-
+};
 
 const Tooltip = (props: TooltipProps) => {
   let timeout: any;
-  const toolTipRef = useRef() as MutableRefObject <HTMLDivElement>;
+  const toolTipRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const showTip = () => {
     timeout = setTimeout(() => {
@@ -41,7 +40,10 @@ const Tooltip = (props: TooltipProps) => {
       onMouseLeave={hideTip}
     >
       {props.children}
-      <div className={`Tooltip-Tip ${props.direction || 'top'}`} ref={toolTipRef}>
+      <div
+        className={`Tooltip-Tip ${props.direction || "top"}`}
+        ref={toolTipRef}
+      >
         {props.content}
       </div>
     </div>

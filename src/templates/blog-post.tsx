@@ -1,39 +1,43 @@
-import React, { useState, useEffect } from "react"
-import moment from "moment"
-import { graphql } from "gatsby"
-import SEO from "../components/SEO"
-import parser from "html-react-parser"
-import Layout from "../components/Layout"
-import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import ArchiveRelative from "../components/ArchiveRelative"
-import RenderComponents from "../components/RenderComponents"
-import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper/index.d"
-import { PageProps } from "../typescript/template"
+import React, { useState, useEffect } from "react";
+import moment from "moment";
+import { graphql } from "gatsby";
+import SEO from "../components/SEO";
+import parser from "html-react-parser";
+import Layout from "../components/Layout";
+import { useLocation } from "@reach/router";
+import { onEntryChange } from "../live-preview-sdk/index";
+import ArchiveRelative from "../components/ArchiveRelative";
+import RenderComponents from "../components/RenderComponents";
+import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper";
+import { PageProps } from "../typescript/template";
 
-const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProps) => {
-  const { pathname } = useLocation()
-  jsonToHtmlParse(contentstackBlogPost)
+const blogPost = ({
+  data: { contentstackBlogPost, contentstackPage },
+}: PageProps) => {
+  const { pathname } = useLocation();
+  jsonToHtmlParse(contentstackBlogPost);
 
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
     post: contentstackBlogPost,
-  })
+  });
 
   async function fetchData() {
     try {
-      const entryRes = await getBlogPostRes(pathname)
-      const bannerRes = await getPageRes("/blog")
-      if (!entryRes || !bannerRes) throw new Error("Error 404")
-      setEntry({ banner: bannerRes, post: entryRes })
+      let sanitizedUrl = pathname;
+      sanitizedUrl = sanitizedUrl.replace(/\/$/, "");
+      const entryRes = await getBlogPostRes(sanitizedUrl);
+      const bannerRes = await getPageRes("/blog");
+      if (!entryRes || !bannerRes) throw new Error("Error 404");
+      setEntry({ banner: bannerRes, post: entryRes });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   useEffect(() => {
-    onEntryChange(() => fetchData())
-  }, [contentstackBlogPost, contentstackPage])
+    onEntryChange(() => fetchData());
+  }, [contentstackBlogPost, contentstackPage]);
   return (
     <Layout blogPost={getEntry.post} banner={getEntry.banner}>
       <SEO title={getEntry.post.title} />
@@ -67,16 +71,14 @@ const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProp
               </h2>
             )}
             <ArchiveRelative
-              data={
-                getEntry.post.related_post && (getEntry.post.related_post)
-              }
+              data={getEntry.post.related_post && getEntry.post.related_post}
             />
           </div>
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const postQuery = graphql`
   query ($title: String!) {
@@ -116,5 +118,5 @@ export const postQuery = graphql`
       }
     }
   }
-`
-export default blogPost
+`;
+export default blogPost;

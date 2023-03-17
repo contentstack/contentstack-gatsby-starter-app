@@ -1,22 +1,22 @@
-import { Link } from "gatsby"
-import React from "react"
-import parser from "html-react-parser"
+import { Link } from "gatsby";
+import React from "react";
+import parser from "html-react-parser";
 
 type AdditionalParam = {
   title: string;
   body: string;
-}
+};
 
 type Data = {
   url: string;
   body: string;
   title: string;
   $: AdditionalParam;
-}
+};
 
 type BlogListProps = {
   data: [Data];
-}
+};
 
 const ArchiveRelative = ({ data }: BlogListProps) => {
   return (
@@ -31,10 +31,10 @@ const ArchiveRelative = ({ data }: BlogListProps) => {
               )}
             </div>
           </Link>
-        )
+        );
       })}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default ArchiveRelative
+export default ArchiveRelative;
