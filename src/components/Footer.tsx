@@ -1,18 +1,18 @@
-import { Link, useStaticQuery, graphql } from "gatsby"
-import React, { useState, useEffect } from "react"
-import parser from "html-react-parser"
-import { connect } from "react-redux"
-import { actionFooter } from "../store/actions/state.action"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index"
+import { Link, useStaticQuery, graphql } from "gatsby";
+import React, { useState, useEffect } from "react";
+import parser from "html-react-parser";
+import { connect } from "react-redux";
+import { actionFooter } from "../store/actions/state.action";
+import { onEntryChange } from "../live-preview-sdk/index";
+import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index";
 import {
   DispatchData,
   FooterProps,
   Links,
   Social,
   Menu,
-} from "../typescript/layout"
-import { FooterModel, PageModel } from "../common/types"
+} from "../typescript/layout";
+import { FooterModel, PageModel } from "../common/types";
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -43,45 +43,45 @@ const queryLayout = () => {
         copyright
       }
     }
-  `)
-  return data
-}
+  `);
+  return data;
+};
 
 const Footer = ({ dispatch }: DispatchData) => {
-  const { contentstackFooter } = queryLayout()
-  jsonToHtmlParse(contentstackFooter)
-  const [getFooter, setFooter] = useState(contentstackFooter)
+  const { contentstackFooter } = queryLayout();
+  jsonToHtmlParse(contentstackFooter);
+  const [getFooter, setFooter] = useState(contentstackFooter);
 
   function buildNavigation(ent: PageModel[], footer: FooterProps) {
-    let newFooter = { ...footer }
+    let newFooter = { ...footer };
     if (ent.length !== newFooter.navigation.link.length) {
       ent.forEach(entry => {
         const fFound = newFooter?.navigation.link.find(
           (nlink: Links) => nlink.title === entry.title
-        )
+        );
         if (!fFound) {
           newFooter.navigation.link?.push({
             title: entry.title,
             href: entry.url,
             $: entry.$,
-          })
+          });
         }
-      })
+      });
     }
-    return newFooter
+    return newFooter;
   }
 
   async function getFooterData() {
-    const footerRes: FooterModel = await getFooterRes()
-    const allEntries: PageModel[] = await getAllEntries()
-    const nFooter = buildNavigation(allEntries, footerRes)
-    setFooter(nFooter)
-    dispatch(actionFooter(nFooter))
+    const footerRes: FooterModel = await getFooterRes();
+    const allEntries: PageModel[] = await getAllEntries();
+    const nFooter = buildNavigation(allEntries, footerRes);
+    setFooter(nFooter);
+    dispatch(actionFooter(nFooter));
   }
 
   useEffect(() => {
-    onEntryChange(() => getFooterData())
-  }, [onEntryChange])
+    onEntryChange(() => getFooterData());
+  }, [onEntryChange]);
 
   return (
     <footer>
@@ -105,7 +105,7 @@ const Footer = ({ dispatch }: DispatchData) => {
                   <li className="footer-nav-li" key={index} {...menu.$?.title}>
                     <Link to={menu.href}>{menu.title}</Link>
                   </li>
-                )
+                );
               })}
             </ul>
           </nav>
@@ -127,7 +127,7 @@ const Footer = ({ dispatch }: DispatchData) => {
                       alt="social-icon"
                     />
                   </a>
-                )
+                );
               }
             )}
           </div>
@@ -141,7 +141,7 @@ const Footer = ({ dispatch }: DispatchData) => {
         )}
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default connect()(Footer)
+export default connect()(Footer);

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react"
-import Tooltip from "./ToolTip"
-import copyIcon from "../images/copy.svg"
+import React, { useState, useEffect } from "react";
+import Tooltip from "./ToolTip";
+import copyIcon from "../images/copy.svg";
 
-const ReactJson = React.lazy(() => import("react-json-view"))
+const ReactJson = React.lazy(() => import("react-json-view"));
 
 const DevTools = ({ response }: any) => {
-  const isSSR = typeof window === "undefined"
-  const [forceUpdate, setForceUpdate] = useState(0)
+  const isSSR = typeof window === "undefined";
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   function filterObject(inputObject: any) {
     const unWantedProps = [
@@ -19,27 +19,27 @@ const DevTools = ({ response }: any) => {
       "updated_at",
       "updated_by",
       "publish_details",
-    ]
+    ];
     for (const key in inputObject) {
-      unWantedProps.includes(key) && delete inputObject[key]
+      unWantedProps.includes(key) && delete inputObject[key];
       if (typeof inputObject[key] !== "object") {
-        continue
+        continue;
       }
-      inputObject[key] = filterObject(inputObject[key])
+      inputObject[key] = filterObject(inputObject[key]);
     }
-    return inputObject
+    return inputObject;
   }
 
   function copyObject(copyText: string) {
-    navigator.clipboard.writeText(copyText)
-    setForceUpdate(1)
+    navigator.clipboard.writeText(copyText);
+    setForceUpdate(1);
   }
 
   useEffect(() => {
     if (forceUpdate !== 0) {
-      setTimeout(() => setForceUpdate(0), 300)
+      setTimeout(() => setForceUpdate(0), 300);
     }
-  }, [forceUpdate])
+  }, [forceUpdate]);
 
   return (
     <div
@@ -108,6 +108,6 @@ const DevTools = ({ response }: any) => {
         </div>
       </div>
     </div>
-  )
-}
-export default DevTools
+  );
+};
+export default DevTools;

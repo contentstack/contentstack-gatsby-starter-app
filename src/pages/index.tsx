@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react"
-import { graphql } from "gatsby"
-import Layout from "../components/Layout"
-import SEO from "../components/SEO"
-import RenderComponents from "../components/RenderComponents"
-import { onEntryChange } from "../live-preview-sdk/index"
-import { getPageRes, jsonToHtmlParse } from "../helper/index"
-import { PageProps } from "../typescript/template"
+import React, { useEffect, useState } from "react";
+import { graphql } from "gatsby";
+import Layout from "../components/Layout";
+import SEO from "../components/SEO";
+import RenderComponents from "../components/RenderComponents";
+import { onEntryChange } from "../live-preview-sdk/index";
+import { getPageRes, jsonToHtmlParse } from "../helper/index";
+import { PageProps } from "../typescript/template";
 
 const Home = ({ data: { contentstackPage } }: PageProps) => {
-  jsonToHtmlParse(contentstackPage)
-  const [getEntry, setEntry] = useState(contentstackPage)
+  jsonToHtmlParse(contentstackPage);
+  const [getEntry, setEntry] = useState(contentstackPage);
 
   async function fetchData() {
     try {
-      const entryRes = await getPageRes("/")
-      if (!entryRes) throw new Error("Error 404")
-      setEntry(entryRes)
+      const entryRes = await getPageRes("/");
+      if (!entryRes) throw new Error("Error 404");
+      setEntry(entryRes);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   useEffect(() => {
-    onEntryChange(() => fetchData())
-  }, [])
+    onEntryChange(() => fetchData());
+  }, []);
 
   return (
     <Layout pageComponent={getEntry}>
@@ -37,8 +37,8 @@ const Home = ({ data: { contentstackPage } }: PageProps) => {
         />
       )}
     </Layout>
-  )
-}
+  );
+};
 
 export const pageQuery = graphql`
   query {
@@ -148,6 +148,6 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
 
-export default Home
+export default Home;
