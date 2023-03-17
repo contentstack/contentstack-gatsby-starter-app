@@ -3,9 +3,16 @@ import React, { useState, useEffect } from "react"
 import parser from "html-react-parser"
 import { connect } from "react-redux"
 import { actionFooter } from "../store/actions/state.action"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index.d"
-import { DispatchData, Entry, FooterProps, Links, Social, Menu } from "../typescript/layout";
+import { onEntryChange } from "../live-preview-sdk/index"
+import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index"
+import {
+  DispatchData,
+  FooterProps,
+  Links,
+  Social,
+  Menu,
+} from "../typescript/layout"
+import { FooterModel, PageModel } from "../common/types"
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -45,7 +52,7 @@ const Footer = ({ dispatch }: DispatchData) => {
   jsonToHtmlParse(contentstackFooter)
   const [getFooter, setFooter] = useState(contentstackFooter)
 
-  function buildNavigation(ent: Entry, footer: FooterProps) {
+  function buildNavigation(ent: PageModel[], footer: FooterProps) {
     let newFooter = { ...footer }
     if (ent.length !== newFooter.navigation.link.length) {
       ent.forEach(entry => {
@@ -65,8 +72,8 @@ const Footer = ({ dispatch }: DispatchData) => {
   }
 
   async function getFooterData() {
-    const footerRes = await getFooterRes()
-    const allEntries = await getAllEntries()
+    const footerRes: FooterModel = await getFooterRes()
+    const allEntries: PageModel[] = await getAllEntries()
     const nFooter = buildNavigation(allEntries, footerRes)
     setFooter(nFooter)
     dispatch(actionFooter(nFooter))
@@ -105,22 +112,24 @@ const Footer = ({ dispatch }: DispatchData) => {
         </div>
         <div className="col-quarter social-link">
           <div className="social-nav">
-            {getFooter.social.social_share.map((social: Social, index: number) => {
-              return (
-                <a
-                  href={social.link?.href}
-                  title={social.link.title.toLowerCase()}
-                  key={index}
-                  className="footer-social-links"
-                >
-                  <img
-                    {...social.icon.$?.url}
-                    src={social.icon?.url}
-                    alt="social-icon"
-                  />
-                </a>
-              )
-            })}
+            {getFooter.social.social_share.map(
+              (social: Social, index: number) => {
+                return (
+                  <a
+                    href={social.link?.href}
+                    title={social.link.title.toLowerCase()}
+                    key={index}
+                    className="footer-social-links"
+                  >
+                    <img
+                      {...social.icon.$?.url}
+                      src={social.icon?.url}
+                      alt="social-icon"
+                    />
+                  </a>
+                )
+              }
+            )}
           </div>
         </div>
       </div>

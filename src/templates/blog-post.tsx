@@ -5,13 +5,15 @@ import SEO from "../components/SEO"
 import parser from "html-react-parser"
 import Layout from "../components/Layout"
 import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
+import { onEntryChange } from "../live-preview-sdk/index"
 import ArchiveRelative from "../components/ArchiveRelative"
 import RenderComponents from "../components/RenderComponents"
-import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper/index.d"
+import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper"
 import { PageProps } from "../typescript/template"
 
-const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProps) => {
+const blogPost = ({
+  data: { contentstackBlogPost, contentstackPage },
+}: PageProps) => {
   const { pathname } = useLocation()
   jsonToHtmlParse(contentstackBlogPost)
 
@@ -22,7 +24,9 @@ const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProp
 
   async function fetchData() {
     try {
-      const entryRes = await getBlogPostRes(pathname)
+      let sanitizedUrl = pathname
+      sanitizedUrl = sanitizedUrl.replace(/\/$/, "")
+      const entryRes = await getBlogPostRes(sanitizedUrl)
       const bannerRes = await getPageRes("/blog")
       if (!entryRes || !bannerRes) throw new Error("Error 404")
       setEntry({ banner: bannerRes, post: entryRes })
@@ -67,9 +71,7 @@ const blogPost = ({ data: { contentstackBlogPost, contentstackPage } }: PageProp
               </h2>
             )}
             <ArchiveRelative
-              data={
-                getEntry.post.related_post && (getEntry.post.related_post)
-              }
+              data={getEntry.post.related_post && getEntry.post.related_post}
             />
           </div>
         </div>

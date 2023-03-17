@@ -4,23 +4,26 @@ import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import RenderComponents from "../components/RenderComponents"
 import ArchiveRelative from "../components/ArchiveRelative"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getPageRes,getBlogListRes ,jsonToHtmlParse } from "../helper/index.d"
+import { onEntryChange } from "../live-preview-sdk/index"
+import { getPageRes, getBlogListRes, jsonToHtmlParse } from "../helper/index"
 import { PageProps } from "../typescript/template"
 import BlogList from "../components/BlogList"
 
-
-const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }: PageProps) => {
-  
+const Blog = ({
+  data: { allContentstackBlogPost, contentstackPage },
+}: PageProps) => {
   jsonToHtmlParse(allContentstackBlogPost.nodes)
-  const [getEntry, setEntry] = useState({banner:contentstackPage, blogList:allContentstackBlogPost.nodes})
+  const [getEntry, setEntry] = useState({
+    banner: contentstackPage,
+    blogList: allContentstackBlogPost.nodes,
+  })
 
   async function fetchData() {
     try {
       const banner = await getPageRes("/blog")
-      const blogList = await getBlogListRes();
+      const blogList = await getBlogListRes()
       if (!banner || !blogList) throw new Error("Error 404")
-      setEntry({ banner, blogList });
+      setEntry({ banner, blogList })
     } catch (error) {
       console.error(error)
     }
