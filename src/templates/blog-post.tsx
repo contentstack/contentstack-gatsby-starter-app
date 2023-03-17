@@ -109,8 +109,106 @@ export const postQuery = graphql`
         meta_title
       }
     }
-    contentstackPage {
+    contentstackPage(url: { eq: "/blog" }) {
+      title
+      url
+      uid
+      locale
+      seo {
+        enable_search_indexing
+        keywords
+        meta_description
+        meta_title
+      }
       page_components {
+        contact_details {
+          address
+          email
+          phone
+        }
+        from_blog {
+          title_h2
+          featured_blogs {
+            title
+            uid
+            url
+            is_archived
+            featured_image {
+              url
+              uid
+            }
+            body
+            author {
+              title
+              uid
+              bio
+            }
+          }
+          view_articles {
+            title
+            href
+          }
+        }
+        hero_banner {
+          banner_description
+          banner_title
+          bg_color
+          call_to_action {
+            title
+            href
+          }
+        }
+        our_team {
+          title_h2
+          description
+          employees {
+            name
+            designation
+            image {
+              url
+              uid
+            }
+          }
+        }
+        section {
+          title_h2
+          description
+          image {
+            url
+            uid
+          }
+          image_alignment
+          call_to_action {
+            title
+            href
+          }
+        }
+        section_with_buckets {
+          title_h2
+          description
+          buckets {
+            title_h3
+            description
+            icon {
+              url
+              uid
+            }
+            call_to_action {
+              title
+              href
+            }
+          }
+        }
+        section_with_cards {
+          cards {
+            title_h3
+            description
+            call_to_action {
+              title
+              href
+            }
+          }
+        }
         widget {
           title_h2
           type

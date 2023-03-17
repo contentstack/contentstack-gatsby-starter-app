@@ -39,5 +39,6 @@ type Data = {
 }
 
 export type PageProps = {
-  data: Data
+  data: Data,
+  pageContext: any
 }

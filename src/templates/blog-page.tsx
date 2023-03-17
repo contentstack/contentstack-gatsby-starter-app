@@ -1,21 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { graphql } from "gatsby";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import RenderComponents from "../components/RenderComponents";
+import ArchiveRelative from "../components/ArchiveRelative";
 import { onEntryChange } from "../live-preview-sdk/index";
-import { getPageRes, jsonToHtmlParse } from "../helper/index";
+import { getPageRes, getBlogListRes, jsonToHtmlParse } from "../helper/index";
 import { PageProps } from "../typescript/template";
+import BlogList from "../components/BlogList";
 
-const Home = ({ data: { contentstackPage } }: PageProps) => {
-  jsonToHtmlParse(contentstackPage);
-  const [getEntry, setEntry] = useState(contentstackPage);
-
+const Blog = ({
+  data: { allContentstackBlogPost, contentstackPage },
+}: PageProps) => {
+  jsonToHtmlParse(allContentstackBlogPost.nodes);
+  const [getEntry, setEntry] = useState({
+    banner: contentstackPage,
+    blogList: allContentstackBlogPost.nodes,
+  });
   async function fetchData() {
     try {
-      const entryRes = await getPageRes("/");
-      if (!entryRes) throw new Error("Error 404");
-      setEntry(entryRes);
+      const banner = await getPageRes("/blog");
+      const blogList = await getBlogListRes();
+      if (!banner || !blogList) throw new Error("Error 404");
+      setEntry({ banner, blogList });
     } catch (error) {
       console.error(error);
     }
@@ -23,26 +30,45 @@ const Home = ({ data: { contentstackPage } }: PageProps) => {
 
   useEffect(() => {
     onEntryChange(() => fetchData());
-  }, []);
+  }, [contentstackPage]);
 
+  const newBlogList = [] as any;
+  const newArchivedList = [] as any;
+  getEntry.blogList?.forEach(post => {
+    if (post.is_archived) {
+      newArchivedList.push(post);
+    } else {
+      newBlogList.push(post);
+    }
+  });
   return (
-    <Layout pageComponent={getEntry}>
-      <SEO title={getEntry.title} />
-      {getEntry.page_components && (
-        <RenderComponents
-          components={getEntry.page_components}
-          contentTypeUid="page"
-          entryUid={getEntry.uid}
-          locale={getEntry.locale}
-        />
-      )}
+    <Layout blogPost={getEntry.blogList} banner={getEntry.banner}>
+      <SEO title={getEntry.banner.title} />
+      <RenderComponents
+        components={getEntry.banner.page_components}
+        blogPage
+        contentTypeUid="page"
+        entryUid={getEntry.banner.uid}
+        locale={getEntry.banner.locale}
+      />
+      <div className="blog-container">
+        <div className="blog-column-left">
+          {newBlogList?.map((blog: BlogList, index: number) => {
+            return <BlogList blogList={blog} key={index} />;
+          })}
+        </div>
+        <div className="blog-column-right">
+          <h2>{contentstackPage?.page_components[1]?.widget?.title_h2}</h2>
+          <ArchiveRelative data={newArchivedList} />
+        </div>
+      </div>
     </Layout>
   );
 };
 
-export const pageQuery = graphql`
+export const postQuery = graphql`
   query {
-    contentstackPage(url: { eq: "/" }) {
+    contentstackPage(url: { eq: "/blog" }) {
       title
       url
       uid
@@ -65,6 +91,7 @@ export const pageQuery = graphql`
             title
             uid
             url
+            is_archived
             featured_image {
               url
               uid
@@ -85,10 +112,6 @@ export const pageQuery = graphql`
           banner_description
           banner_title
           bg_color
-          banner_image {
-            url
-            uid
-          }
           call_to_action {
             title
             href
@@ -145,9 +168,38 @@ export const pageQuery = graphql`
             }
           }
         }
+        widget {
+          title_h2
+          type
+        }
+      }
+    }
+
+    allContentstackBlogPost {
+      nodes {
+        url
+        title
+        uid
+        locale
+        author {
+          title
+          uid
+        }
+        related_post {
+          title
+          body
+          uid
+        }
+        date
+        featured_image {
+          url
+          uid
+        }
+        is_archived
+        body
       }
     }
   }
 `;
 
-export default Home;
+export default Blog;

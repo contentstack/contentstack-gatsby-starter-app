@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { useLocation } from "@reach/router";
 import { onEntryChange } from "../live-preview-sdk/index";
 import { getPageRes, jsonToHtmlParse } from "../helper";
 import RenderComponents from "../components/RenderComponents";
 import { PageProps } from "../typescript/template";
 
-const Page = ({ data: { contentstackPage } }: PageProps) => {
-  const { pathname } = useLocation();
+const Page = ({ data: { contentstackPage }, pageContext }: PageProps) => {
   jsonToHtmlParse(contentstackPage);
   const [getEntry, setEntry] = useState(contentstackPage);
 
   async function fetchData() {
     try {
-      const entryRes = await getPageRes(`/${pathname.split("/")[1]}`);
+      const entryRes = await getPageRes(pageContext?.url);
       if (!entryRes) throw new Error("Error 404");
       setEntry(entryRes);
     } catch (error) {
@@ -64,10 +62,15 @@ export const pageQuery = graphql`
         }
         from_blog {
           title_h2
+
           featured_blogs {
             uid
             title
             url
+            featured_image {
+              url
+              uid
+            }
             author {
               title
               uid
@@ -80,9 +83,14 @@ export const pageQuery = graphql`
             href
           }
         }
+
         hero_banner {
           banner_description
           banner_title
+          banner_image {
+            uid
+            url
+          }
           bg_color
           text_color
           call_to_action {
