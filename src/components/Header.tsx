@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react"
-import { Link, graphql, useStaticQuery } from "gatsby"
-import parse from "html-react-parser"
-import { connect } from "react-redux"
-import Tooltip from "./ToolTip"
-import jsonIcon from "../images/json.svg"
-import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper/index.d"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { actionHeader } from "../store/actions/state.action"
-import { DispatchData, Entry, HeaderProps, Menu } from "../typescript/layout";
+import React, { useState, useEffect } from "react";
+import { Link, graphql, useStaticQuery } from "gatsby";
+import parse from "html-react-parser";
+import { connect } from "react-redux";
+import Tooltip from "./ToolTip";
+import jsonIcon from "../images/json.svg";
+import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper/index";
+import { onEntryChange } from "../live-preview-sdk/index";
+import { actionHeader } from "../store/actions/state.action";
+import { DispatchData, HeaderProps, Menu } from "../typescript/layout";
+import { PageModel, HeaderModel } from "../common/types";
 
 const queryHeader = () => {
   const query = graphql`
@@ -34,22 +35,22 @@ const queryHeader = () => {
         }
       }
     }
-  `
-  return useStaticQuery(query)
-}
+  `;
+  return useStaticQuery(query);
+};
 
 const Header = ({ dispatch }: DispatchData) => {
-  const { contentstackHeader } = queryHeader()
-  jsonToHtmlParse(contentstackHeader)
-  const [getHeader, setHeader] = useState(contentstackHeader)
+  const { contentstackHeader } = queryHeader();
+  jsonToHtmlParse(contentstackHeader);
+  const [getHeader, setHeader] = useState(contentstackHeader);
 
-  function buildNavigation(ent: Entry, head: HeaderProps) {
-    let newHeader = { ...head }
+  function buildNavigation(ent: PageModel[], head: HeaderProps) {
+    let newHeader = { ...head };
     if (ent.length !== newHeader.navigation_menu.length) {
       ent.forEach(entry => {
         const hFound = newHeader?.navigation_menu.find(
-          (navLink) => navLink.label === entry.title
-        )
+          navLink => navLink.label === entry.title
+        );
         if (!hFound) {
           newHeader.navigation_menu?.push({
             label: entry.title,
@@ -57,28 +58,31 @@ const Header = ({ dispatch }: DispatchData) => {
               { title: entry.title, url: entry.url, $: entry.$ },
             ],
             $: {},
-          })
+          });
         }
-      })
+      });
     }
-    return newHeader
+    return newHeader;
   }
 
   async function getHeaderData() {
-    const headerRes = await getHeaderRes()
-    const allEntries = await getAllEntries()
-    const nHeader = buildNavigation(allEntries, headerRes)
-    setHeader(nHeader)
-    dispatch(actionHeader(nHeader))
+    const headerRes: HeaderModel = await getHeaderRes();
+    const allEntries: PageModel[] = await getAllEntries();
+    const nHeader = buildNavigation(allEntries, headerRes);
+    setHeader(nHeader);
+    dispatch(actionHeader(nHeader));
   }
 
   useEffect(() => {
-    onEntryChange(() => getHeaderData())
-  }, [onEntryChange])
+    onEntryChange(() => getHeaderData());
+  }, [onEntryChange]);
 
   return (
     <header className="header">
-      <div className="note-div" {...getHeader.notification_bar.$?.announcement_text}>
+      <div
+        className="note-div"
+        {...getHeader.notification_bar.$?.announcement_text}
+      >
         {getHeader.notification_bar.show_announcement &&
           typeof getHeader.notification_bar.announcement_text === "string" &&
           parse(getHeader.notification_bar.announcement_text)}
@@ -121,12 +125,18 @@ const Header = ({ dispatch }: DispatchData) => {
                     </Link>
                   )}
                 </li>
-              )
+              );
             })}
           </ul>
         </nav>
         <div className="json-preview">
-          <Tooltip content="JSON Preview" direction='top' dynamic={false} delay={200} status={0}>
+          <Tooltip
+            content="JSON Preview"
+            direction="top"
+            dynamic={false}
+            delay={200}
+            status={0}
+          >
             <span data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               <img src={jsonIcon} alt="JSON Preview icon" />
             </span>
@@ -134,7 +144,7 @@ const Header = ({ dispatch }: DispatchData) => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default connect()(Header)
+export default connect()(Header);

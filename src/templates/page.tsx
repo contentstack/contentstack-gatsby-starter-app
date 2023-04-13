@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import SEO from "../components/SEO"
-import Layout from "../components/Layout"
-import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getPageRes, jsonToHtmlParse } from "../helper/index.d"
-import RenderComponents from "../components/RenderComponents"
-import { PageProps } from "../typescript/template"
+import React, { useState, useEffect } from "react";
+import { graphql } from "gatsby";
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
+import { onEntryChange } from "../live-preview-sdk/index";
+import { getPageRes, jsonToHtmlParse } from "../helper";
+import RenderComponents from "../components/RenderComponents";
+import { PageProps } from "../typescript/template";
 
-const Page = ({ data: { contentstackPage } }: PageProps) => {
-  const { pathname } = useLocation()
-  jsonToHtmlParse(contentstackPage)
-  const [getEntry, setEntry] = useState(contentstackPage)
+const Page = ({ data: { contentstackPage }, pageContext }: PageProps) => {
+  jsonToHtmlParse(contentstackPage);
+  const [getEntry, setEntry] = useState(contentstackPage);
 
   async function fetchData() {
     try {
-      const entryRes = await getPageRes(`/${pathname.split("/")[1]}`)
-      if (!entryRes) throw new Error("Error 404")
-      setEntry(entryRes)
+      const entryRes = await getPageRes(pageContext?.url);
+      if (!entryRes) throw new Error("Error 404");
+      setEntry(entryRes);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
   useEffect(() => {
-    onEntryChange(() => fetchData())
-  }, [])
+    onEntryChange(() => fetchData());
+  }, []);
 
   return (
     <Layout pageComponent={getEntry}>
@@ -40,8 +38,8 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
         )}
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const pageQuery = graphql`
   query ($url: String!) {
@@ -64,10 +62,15 @@ export const pageQuery = graphql`
         }
         from_blog {
           title_h2
+
           featured_blogs {
             uid
             title
             url
+            featured_image {
+              url
+              uid
+            }
             author {
               title
               uid
@@ -80,9 +83,14 @@ export const pageQuery = graphql`
             href
           }
         }
+
         hero_banner {
           banner_description
           banner_title
+          banner_image {
+            uid
+            url
+          }
           bg_color
           text_color
           call_to_action {
@@ -158,6 +166,6 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
 
-export default Page
+export default Page;
