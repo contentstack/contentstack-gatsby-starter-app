@@ -1,26 +1,28 @@
 // Module dependency
 
-require('ts-node').register({
+require("ts-node").register({
   compilerOptions: {
-      module: 'commonjs',
-      target: 'es2017',
+    module: "commonjs",
+    target: "es2017",
   },
-})
+});
 
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
-})
+});
 
 const {
   CONTENTSTACK_API_KEY,
   CONTENTSTACK_DELIVERY_TOKEN,
   CONTENTSTACK_ENVIRONMENT,
+  CONTENTSTACK_BRANCH,
+  CONTENTSTACK_REGION,
   CONTENTSTACK_API_HOST,
   CONTENTSTACK_HOSTED_URL,
-} = process.env
+} = process.env;
 
-const hostedUrl = CONTENTSTACK_HOSTED_URL || "http://localhost:9000"
-const cdnHost = CONTENTSTACK_API_HOST?.replace(/api/g, "cdn")
+const hostedUrl = CONTENTSTACK_HOSTED_URL || "http://localhost:9000";
+const cdnHost = CONTENTSTACK_API_HOST?.replace(/api/g, "cdn");
 
 module.exports = {
   siteMetadata: {
@@ -64,6 +66,7 @@ module.exports = {
         api_key: CONTENTSTACK_API_KEY,
         delivery_token: CONTENTSTACK_DELIVERY_TOKEN,
         environment: CONTENTSTACK_ENVIRONMENT,
+        branch: CONTENTSTACK_BRANCH,
         cdn: `https://${cdnHost}/v3`,
         // Optional: expediteBuild set this to either true or false
         expediteBuild: true,
@@ -80,6 +83,8 @@ module.exports = {
           "CONTENTSTACK_API_KEY",
           "CONTENTSTACK_DELIVERY_TOKEN",
           "CONTENTSTACK_ENVIRONMENT",
+          "CONTENTSTACK_BRANCH",
+          "CONTENTSTACK_REGION",
           "CONTENTSTACK_MANAGEMENT_TOKEN",
           "CONTENTSTACK_API_HOST",
           "CONTENTSTACK_APP_HOST",
@@ -88,4 +93,4 @@ module.exports = {
       },
     },
   ],
-}
+};
