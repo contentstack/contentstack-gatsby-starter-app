@@ -66,7 +66,7 @@ module.exports = {
         api_key: CONTENTSTACK_API_KEY,
         delivery_token: CONTENTSTACK_DELIVERY_TOKEN,
         environment: CONTENTSTACK_ENVIRONMENT,
-        branch: CONTENTSTACK_BRANCH,
+        branch: CONTENTSTACK_BRANCH ? CONTENTSTACK_BRANCH : "main",
         cdn: `https://${cdnHost}/v3`,
         // Optional: expediteBuild set this to either true or false
         expediteBuild: true,
