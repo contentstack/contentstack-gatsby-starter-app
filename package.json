@@ -2,7 +2,7 @@
   "name": "contentstack-gatsby-starter-app",
   "private": true,
   "description": "A simple starter app build using Gatsby and Contentstack",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "author": "Contentstack",
   "dependencies": {
     "@contentstack/live-preview-utils": "^1.0.1",
@@ -19,7 +19,7 @@
     "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sharp": "^5.0.0-next",
     "gatsby-plugin-sitemap": "^6.0.0",
-    "gatsby-source-contentstack": "^5.0.0",
+    "gatsby-source-contentstack": "^5.0.2",
     "gatsby-source-filesystem": "^5.0.0-next",
     "gatsby-transformer-sharp": "^5.0.0-next",
     "html-react-parser": "^1.4.4",
@@ -41,7 +41,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop -p 3000",
+    "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,css,html,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
