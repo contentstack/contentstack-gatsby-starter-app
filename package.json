@@ -19,7 +19,7 @@
     "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sharp": "^5.0.0-next",
     "gatsby-plugin-sitemap": "^6.0.0",
-    "gatsby-source-contentstack": "^5.0.2",
+    "gatsby-source-contentstack": "^5.0.4",
     "gatsby-source-filesystem": "^5.0.0-next",
     "gatsby-transformer-sharp": "^5.0.0-next",
     "html-react-parser": "^1.4.4",
