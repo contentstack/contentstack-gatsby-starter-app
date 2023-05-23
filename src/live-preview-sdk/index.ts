@@ -2,6 +2,10 @@ import * as contentstack from "contentstack";
 import * as Utils from "@contentstack/utils";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 import { EntryParams } from "../common/types";
+import { customHostUrl, isValidCustomHostUrl } from "./utils";
+
+let customHostBseUrl = process.env.CONTENTSTACK_API_HOST as string
+customHostBseUrl = customHostUrl(customHostBseUrl)
 
 const Stack = contentstack.Stack({
   api_key: `${process.env.CONTENTSTACK_API_KEY}`,
@@ -26,8 +30,9 @@ const Stack = contentstack.Stack({
   },
 });
 
-if (process.env.CONTENTSTACK_API_HOST) {
-  Stack.setHost(process.env.CONTENTSTACK_API_HOST);
+// set host url only for custom host or non prod base url's
+if (isValidCustomHostUrl(customHostBseUrl)) {
+  Stack.setHost(customHostBseUrl);
 }
 
 ContentstackLivePreview.init({
