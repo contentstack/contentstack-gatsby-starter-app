@@ -4,40 +4,38 @@ import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import parser from "html-react-parser";
 import Layout from "../components/Layout";
-import { useLocation } from "@reach/router";
-import { onEntryChange } from "../live-preview-sdk/index";
+import { livePreview } from "../live-preview-sdk/index";
 import ArchiveRelative from "../components/ArchiveRelative";
 import RenderComponents from "../components/RenderComponents";
-import { getPageRes, getBlogPostRes, jsonToHtmlParse } from "../helper";
+import { addEditableTags, isJsonRteToHtmlEnabled, isLiveEditTagsEnabled, jsonToHtmlParse } from "../helper";
 import { PageProps } from "../typescript/template";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
 const blogPost = ({
   data: { contentstackBlogPost, contentstackPage },
 }: PageProps) => {
-  const { pathname } = useLocation();
-  jsonToHtmlParse(contentstackBlogPost);
-
+  !isJsonRteToHtmlEnabled && jsonToHtmlParse(contentstackBlogPost);
+  isLiveEditTagsEnabled && addEditableTags(contentstackBlogPost, "blog_post")
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
     post: contentstackBlogPost,
   });
+  const entryUid = contentstackBlogPost.uid
 
-  async function fetchData() {
-    try {
-      let sanitizedUrl = pathname;
-      sanitizedUrl = sanitizedUrl.replace(/\/$/, "");
-      const entryRes = await getBlogPostRes(sanitizedUrl);
-      const bannerRes = await getPageRes("/blog");
-      if (!entryRes || !bannerRes) throw new Error("Error 404");
-      setEntry({ banner: bannerRes, post: entryRes });
-    } catch (error) {
-      console.error(error);
+  const fetchLivePreviewData = async () => {
+    const updatedData = await livePreview.get(contentstackBlogPost);
+    if (updatedData.uid === entryUid) {
+      !isJsonRteToHtmlEnabled &&  jsonToHtmlParse(updatedData)
+      isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post")
+      setEntry((prev) => ({...prev, post: updatedData}))
     }
   }
 
   useEffect(() => {
-    onEntryChange(() => fetchData());
-  }, [contentstackBlogPost, contentstackPage]);
+    const callbackId = ContentstackLivePreview.onLiveEdit(fetchLivePreviewData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
+  }, [])
+
   return (
     <Layout blogPost={getEntry.post} banner={getEntry.banner}>
       <SEO title={getEntry.post.title} />
