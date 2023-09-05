@@ -15,6 +15,7 @@ const queryHeader = () => {
   const query = graphql`
     query {
       contentstackHeader {
+        __typename
         title
         uid
         logo {
@@ -44,13 +45,9 @@ const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader();
   isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header")
   const [getHeader, setHeader] = useState(contentstackHeader);
-  const entryUid = contentstackHeader.uid;
 
   async function getHeaderData() {
     const headerRes: HeaderModel = await livePreview.get(contentstackHeader);
-    if (headerRes.uid !== entryUid) {
-      return;
-    }
     isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
     setHeader(headerRes);
     dispatch(actionHeader(headerRes));

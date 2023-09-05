@@ -9,6 +9,7 @@ if (isBrowser) {
   livePreview = new ContentstackGatsby({
     api_key: process.env.CONTENTSTACK_API_KEY,
     environment: process.env.CONTENTSTACK_ENVIRONMENT,
+    delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
     live_preview: {
       management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN,
       enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",

@@ -18,14 +18,11 @@ const Blog = ({
     banner: contentstackPage,
     blogList: allContentstackBlogPost.nodes,
   });
-  const entryUid = contentstackPage.uid
 
   async function fetchData() {
     const updatedData = await livePreview.get(contentstackPage);
-    if (updatedData.uid === entryUid) {
-      isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
-      setEntry((prev) => ({ ...prev, banner: updatedData }))
-    }
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
+    setEntry((prev) => ({ ...prev, banner: updatedData }))
   }
 
   useEffect(() => {
@@ -70,6 +67,7 @@ const Blog = ({
 export const postQuery = graphql`
   query {
     contentstackPage(url: { eq: "/blog" }) {
+      __typename
       title
       url
       uid

@@ -19,14 +19,11 @@ const blogPost = ({
     banner: contentstackPage,
     post: contentstackBlogPost,
   });
-  const entryUid = contentstackBlogPost.uid
 
   const fetchLivePreviewData = async () => {
     const updatedData = await livePreview.get(contentstackBlogPost);
-    if (updatedData.uid === entryUid) {
-      isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post")
-      setEntry((prev) => ({...prev, post: updatedData}))
-    }
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post")
+    setEntry((prev) => ({...prev, post: updatedData}))
   }
 
   useEffect(() => {
@@ -79,6 +76,7 @@ const blogPost = ({
 export const postQuery = graphql`
   query ($title: String!) {
     contentstackBlogPost(title: { eq: $title }) {
+      __typename
       url
       title
       body

@@ -17,6 +17,7 @@ const queryLayout = () => {
   const data = useStaticQuery(graphql`
     query {
       contentstackFooter {
+        __typename
         title
         uid
         logo {
@@ -50,13 +51,9 @@ const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout();
   isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer")
   const [getFooter, setFooter] = useState(contentstackFooter);
-  const entryUid = contentstackFooter.uid;
 
   async function getFooterData() {
     const footerRes: FooterModel = await livePreview.get(contentstackFooter);
-    if (footerRes.uid !== entryUid) {
-      return;
-    }
     isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
     setFooter(footerRes);
     dispatch(actionFooter(footerRes));

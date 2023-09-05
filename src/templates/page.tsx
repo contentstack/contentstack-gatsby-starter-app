@@ -12,15 +12,12 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
   // if auto-conversion is not enabled, convert json to hetml using helper function
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState(contentstackPage);
-  const entryUid = contentstackPage.uid;
 
   const fetchLivePreviewData = async () => {
     // pass initial entry data to ContentstackGatsby.get()  
     const updatedData = await livePreview.get(contentstackPage);
-    if (updatedData.uid === entryUid) {
-      isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
-      setEntry(updatedData)
-    }
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
+    setEntry(updatedData)
   }
 
   useEffect(() => {
@@ -48,6 +45,7 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
 export const pageQuery = graphql`
   query ($url: String!) {
     contentstackPage(url: { eq: $url }) {
+      __typename
       uid
       title
       url
