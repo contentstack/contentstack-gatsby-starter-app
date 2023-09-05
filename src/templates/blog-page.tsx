@@ -5,7 +5,7 @@ import SEO from "../components/SEO";
 import RenderComponents from "../components/RenderComponents";
 import ArchiveRelative from "../components/ArchiveRelative";
 import { livePreview } from "../live-preview-sdk/index";
-import { addEditableTags, isJsonRteToHtmlEnabled, isLiveEditTagsEnabled, jsonToHtmlParse } from "../helper/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { PageProps } from "../typescript/template";
 import BlogList from "../components/BlogList";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
@@ -13,7 +13,6 @@ import ContentstackLivePreview from "@contentstack/live-preview-utils";
 const Blog = ({
   data: { allContentstackBlogPost, contentstackPage },
 }: PageProps) => {
-  !isJsonRteToHtmlEnabled && jsonToHtmlParse(allContentstackBlogPost.nodes);
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
@@ -24,7 +23,6 @@ const Blog = ({
   async function fetchData() {
     const updatedData = await livePreview.get(contentstackPage);
     if (updatedData.uid === entryUid) {
-      !isJsonRteToHtmlEnabled && jsonToHtmlParse(updatedData)
       isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
       setEntry((prev) => ({ ...prev, banner: updatedData }))
     }

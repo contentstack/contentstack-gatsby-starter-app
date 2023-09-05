@@ -4,11 +4,11 @@ import parse from "html-react-parser";
 import { connect } from "react-redux";
 import Tooltip from "./ToolTip";
 import jsonIcon from "../images/json.svg";
-import { addEditableTags, isJsonRteToHtmlEnabled, isLiveEditTagsEnabled, jsonToHtmlParse } from "../helper/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { livePreview } from "../live-preview-sdk";
 import { actionHeader } from "../store/actions/state.action";
-import { DispatchData, HeaderProps, Menu } from "../typescript/layout";
-import { PageModel, HeaderModel } from "../common/types";
+import { DispatchData, Menu } from "../typescript/layout";
+import { HeaderModel } from "../common/types";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
 const queryHeader = () => {
@@ -42,7 +42,6 @@ const queryHeader = () => {
 
 const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader();
-  isJsonRteToHtmlEnabled && jsonToHtmlParse(contentstackHeader);
   isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header")
   const [getHeader, setHeader] = useState(contentstackHeader);
   const entryUid = contentstackHeader.uid;
@@ -52,7 +51,6 @@ const Header = ({ dispatch }: DispatchData) => {
     if (headerRes.uid !== entryUid) {
       return;
     }
-    isJsonRteToHtmlEnabled && jsonToHtmlParse(headerRes);
     isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
     setHeader(headerRes);
     dispatch(actionHeader(headerRes));

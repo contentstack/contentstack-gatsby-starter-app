@@ -3,14 +3,13 @@ import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import { livePreview } from "../live-preview-sdk";
-import { addEditableTags, isJsonRteToHtmlEnabled, isLiveEditTagsEnabled, jsonToHtmlParse } from "../helper";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import RenderComponents from "../components/RenderComponents";
 import { PageProps } from "../typescript/template";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
 const Page = ({ data: { contentstackPage } }: PageProps) => {
   // if auto-conversion is not enabled, convert json to hetml using helper function
-  !isJsonRteToHtmlEnabled && jsonToHtmlParse(contentstackPage);
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState(contentstackPage);
   const entryUid = contentstackPage.uid;
@@ -19,7 +18,6 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
     // pass initial entry data to ContentstackGatsby.get()  
     const updatedData = await livePreview.get(contentstackPage);
     if (updatedData.uid === entryUid) {
-      !isJsonRteToHtmlEnabled && jsonToHtmlParse(updatedData);
       isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
       setEntry(updatedData)
     }

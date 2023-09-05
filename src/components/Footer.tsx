@@ -4,7 +4,7 @@ import parser from "html-react-parser";
 import { connect } from "react-redux";
 import { actionFooter } from "../store/actions/state.action";
 import { livePreview } from "../live-preview-sdk/index";
-import { addEditableTags, isJsonRteToHtmlEnabled, isLiveEditTagsEnabled, jsonToHtmlParse } from "../helper/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import {
   DispatchData,
   Social,
@@ -48,7 +48,6 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout();
-  isJsonRteToHtmlEnabled && jsonToHtmlParse(contentstackFooter);
   isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer")
   const [getFooter, setFooter] = useState(contentstackFooter);
   const entryUid = contentstackFooter.uid;
@@ -58,7 +57,6 @@ const Footer = ({ dispatch }: DispatchData) => {
     if (footerRes.uid !== entryUid) {
       return;
     }
-    isJsonRteToHtmlEnabled && jsonToHtmlParse(footerRes);
     isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
     setFooter(footerRes);
     dispatch(actionFooter(footerRes));

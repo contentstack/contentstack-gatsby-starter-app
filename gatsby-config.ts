@@ -70,7 +70,7 @@ module.exports = {
         branch: CONTENTSTACK_BRANCH ? CONTENTSTACK_BRANCH : "main",
         cdn: `https://${cdnHost}/v3`,
         // Specify whether to convert RTE Json to HTML
-        jsonRteToHtml: CONTENTSTACK_JSON_RTE_TO_HTML,
+        jsonRteToHtml: true,
         // Optional: expediteBuild set this to either true or false
         expediteBuild: true,
         // Optional: Specify true if you want to generate custom schema
