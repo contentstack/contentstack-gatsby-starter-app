@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Tooltip from "./ToolTip";
 import jsonIcon from "../images/json.svg";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
-import { livePreview } from "../live-preview-sdk";
+import { getCSData } from "../live-preview-sdk";
 import { actionHeader } from "../store/actions/state.action";
 import { DispatchData, Menu } from "../typescript/layout";
 import { HeaderModel } from "../common/types";
@@ -47,7 +47,7 @@ const Header = ({ dispatch }: DispatchData) => {
   const [getHeader, setHeader] = useState(contentstackHeader);
 
   async function getHeaderData() {
-    const headerRes: HeaderModel = await livePreview.get(contentstackHeader);
+    const headerRes: HeaderModel = await getCSData.get(contentstackHeader);
     isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
     setHeader(headerRes);
   }

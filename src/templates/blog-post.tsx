@@ -4,7 +4,7 @@ import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import parser from "html-react-parser";
 import Layout from "../components/Layout";
-import { livePreview } from "../live-preview-sdk/index";
+import { getCSData } from "../live-preview-sdk/index";
 import ArchiveRelative from "../components/ArchiveRelative";
 import RenderComponents from "../components/RenderComponents";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
@@ -21,7 +21,7 @@ const blogPost = ({
   });
 
   const fetchLivePreviewData = async () => {
-    const updatedData = await livePreview.get(contentstackBlogPost);
+    const updatedData = await getCSData.get(contentstackBlogPost);
     isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post")
     setEntry((prev) => ({...prev, post: updatedData}))
   }

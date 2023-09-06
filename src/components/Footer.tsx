@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import parser from "html-react-parser";
 import { connect } from "react-redux";
 import { actionFooter } from "../store/actions/state.action";
-import { livePreview } from "../live-preview-sdk/index";
+import { getCSData } from "../live-preview-sdk/index";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import {
   DispatchData,
@@ -53,7 +53,7 @@ const Footer = ({ dispatch }: DispatchData) => {
   const [getFooter, setFooter] = useState(contentstackFooter);
 
   async function getFooterData() {
-    const footerRes: FooterModel = await livePreview.get(contentstackFooter);
+    const footerRes: FooterModel = await getCSData.get(contentstackFooter);
     isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
     setFooter(footerRes);
   }
