@@ -56,7 +56,6 @@ const Footer = ({ dispatch }: DispatchData) => {
     const footerRes: FooterModel = await livePreview.get(contentstackFooter);
     isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
     setFooter(footerRes);
-    // dispatch(actionFooter(footerRes));
   }
 
   useEffect(() => {
