@@ -56,13 +56,16 @@ const Footer = ({ dispatch }: DispatchData) => {
     const footerRes: FooterModel = await livePreview.get(contentstackFooter);
     isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
     setFooter(footerRes);
-    dispatch(actionFooter(footerRes));
   }
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(getFooterData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
   }, [])
+
+  useEffect(() => {
+    dispatch(actionFooter(getFooter));
+  }, [getFooter])
 
   return (
     <footer>
