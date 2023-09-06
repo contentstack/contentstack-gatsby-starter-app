@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { livePreview } from "../live-preview-sdk";
+import { getCSData } from "../live-preview-sdk";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import RenderComponents from "../components/RenderComponents";
 import { PageProps } from "../typescript/template";
@@ -15,7 +15,7 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
 
   const fetchLivePreviewData = async () => {
     // pass initial entry data to ContentstackGatsby.get()  
-    const updatedData = await livePreview.get(contentstackPage);
+    const updatedData = await getCSData.get(contentstackPage);
     isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
     setEntry(updatedData)
   }

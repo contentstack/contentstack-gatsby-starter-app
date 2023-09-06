@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import RenderComponents from "../components/RenderComponents";
 import ArchiveRelative from "../components/ArchiveRelative";
-import { livePreview } from "../live-preview-sdk/index";
+import { getCSData } from "../live-preview-sdk/index";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { PageProps } from "../typescript/template";
 import BlogList from "../components/BlogList";
@@ -20,7 +20,7 @@ const Blog = ({
   });
 
   async function fetchData() {
-    const updatedData = await livePreview.get(contentstackPage);
+    const updatedData = await getCSData.get(contentstackPage);
     isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
     setEntry((prev) => ({ ...prev, banner: updatedData }))
   }
