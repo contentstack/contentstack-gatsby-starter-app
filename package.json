@@ -2,7 +2,7 @@
   "name": "contentstack-gatsby-starter-app",
   "private": true,
   "description": "A simple starter app build using Gatsby and Contentstack",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "author": "Contentstack",
   "dependencies": {
     "@contentstack/live-preview-utils": "github:contentstack/live-preview-sdk#develop",
