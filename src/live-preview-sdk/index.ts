@@ -20,6 +20,9 @@ if (isBrowser) {
 
   ContentstackLivePreview.init({
     stackSdk: livePreview.stackSdk,
+    clientUrlParams: {
+      host: process.env.CONTENTSTACK_APP_HOST
+    }
   })
 }
 

@@ -50,13 +50,16 @@ const Header = ({ dispatch }: DispatchData) => {
     const headerRes: HeaderModel = await livePreview.get(contentstackHeader);
     isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
     setHeader(headerRes);
-    dispatch(actionHeader(headerRes));
   }
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(getHeaderData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
   }, [])
+
+  useEffect(() => {
+    dispatch(actionHeader(getHeader));
+  }, [getHeader])
 
   return (
     <header className="header">

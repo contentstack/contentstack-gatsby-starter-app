@@ -200,6 +200,11 @@ footer a {
   padding: 12px 28px;
 }
 
+.btn:hover {
+  background: #fff;
+  color: #715cdd;
+}
+
 .primary-btn {
   background: #715cdd;
   color: #fff;
@@ -226,10 +231,6 @@ footer a {
   background: #ffffff;
   color: #715cdd;
   font-weight: bold;
-}
-
-.tertiary-btn:hover {
-  color: #5c49be;
 }
 
 .btn-close {
