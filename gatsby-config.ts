@@ -19,6 +19,7 @@ const {
   CONTENTSTACK_REGION,
   CONTENTSTACK_API_HOST,
   CONTENTSTACK_HOSTED_URL,
+  CONTENTSTACK_JSON_RTE_TO_HTML,
 } = process.env;
 
 const hostedUrl = CONTENTSTACK_HOSTED_URL || "http://localhost:9000";
@@ -68,6 +69,8 @@ module.exports = {
         environment: CONTENTSTACK_ENVIRONMENT,
         branch: CONTENTSTACK_BRANCH ? CONTENTSTACK_BRANCH : "main",
         cdn: `https://${cdnHost}/v3`,
+        // Specify whether to convert RTE Json to HTML
+        jsonRteToHtml: true,
         // Optional: expediteBuild set this to either true or false
         expediteBuild: true,
         // Optional: Specify true if you want to generate custom schema
@@ -89,6 +92,7 @@ module.exports = {
           "CONTENTSTACK_API_HOST",
           "CONTENTSTACK_APP_HOST",
           "CONTENTSTACK_LIVE_PREVIEW",
+          "CONTENTSTACK_JSON_RTE_TO_HTML"
         ],
       },
     },

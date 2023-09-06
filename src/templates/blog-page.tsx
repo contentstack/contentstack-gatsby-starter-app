@@ -4,33 +4,31 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import RenderComponents from "../components/RenderComponents";
 import ArchiveRelative from "../components/ArchiveRelative";
-import { onEntryChange } from "../live-preview-sdk/index";
-import { getPageRes, getBlogListRes, jsonToHtmlParse } from "../helper/index";
+import { livePreview } from "../live-preview-sdk/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { PageProps } from "../typescript/template";
 import BlogList from "../components/BlogList";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
 const Blog = ({
   data: { allContentstackBlogPost, contentstackPage },
 }: PageProps) => {
-  jsonToHtmlParse(allContentstackBlogPost.nodes);
+  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
     blogList: allContentstackBlogPost.nodes,
   });
+
   async function fetchData() {
-    try {
-      const banner = await getPageRes("/blog");
-      const blogList = await getBlogListRes();
-      if (!banner || !blogList) throw new Error("Error 404");
-      setEntry({ banner, blogList });
-    } catch (error) {
-      console.error(error);
-    }
+    const updatedData = await livePreview.get(contentstackPage);
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
+    setEntry((prev) => ({ ...prev, banner: updatedData }))
   }
 
   useEffect(() => {
-    onEntryChange(() => fetchData());
-  }, [contentstackPage]);
+    const callbackId = ContentstackLivePreview.onLiveEdit(fetchData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
+  }, [])
 
   const newBlogList = [] as any;
   const newArchivedList = [] as any;
@@ -69,6 +67,7 @@ const Blog = ({
 export const postQuery = graphql`
   query {
     contentstackPage(url: { eq: "/blog" }) {
+      __typename
       title
       url
       uid

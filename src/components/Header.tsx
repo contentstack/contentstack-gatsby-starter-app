@@ -4,16 +4,18 @@ import parse from "html-react-parser";
 import { connect } from "react-redux";
 import Tooltip from "./ToolTip";
 import jsonIcon from "../images/json.svg";
-import { getHeaderRes, jsonToHtmlParse, getAllEntries } from "../helper/index";
-import { onEntryChange } from "../live-preview-sdk/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
+import { livePreview } from "../live-preview-sdk";
 import { actionHeader } from "../store/actions/state.action";
-import { DispatchData, HeaderProps, Menu } from "../typescript/layout";
-import { PageModel, HeaderModel } from "../common/types";
+import { DispatchData, Menu } from "../typescript/layout";
+import { HeaderModel } from "../common/types";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
 
 const queryHeader = () => {
   const query = graphql`
     query {
       contentstackHeader {
+        __typename
         title
         uid
         logo {
@@ -41,41 +43,20 @@ const queryHeader = () => {
 
 const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader();
-  jsonToHtmlParse(contentstackHeader);
+  isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header")
   const [getHeader, setHeader] = useState(contentstackHeader);
 
-  function buildNavigation(ent: PageModel[], head: HeaderProps) {
-    let newHeader = { ...head };
-    if (ent.length !== newHeader.navigation_menu.length) {
-      ent.forEach(entry => {
-        const hFound = newHeader?.navigation_menu.find(
-          navLink => navLink.label === entry.title
-        );
-        if (!hFound) {
-          newHeader.navigation_menu?.push({
-            label: entry.title,
-            page_reference: [
-              { title: entry.title, url: entry.url, $: entry.$ },
-            ],
-            $: {},
-          });
-        }
-      });
-    }
-    return newHeader;
-  }
-
   async function getHeaderData() {
-    const headerRes: HeaderModel = await getHeaderRes();
-    const allEntries: PageModel[] = await getAllEntries();
-    const nHeader = buildNavigation(allEntries, headerRes);
-    setHeader(nHeader);
-    dispatch(actionHeader(nHeader));
+    const headerRes: HeaderModel = await livePreview.get(contentstackHeader);
+    isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
+    setHeader(headerRes);
+    dispatch(actionHeader(headerRes));
   }
 
   useEffect(() => {
-    onEntryChange(() => getHeaderData());
-  }, [onEntryChange]);
+    const callbackId = ContentstackLivePreview.onLiveEdit(getHeaderData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
+  }, [])
 
   return (
     <header className="header">
