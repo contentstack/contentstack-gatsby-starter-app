@@ -2,27 +2,30 @@ import React, { useState, useEffect } from "react";
 import { graphql } from "gatsby";
 import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import { onEntryChange } from "../live-preview-sdk/index";
-import { getPageRes, jsonToHtmlParse } from "../helper";
+import { getCSData } from "../live-preview-sdk";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import RenderComponents from "../components/RenderComponents";
 import { PageProps } from "../typescript/template";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
 
-const Page = ({ data: { contentstackPage }, pageContext }: PageProps) => {
-  jsonToHtmlParse(contentstackPage);
+const Page = ({ data: { contentstackPage } }: PageProps) => {
+  // if auto-conversion is not enabled, convert json to hetml using helper function
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
+  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState(contentstackPage);
 
-  async function fetchData() {
-    try {
-      const entryRes = await getPageRes(pageContext?.url);
-      if (!entryRes) throw new Error("Error 404");
-      setEntry(entryRes);
-    } catch (error) {
-      console.error(error);
-    }
+  const fetchLivePreviewData = async () => {
+    // pass initial entry data to ContentstackGatsby.get()  
+    const updatedData = await getCSData.get(contentstackPage);
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
+    setEntry(updatedData)
   }
+
   useEffect(() => {
-    onEntryChange(() => fetchData());
-  }, []);
+    const callbackId = ContentstackLivePreview.onLiveEdit(fetchLivePreviewData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
+  }, [])
 
   return (
     <Layout pageComponent={getEntry}>
@@ -44,6 +47,7 @@ const Page = ({ data: { contentstackPage }, pageContext }: PageProps) => {
 export const pageQuery = graphql`
   query ($url: String!) {
     contentstackPage(url: { eq: $url }) {
+      __typename
       uid
       title
       url
@@ -65,6 +69,7 @@ export const pageQuery = graphql`
 
           featured_blogs {
             uid
+            __typename
             title
             url
             featured_image {

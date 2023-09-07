@@ -3,21 +3,22 @@ import React, { useState, useEffect } from "react";
 import parser from "html-react-parser";
 import { connect } from "react-redux";
 import { actionFooter } from "../store/actions/state.action";
-import { onEntryChange } from "../live-preview-sdk/index";
-import { getFooterRes, getAllEntries, jsonToHtmlParse } from "../helper/index";
+import { getCSData } from "../live-preview-sdk/index";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import {
   DispatchData,
-  FooterProps,
-  Links,
   Social,
   Menu,
 } from "../typescript/layout";
-import { FooterModel, PageModel } from "../common/types";
+import { FooterModel } from "../common/types";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
     query {
       contentstackFooter {
+        __typename
         title
         uid
         logo {
@@ -49,39 +50,24 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout();
-  jsonToHtmlParse(contentstackFooter);
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackFooter)
+  isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer")
   const [getFooter, setFooter] = useState(contentstackFooter);
 
-  function buildNavigation(ent: PageModel[], footer: FooterProps) {
-    let newFooter = { ...footer };
-    if (ent.length !== newFooter.navigation.link.length) {
-      ent.forEach(entry => {
-        const fFound = newFooter?.navigation.link.find(
-          (nlink: Links) => nlink.title === entry.title
-        );
-        if (!fFound) {
-          newFooter.navigation.link?.push({
-            title: entry.title,
-            href: entry.url,
-            $: entry.$,
-          });
-        }
-      });
-    }
-    return newFooter;
-  }
-
   async function getFooterData() {
-    const footerRes: FooterModel = await getFooterRes();
-    const allEntries: PageModel[] = await getAllEntries();
-    const nFooter = buildNavigation(allEntries, footerRes);
-    setFooter(nFooter);
-    dispatch(actionFooter(nFooter));
+    const footerRes: FooterModel = await getCSData.get(contentstackFooter);
+    isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
+    setFooter(footerRes);
   }
 
   useEffect(() => {
-    onEntryChange(() => getFooterData());
-  }, [onEntryChange]);
+    const callbackId = ContentstackLivePreview.onLiveEdit(getFooterData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
+  }, [])
+
+  useEffect(() => {
+    dispatch(actionFooter(getFooter));
+  }, [getFooter])
 
   return (
     <footer>
