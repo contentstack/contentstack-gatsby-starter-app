@@ -12,6 +12,7 @@ import {
 } from "../typescript/layout";
 import { FooterModel } from "../common/types";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
 
 const queryLayout = () => {
   const data = useStaticQuery(graphql`
@@ -49,6 +50,7 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout();
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackFooter)
   isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer")
   const [getFooter, setFooter] = useState(contentstackFooter);
 

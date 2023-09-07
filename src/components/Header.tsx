@@ -10,6 +10,7 @@ import { actionHeader } from "../store/actions/state.action";
 import { DispatchData, Menu } from "../typescript/layout";
 import { HeaderModel } from "../common/types";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
 
 const queryHeader = () => {
   const query = graphql`
@@ -43,6 +44,7 @@ const queryHeader = () => {
 
 const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader();
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackHeader)
   isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header")
   const [getHeader, setHeader] = useState(contentstackHeader);
 

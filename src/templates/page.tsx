@@ -7,10 +7,13 @@ import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import RenderComponents from "../components/RenderComponents";
 import { PageProps } from "../typescript/template";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
 
 const Page = ({ data: { contentstackPage } }: PageProps) => {
   // if auto-conversion is not enabled, convert json to hetml using helper function
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
+  console.log(contentstackPage)
   const [getEntry, setEntry] = useState(contentstackPage);
 
   const fetchLivePreviewData = async () => {
@@ -67,6 +70,7 @@ export const pageQuery = graphql`
 
           featured_blogs {
             uid
+            __typename
             title
             url
             featured_image {
