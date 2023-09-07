@@ -9,10 +9,12 @@ import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { PageProps } from "../typescript/template";
 import BlogList from "../components/BlogList";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
 
 const Blog = ({
   data: { allContentstackBlogPost, contentstackPage },
 }: PageProps) => {
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
@@ -87,6 +89,7 @@ export const postQuery = graphql`
         from_blog {
           title_h2
           featured_blogs {
+            __typename
             title
             uid
             url
@@ -182,9 +185,12 @@ export const postQuery = graphql`
         locale
         author {
           title
+          __typename
           uid
         }
         related_post {
+          __typename
+          uid
           title
           body
           uid

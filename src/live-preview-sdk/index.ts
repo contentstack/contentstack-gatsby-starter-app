@@ -20,6 +20,9 @@ if (isBrowser) {
     jsonRteToHtml: true,
   });
 
+  const cdnHost = process.env.CONTENTSTACK_API_HOST?.replace(/api/g, "cdn");
+  getCSData.setHost(cdnHost);
+
   ContentstackLivePreview.init({
     stackSdk: getCSData.stackSdk,
     clientUrlParams: {
