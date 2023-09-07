@@ -13,7 +13,6 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
   // if auto-conversion is not enabled, convert json to hetml using helper function
   ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
   isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
-  console.log(contentstackPage)
   const [getEntry, setEntry] = useState(contentstackPage);
 
   const fetchLivePreviewData = async () => {
