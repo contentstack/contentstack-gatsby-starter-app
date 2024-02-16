@@ -1,18 +1,16 @@
-import React from "react";
-import parser from "html-react-parser";
-import { ObjectProps } from "../typescript/component";
+import React from "react"
+import parser from "html-react-parser"
+import { ObjectProps } from "../typescript/component"
 
 type Data = {
   section_with_html_code: ObjectProps;
-};
+}
 
 type EmbedSection = {
   data: Data;
-};
+}
 
-const SectionWithEmbedObject = ({
-  data: { section_with_html_code },
-}: EmbedSection) => {
+const SectionWithEmbedObject = ({ data: { section_with_html_code } }: EmbedSection) => {
   if (section_with_html_code.html_code_alignment === "Left") {
     return (
       <div className="contact-page-section max-width">
@@ -42,7 +40,7 @@ const SectionWithEmbedObject = ({
           )}
         </div>
       </div>
-    );
+    )
   }
   return (
     <div className="contact-maps-section max-width">
@@ -70,7 +68,7 @@ const SectionWithEmbedObject = ({
         )}{" "}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SectionWithEmbedObject;
+export default SectionWithEmbedObject

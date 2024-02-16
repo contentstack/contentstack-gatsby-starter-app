@@ -1,28 +1,28 @@
-import React from "react";
-import parser from "html-react-parser";
-import { Image } from "../typescript/action";
-import { SectionWithBucket } from "../typescript/component";
+import React from "react"
+import parser from "html-react-parser"
+import { Image } from '../typescript/action';
+import { SectionWithBucket } from "../typescript/component"
 
 type AdditionalParam = {
   title_h2?: string;
   title_h3?: string;
   description?: string;
-};
+}
 
 type Bucket = {
   title_h3: string;
   description: string;
   icon: Image;
   $: AdditionalParam;
-};
+}
 
 type Data = {
   section_with_buckets: SectionWithBucket;
-};
+}
 
 type BucketProps = {
   data: Data;
-};
+}
 
 const AboutSectionBucket = ({ data }: BucketProps) => {
   function bucketContent(bucket: Bucket) {
@@ -47,7 +47,7 @@ const AboutSectionBucket = ({ data }: BucketProps) => {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -72,7 +72,7 @@ const AboutSectionBucket = ({ data }: BucketProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AboutSectionBucket;
+export default AboutSectionBucket

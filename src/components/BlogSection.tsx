@@ -1,15 +1,15 @@
-import { Link } from "gatsby";
-import React from "react";
-import parser from "html-react-parser";
-import { FeaturedBlogData } from "../typescript/component";
+import { Link } from "gatsby"
+import React from "react"
+import parser from "html-react-parser"
+import { FeaturedBlogData } from "../typescript/component"
 
 type Data = {
-  from_blog: FeaturedBlogData;
-};
+  from_blog: FeaturedBlogData
+}
 
 type FeaturedBlogProps = {
   data: Data;
-};
+}
 
 const BlogSection = ({ data: { from_blog } }: FeaturedBlogProps) => {
   return (
@@ -59,11 +59,11 @@ const BlogSection = ({ data: { from_blog } }: FeaturedBlogProps) => {
                 </Link>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BlogSection;
+export default BlogSection

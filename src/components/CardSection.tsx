@@ -1,18 +1,18 @@
-import { Link } from "gatsby";
-import React from "react";
+import { Link } from "gatsby"
+import React from "react"
 import { CardData } from "../typescript/component";
 
 type CardSection = {
-  cards: [CardData];
-};
+  cards: [CardData]
+}
 
 type Data = {
-  section_with_cards: CardSection;
-};
+  section_with_cards: CardSection
+}
 
 type CardProps = {
-  data: Data;
-};
+  data: Data
+}
 
 const CardSection = ({ data }: CardProps) => {
   return (
@@ -38,10 +38,10 @@ const CardSection = ({ data }: CardProps) => {
               )}
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default CardSection;
+export default CardSection

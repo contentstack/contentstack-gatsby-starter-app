@@ -1,46 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { graphql } from "gatsby";
-import Layout from "../components/Layout";
-import SEO from "../components/SEO";
-import RenderComponents from "../components/RenderComponents";
-import ArchiveRelative from "../components/ArchiveRelative";
-import { getCSData } from "../live-preview-sdk/index";
-import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
-import { PageProps } from "../typescript/template";
-import BlogList from "../components/BlogList";
-import ContentstackLivePreview from "@contentstack/live-preview-utils";
-import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
+import React, { useState, useEffect } from "react"
+import { graphql } from "gatsby"
+import Layout from "../components/Layout"
+import SEO from "../components/SEO"
+import RenderComponents from "../components/RenderComponents"
+import ArchiveRelative from "../components/ArchiveRelative"
+import { onEntryChange } from "../live-preview-sdk/index.d"
+import { getPageRes,getBlogListRes ,jsonToHtmlParse } from "../helper/index.d"
+import { PageProps } from "../typescript/template"
+import BlogList from "../components/BlogList"
 
-const Blog = ({
-  data: { allContentstackBlogPost, contentstackPage },
-}: PageProps) => {
-  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
-  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
-  const [getEntry, setEntry] = useState({
-    banner: contentstackPage,
-    blogList: allContentstackBlogPost.nodes,
-  });
+
+const Blog = ({ data: { allContentstackBlogPost, contentstackPage } }: PageProps) => {
+  
+  jsonToHtmlParse(allContentstackBlogPost.nodes)
+  const [getEntry, setEntry] = useState({banner:contentstackPage, blogList:allContentstackBlogPost.nodes})
 
   async function fetchData() {
-    const updatedData = await getCSData.get(contentstackPage);
-    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
-    setEntry((prev) => ({ ...prev, banner: updatedData }))
+    try {
+      const banner = await getPageRes("/blog")
+      const blogList = await getBlogListRes();
+      if (!banner || !blogList) throw new Error("Error 404")
+      setEntry({ banner, blogList });
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
-    const callbackId = ContentstackLivePreview.onLiveEdit(fetchData);
-    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
-  }, [])
+    onEntryChange(() => fetchData())
+  }, [contentstackPage])
 
-  const newBlogList = [] as any;
-  const newArchivedList = [] as any;
+  const newBlogList = [] as any
+  const newArchivedList = [] as any
   getEntry.blogList?.forEach(post => {
     if (post.is_archived) {
-      newArchivedList.push(post);
+      newArchivedList.push(post)
     } else {
-      newBlogList.push(post);
+      newBlogList.push(post)
     }
-  });
+  })
   return (
     <Layout blogPost={getEntry.blogList} banner={getEntry.banner}>
       <SEO title={getEntry.banner.title} />
@@ -54,22 +52,21 @@ const Blog = ({
       <div className="blog-container">
         <div className="blog-column-left">
           {newBlogList?.map((blog: BlogList, index: number) => {
-            return <BlogList blogList={blog} key={index} />;
+            return <BlogList blogList={blog} key={index} />
           })}
         </div>
         <div className="blog-column-right">
-          <h2>{contentstackPage?.page_components[1]?.widget?.title_h2}</h2>
+          <h2>{contentstackPage.page_components[1].widget.title_h2}</h2>
           <ArchiveRelative data={newArchivedList} />
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export const postQuery = graphql`
+export const pageQuery = graphql`
   query {
     contentstackPage(url: { eq: "/blog" }) {
-      __typename
       title
       url
       uid
@@ -89,7 +86,6 @@ export const postQuery = graphql`
         from_blog {
           title_h2
           featured_blogs {
-            __typename
             title
             uid
             url
@@ -182,15 +178,11 @@ export const postQuery = graphql`
         url
         title
         uid
-        locale
         author {
           title
-          __typename
           uid
         }
         related_post {
-          __typename
-          uid
           title
           body
           uid
@@ -205,6 +197,6 @@ export const postQuery = graphql`
       }
     }
   }
-`;
+`
 
-export default Blog;
+export default Blog

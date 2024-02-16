@@ -1,38 +1,38 @@
-import React from "react";
-import moment from "moment";
-import parse from "html-react-parser";
-import { Link } from "gatsby";
+import React from "react"
+import moment from "moment"
+import parse from "html-react-parser"
+import { Link } from "gatsby"
 import { Image } from "../typescript/action";
 
 type AdditionalParam = {
   title: string;
   date: string;
   body: string;
-};
+}
 
 type Author = {
   title: string;
-  $: AdditionalParam;
-};
+  $: AdditionalParam
+}
 
 type BlogList = {
   body: string;
   url: string;
-  featured_image: Image;
+  featured_image: Image; 
   title: string;
   date: string;
   author: [Author];
   $: AdditionalParam;
-};
+}
 
 type BloglistProps = {
   blogList: BlogList;
-};
+}
 
-function BlogList({ blogList }: BloglistProps) {
-  let body: string = blogList.body && blogList.body.substr(0, 300);
-  const stringLength = body.lastIndexOf(" ");
-  body = `${body.substr(0, Math.min(body.length, stringLength))}...`;
+function BlogList({ blogList }: BloglistProps ) {
+  let body: string = blogList.body && blogList.body.substr(0, 300)
+  const stringLength = body.lastIndexOf(" ")
+  body = `${body.substr(0, Math.min(body.length, stringLength))}...`
   return (
     <div className="blog-list">
       {blogList.featured_image && (
@@ -70,7 +70,7 @@ function BlogList({ blogList }: BloglistProps) {
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default BlogList;
+export default BlogList

@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
 
 export default function HTML(props) {
   return (
@@ -27,11 +27,14 @@ export default function HTML(props) {
       </head>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
-        <div key={`body`} id="___gatsby" />
+        <div
+          key={`body`}
+          id="___gatsby"
+        />
         {props.postBodyComponents}
       </body>
     </html>
-  );
+  )
 }
 
 HTML.propTypes = {
@@ -41,4 +44,4 @@ HTML.propTypes = {
   preBodyComponents: PropTypes.array,
   body: PropTypes.string,
   postBodyComponents: PropTypes.array,
-};
+}

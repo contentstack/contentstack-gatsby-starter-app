@@ -1,13 +1,13 @@
-import React from "react";
+import React from "react"
 import { TeamProps } from "../typescript/component";
 
 type Data = {
   our_team: TeamProps;
-};
+}
 
 type OurTeam = {
   data: Data;
-};
+}
 
 const TeamSection = ({ data: { our_team } }: OurTeam) => {
   return (
@@ -44,11 +44,11 @@ const TeamSection = ({ data: { our_team } }: OurTeam) => {
                 )}
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeamSection;
+export default TeamSection

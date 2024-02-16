@@ -1,22 +1,22 @@
-import { Link } from "gatsby";
-import React from "react";
-import { SectionProps } from "../typescript/component";
+import { Link } from "gatsby"
+import React from "react"
+import { SectionProps } from "../typescript/component"
 
 type Data = {
   section: SectionProps;
-};
+}
 
 type DataSection = {
-  section: SectionProps;
-};
+  section: SectionProps
+}
 
 type DataImg = {
-  section: SectionProps;
-};
+  section: SectionProps
+}
 
 type BucketProps = {
   data: Data;
-};
+}
 
 const Section = ({ data }: BucketProps) => {
   function contentSection(dataSection: DataSection, index: string) {
@@ -45,10 +45,10 @@ const Section = ({ data }: BucketProps) => {
           ""
         )}
       </div>
-    );
+    )
   }
 
-  function imageContent(dataImg: DataImg, index: string) {
+  function imageContent(dataImg: DataImg, index:string) {
     return (
       <img
         {...dataImg.section.image.$?.url}
@@ -56,7 +56,7 @@ const Section = ({ data }: BucketProps) => {
         alt="section-image"
         key={index}
       />
-    );
+    )
   }
 
   return (
@@ -65,7 +65,7 @@ const Section = ({ data }: BucketProps) => {
         ? [imageContent(data, "left-1"), contentSection(data, "left-2")]
         : [contentSection(data, "right-1"), imageContent(data, "right-2")]}
     </div>
-  );
-};
+  )
+}
 
-export default Section;
+export default Section
