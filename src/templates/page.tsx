@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import SEO from "../components/SEO"
-import Layout from "../components/Layout"
-import { useLocation } from "@reach/router"
-import { onEntryChange } from "../live-preview-sdk/index.d"
-import { getPageRes, jsonToHtmlParse } from "../helper/index.d"
-import RenderComponents from "../components/RenderComponents"
-import { PageProps } from "../typescript/template"
+import React, { useState, useEffect } from "react";
+import { graphql } from "gatsby";
+import SEO from "../components/SEO";
+import Layout from "../components/Layout";
+import { getCSData } from "../live-preview-sdk";
+import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
+import RenderComponents from "../components/RenderComponents";
+import { PageProps } from "../typescript/template";
+import ContentstackLivePreview from "@contentstack/live-preview-utils";
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
 
 const Page = ({ data: { contentstackPage } }: PageProps) => {
-  const { pathname } = useLocation()
-  jsonToHtmlParse(contentstackPage)
-  const [getEntry, setEntry] = useState(contentstackPage)
+  // if auto-conversion is not enabled, convert json to hetml using helper function
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
+  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
+  const [getEntry, setEntry] = useState(contentstackPage);
 
-  async function fetchData() {
-    try {
-      const entryRes = await getPageRes(`/${pathname.split("/")[1]}`)
-      if (!entryRes) throw new Error("Error 404")
-      setEntry(entryRes)
-    } catch (error) {
-      console.error(error)
-    }
+  const fetchLivePreviewData = async () => {
+    // pass initial entry data to ContentstackGatsby.get()  
+    const updatedData = await getCSData.get(contentstackPage);
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
+    setEntry(updatedData)
   }
+
   useEffect(() => {
-    onEntryChange(() => fetchData())
+    const callbackId = ContentstackLivePreview.onLiveEdit(fetchLivePreviewData);
+    return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
   }, [])
 
   return (
@@ -40,12 +41,13 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
         )}
       </div>
     </Layout>
-  )
-}
+  );
+};
 
 export const pageQuery = graphql`
   query ($url: String!) {
     contentstackPage(url: { eq: $url }) {
+      __typename
       uid
       title
       url
@@ -64,10 +66,16 @@ export const pageQuery = graphql`
         }
         from_blog {
           title_h2
+
           featured_blogs {
             uid
+            __typename
             title
             url
+            featured_image {
+              url
+              uid
+            }
             author {
               title
               uid
@@ -80,9 +88,14 @@ export const pageQuery = graphql`
             href
           }
         }
+
         hero_banner {
           banner_description
           banner_title
+          banner_image {
+            uid
+            url
+          }
           bg_color
           text_color
           call_to_action {
@@ -158,6 +171,6 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
 
-export default Page
+export default Page;

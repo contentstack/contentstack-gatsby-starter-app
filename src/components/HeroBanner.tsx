@@ -1,17 +1,17 @@
-import { Link } from "gatsby"
-import React from "react"
+import { Link } from "gatsby";
+import React from "react";
 import { Banner } from "../typescript/component";
 
 type Data = {
   hero_banner: Banner;
-}
+};
 
 type BannerProps = {
   data: Data;
-}
+};
 
 const HeroBanner = (props: BannerProps) => {
-  const { hero_banner } = props.data
+  const { hero_banner } = props.data;
   return (
     <div
       className="hero-banner"
@@ -58,7 +58,7 @@ const HeroBanner = (props: BannerProps) => {
         ""
       )}
     </div>
-  )
-}
+  );
+};
 
-export default HeroBanner
+export default HeroBanner;

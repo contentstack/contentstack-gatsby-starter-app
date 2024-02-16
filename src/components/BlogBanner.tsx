@@ -1,16 +1,16 @@
-import React from "react"
-import { Banner } from "../typescript/component"
+import React from "react";
+import { Banner } from "../typescript/component";
 
 type Data = {
   hero_banner: Banner;
-}
+};
 
 type BannerProps = {
   data: Data;
-}
+};
 
 const BlogBanner = (props: BannerProps) => {
-  const banner = props.data.hero_banner
+  const banner = props.data.hero_banner;
   return (
     <>
       <div
@@ -36,7 +36,7 @@ const BlogBanner = (props: BannerProps) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default BlogBanner
+export default BlogBanner;

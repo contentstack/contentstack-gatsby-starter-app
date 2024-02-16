@@ -1,15 +1,15 @@
-import { Link } from "gatsby"
-import React from "react"
-import parser from "html-react-parser"
+import { Link } from "gatsby";
+import React from "react";
+import parser from "html-react-parser";
 import { SectionWithBucket } from "../typescript/component";
 
 type Data = {
   section_with_buckets: SectionWithBucket;
-}
+};
 
 type BucketProps = {
   data: Data;
-}
+};
 
 const SectionBucket = ({ data: { section_with_buckets } }: BucketProps) => {
   return (
@@ -67,11 +67,11 @@ const SectionBucket = ({ data: { section_with_buckets } }: BucketProps) => {
                 ""
               )}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SectionBucket
+export default SectionBucket;
