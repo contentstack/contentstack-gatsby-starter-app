@@ -47,7 +47,7 @@ const Page = ({ data: { contentstackPage } }: PageProps) => {
 export const pageQuery = graphql`
   query ($url: String!) {
     contentstackPage(url: { eq: $url }) {
-      __typename
+      cslp__meta
       uid
       title
       url
@@ -69,7 +69,7 @@ export const pageQuery = graphql`
 
           featured_blogs {
             uid
-            __typename
+            
             title
             url
             featured_image {

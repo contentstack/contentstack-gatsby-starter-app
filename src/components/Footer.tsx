@@ -5,11 +5,7 @@ import { connect } from "react-redux";
 import { actionFooter } from "../store/actions/state.action";
 import { getCSData } from "../live-preview-sdk/index";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
-import {
-  DispatchData,
-  Social,
-  Menu,
-} from "../typescript/layout";
+import { DispatchData, Social, Menu } from "../typescript/layout";
 import { FooterModel } from "../common/types";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
@@ -18,7 +14,7 @@ const queryLayout = () => {
   const data = useStaticQuery(graphql`
     query {
       contentstackFooter {
-        __typename
+        cslp__meta
         title
         uid
         logo {
@@ -50,24 +46,24 @@ const queryLayout = () => {
 
 const Footer = ({ dispatch }: DispatchData) => {
   const { contentstackFooter } = queryLayout();
-  ContentstackGatsby.addContentTypeUidFromTypename(contentstackFooter)
-  isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer")
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackFooter);
+  isLiveEditTagsEnabled && addEditableTags(contentstackFooter, "footer");
   const [getFooter, setFooter] = useState(contentstackFooter);
 
   async function getFooterData() {
     const footerRes: FooterModel = await getCSData.get(contentstackFooter);
-    isLiveEditTagsEnabled && addEditableTags(footerRes, "footer")
+    isLiveEditTagsEnabled && addEditableTags(footerRes, "footer");
     setFooter(footerRes);
   }
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(getFooterData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
-  }, [])
+  }, []);
 
   useEffect(() => {
     dispatch(actionFooter(getFooter));
-  }, [getFooter])
+  }, [getFooter]);
 
   return (
     <footer>

@@ -16,7 +16,7 @@ const queryHeader = () => {
   const query = graphql`
     query {
       contentstackHeader {
-        __typename
+        cslp__meta
         title
         uid
         logo {
@@ -44,24 +44,24 @@ const queryHeader = () => {
 
 const Header = ({ dispatch }: DispatchData) => {
   const { contentstackHeader } = queryHeader();
-  ContentstackGatsby.addContentTypeUidFromTypename(contentstackHeader)
-  isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header")
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackHeader);
+  isLiveEditTagsEnabled && addEditableTags(contentstackHeader, "header");
   const [getHeader, setHeader] = useState(contentstackHeader);
 
   async function getHeaderData() {
     const headerRes: HeaderModel = await getCSData.get(contentstackHeader);
-    isLiveEditTagsEnabled && addEditableTags(headerRes, "header")
+    isLiveEditTagsEnabled && addEditableTags(headerRes, "header");
     setHeader(headerRes);
   }
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(getHeaderData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
-  }, [])
+  }, []);
 
   useEffect(() => {
     dispatch(actionHeader(getHeader));
-  }, [getHeader])
+  }, [getHeader]);
 
   return (
     <header className="header">
