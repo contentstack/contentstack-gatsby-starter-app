@@ -14,7 +14,7 @@ if (isBrowser) {
     branch: process.env.CONTENTSTACK_BRANCH ? process.env.CONTENTSTACK_BRANCH : "main",
     live_preview: {
       enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",
-      host: process.env.CONTENTSTACK_PREVIEW_HOST,
+      preview_host: process.env.CONTENTSTACK_PREVIEW_HOST,
       preview_token: process.env.CONTENTSTACK_PREVIEW_TOKEN,
     },
     jsonRteToHtml: true,
