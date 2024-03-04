@@ -10,13 +10,13 @@ import RenderComponents from "../components/RenderComponents";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import { PageProps } from "../typescript/template";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
-import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
 
 const blogPost = ({
   data: { contentstackBlogPost, contentstackPage },
 }: PageProps) => {
-  ContentstackGatsby.addContentTypeUidFromTypename(contentstackBlogPost)
-  isLiveEditTagsEnabled && addEditableTags(contentstackBlogPost, "blog_post")
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackBlogPost);
+  isLiveEditTagsEnabled && addEditableTags(contentstackBlogPost, "blog_post");
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
     post: contentstackBlogPost,
@@ -24,14 +24,14 @@ const blogPost = ({
 
   const fetchLivePreviewData = async () => {
     const updatedData = await getCSData.get(contentstackBlogPost);
-    isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post")
-    setEntry((prev) => ({...prev, post: updatedData}))
-  }
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "blog_post");
+    setEntry(prev => ({ ...prev, post: updatedData }));
+  };
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(fetchLivePreviewData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
-  }, [])
+  }, []);
 
   return (
     <Layout blogPost={getEntry.post} banner={getEntry.banner}>
@@ -78,7 +78,7 @@ const blogPost = ({
 export const postQuery = graphql`
   query ($title: String!) {
     contentstackBlogPost(title: { eq: $title }) {
-      __typename
+      cslp__meta
       url
       title
       body
@@ -93,7 +93,7 @@ export const postQuery = graphql`
         }
       }
       related_post {
-        __typename
+        
         uid
         body
         url
@@ -110,7 +110,7 @@ export const postQuery = graphql`
     contentstackPage(url: { eq: "/blog" }) {
       title
       url
-      __typename
+      cslp__meta
       uid
       locale
       seo {
@@ -129,7 +129,7 @@ export const postQuery = graphql`
           title_h2
           featured_blogs {
             title
-            __typename
+            
             uid
             url
             is_archived
