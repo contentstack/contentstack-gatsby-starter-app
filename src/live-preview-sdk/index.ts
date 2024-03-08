@@ -13,9 +13,9 @@ if (isBrowser) {
     region: process.env.CONTENTSTACK_REGION ? process.env.CONTENTSTACK_REGION : "us",
     branch: process.env.CONTENTSTACK_BRANCH ? process.env.CONTENTSTACK_BRANCH : "main",
     live_preview: {
-      management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN,
       enable: process.env.CONTENTSTACK_LIVE_PREVIEW === "true",
-      host: process.env.CONTENTSTACK_API_HOST,
+      preview_host: process.env.CONTENTSTACK_PREVIEW_HOST,
+      preview_token: process.env.CONTENTSTACK_PREVIEW_TOKEN,
     },
     jsonRteToHtml: true,
   });

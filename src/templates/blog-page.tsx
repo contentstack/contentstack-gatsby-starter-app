@@ -9,13 +9,13 @@ import { addEditableTags, isLiveEditTagsEnabled } from "../helper/index";
 import { PageProps } from "../typescript/template";
 import BlogList from "../components/BlogList";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
-import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview"
+import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
 
 const Blog = ({
   data: { allContentstackBlogPost, contentstackPage },
 }: PageProps) => {
-  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage)
-  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page")
+  ContentstackGatsby.addContentTypeUidFromTypename(contentstackPage);
+  isLiveEditTagsEnabled && addEditableTags(contentstackPage, "page");
   const [getEntry, setEntry] = useState({
     banner: contentstackPage,
     blogList: allContentstackBlogPost.nodes,
@@ -23,14 +23,14 @@ const Blog = ({
 
   async function fetchData() {
     const updatedData = await getCSData.get(contentstackPage);
-    isLiveEditTagsEnabled && addEditableTags(updatedData, "page")
-    setEntry((prev) => ({ ...prev, banner: updatedData }))
+    isLiveEditTagsEnabled && addEditableTags(updatedData, "page");
+    setEntry(prev => ({ ...prev, banner: updatedData }));
   }
 
   useEffect(() => {
     const callbackId = ContentstackLivePreview.onLiveEdit(fetchData);
     return () => ContentstackLivePreview.unsubscribeOnEntryChange(callbackId);
-  }, [])
+  }, []);
 
   const newBlogList = [] as any;
   const newArchivedList = [] as any;
@@ -69,7 +69,7 @@ const Blog = ({
 export const postQuery = graphql`
   query {
     contentstackPage(url: { eq: "/blog" }) {
-      __typename
+      cslp__meta
       title
       url
       uid
@@ -89,7 +89,7 @@ export const postQuery = graphql`
         from_blog {
           title_h2
           featured_blogs {
-            __typename
+            
             title
             uid
             url
@@ -185,11 +185,11 @@ export const postQuery = graphql`
         locale
         author {
           title
-          __typename
+          cslp__meta
           uid
         }
         related_post {
-          __typename
+          cslp__meta
           uid
           title
           body
