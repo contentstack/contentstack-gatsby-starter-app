@@ -21,7 +21,6 @@ typeof window !== "undefined" &&
   require("bootstrap/dist/css/bootstrap.min.css");
 typeof window !== "undefined" && require("bootstrap/dist/js/bootstrap");
 require("../styles/style.css");
-require("@contentstack/live-preview-utils/dist/main.css");
 
 type JsonContent = {
   header: {};
