@@ -25,6 +25,11 @@ if (isBrowser) {
 
   ContentstackLivePreview.init({
     stackSdk: getCSData.stackSdk,
+    stackDetails:{
+      apiKey: process.env.CONTENTSTACK_API_KEY
+    },
+    enable:true,
+    mode:"builder",
     clientUrlParams: {
       host: process.env.CONTENTSTACK_APP_HOST
     }
