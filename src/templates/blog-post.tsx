@@ -5,14 +5,14 @@ import SEO from "../components/SEO";
 import parser from "html-react-parser";
 import Layout from "../components/Layout";
 import { getCSData } from "../live-preview-sdk/index";
-import ArchiveRelative from "../components/ArchiveRelative";
-import RenderComponents from "../components/RenderComponents";
+import RelatedPosts from "../components/RelatedPosts";
 import { addEditableTags, isLiveEditTagsEnabled } from "../helper";
 import { PageProps } from "../typescript/template";
 import ContentstackLivePreview from "@contentstack/live-preview-utils";
 import { ContentstackGatsby } from "gatsby-source-contentstack/live-preview";
+import RenderComponents from "../components/RenderComponents";
 
-const blogPost = ({
+const BlogPost = ({
   data: { contentstackBlogPost, contentstackPage },
 }: PageProps) => {
   ContentstackGatsby.addContentTypeUidFromTypename(contentstackBlogPost);
@@ -59,16 +59,16 @@ const blogPost = ({
           <span {...getEntry.post.$?.body}>{parser(getEntry.post.body)}</span>
         </div>
         <div className="blog-column-right">
-          <div className="related-post">
-            {getEntry.banner.page_components[2].widget && (
-              <h2 {...getEntry.banner.page_components[2]?.widget.$?.title_h2}>
-                {getEntry.banner.page_components[2].widget.title_h2}
-              </h2>
-            )}
-            <ArchiveRelative
-              data={getEntry.post.related_post && getEntry.post.related_post}
-            />
-          </div>
+          {/* Related Posts Section */}
+          {/* 
+            Renders related blog posts based on the current post's related_post field.
+            The relatedUids prop extracts UIDs from the related_post array,
+            and the widget prop provides configuration for the section title and styling.
+          */}
+          <RelatedPosts 
+            relatedUids={getEntry.post.related_post?.map((r: { uid: string }) => r.uid) || []} 
+            widget={getEntry.banner.page_components[2]?.widget} 
+          />
         </div>
       </div>
     </Layout>
@@ -92,13 +92,9 @@ export const postQuery = graphql`
           url
         }
       }
+      # Related posts field - contains array of related blog post UIDs
       related_post {
-        
         uid
-        body
-        url
-        title
-        date
       }
       seo {
         enable_search_indexing
@@ -217,4 +213,4 @@ export const postQuery = graphql`
     }
   }
 `;
-export default blogPost;
+export default BlogPost;
