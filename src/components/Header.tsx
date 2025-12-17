@@ -27,9 +27,36 @@ const queryHeader = () => {
         navigation_menu {
           label
           page_reference {
-            title
-            url
-            uid
+            ... on Contentstack_page {
+              title
+              pageUrl: url
+              uid
+            }
+            ... on Contentstack_blog_post {
+              title
+              blogUrl: url
+              uid
+            }
+            ... on Contentstack_superhero_landing_page {
+              title
+              superheroLandingUrl: url
+              uid
+            }
+            ... on Contentstack_superhero_gallery_page {
+              title
+              superheroGalleryUrl: url
+              uid
+            }
+            ... on Contentstack_home_world {
+              title
+              homeWorldUrl: url
+              uid
+            }
+            ... on Contentstack_character {
+              title
+              characterUrl: url
+              uid
+            }
           }
         }
         notification_bar {
@@ -40,6 +67,11 @@ const queryHeader = () => {
     }
   `;
   return useStaticQuery(query);
+};
+
+const getPageUrl = (ref: any) => {
+  return ref?.pageUrl || ref?.blogUrl || ref?.superheroLandingUrl || 
+         ref?.superheroGalleryUrl || ref?.homeWorldUrl || ref?.characterUrl || ref?.url;
 };
 
 const Header = ({ dispatch }: DispatchData) => {
@@ -97,14 +129,14 @@ const Header = ({ dispatch }: DispatchData) => {
                 <li className="nav-li" key={index} {...menu.$?.label}>
                   {menu.label === "Home" ? (
                     <Link
-                      to={`${menu.page_reference[0]?.url}`}
+                      to={`${getPageUrl(menu.page_reference[0])}`}
                       activeClassName="active"
                     >
                       {menu.label}
                     </Link>
                   ) : (
                     <Link
-                      to={`${menu.page_reference[0]?.url}/`}
+                      to={`${getPageUrl(menu.page_reference[0])}`}
                       activeClassName="active"
                     >
                       {menu.label}
