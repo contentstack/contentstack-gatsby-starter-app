@@ -34,7 +34,6 @@ module.exports = {
   },
   plugins: [
     "gatsby-plugin-sitemap",
-    "gatsby-plugin-offline",
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
