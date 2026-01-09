@@ -1,7 +1,21 @@
 import { defineConfig, devices } from '@playwright/test';
-import dotenv from 'dotenv';
+import * as path from 'path';
+import * as fs from 'fs';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+// Load BASE_URL from root .env files
+const envFile = process.env.NODE_ENV === 'production' 
+  ? '.env.production' 
+  : '.env.development';
+const envPath = path.resolve(__dirname, '..', envFile);
+
+if (fs.existsSync(envPath)) {
+  require('dotenv').config({ path: envPath });
+}
+
+// Default URLs based on environment
+const defaultUrl = process.env.NODE_ENV === 'production'
+  ? 'http://localhost:9000'
+  : 'http://localhost:8000';
 
 export default defineConfig({
   testDir: './tests',
@@ -16,7 +30,7 @@ export default defineConfig({
     ['html', { outputFolder: '../playwright-report', open: 'never' }],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:8000',
+    baseURL: process.env.BASE_URL || defaultUrl,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     viewport: { width: 1280, height: 720 },

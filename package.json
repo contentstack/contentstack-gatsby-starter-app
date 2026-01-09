@@ -45,7 +45,13 @@
     "format": "prettier --write \"**/*.{js,css,html,jsx,ts,tsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "clean": "gatsby clean",
+    "test:e2e": "playwright test --config=e2e/playwright.config.ts",
+    "test:e2e:headed": "playwright test --config=e2e/playwright.config.ts --headed",
+    "test:e2e:debug": "playwright test --config=e2e/playwright.config.ts --debug",
+    "test:e2e:ui": "playwright test --config=e2e/playwright.config.ts --ui",
+    "test:e2e:report": "playwright show-report playwright-report",
+    "test:e2e:prod": "BASE_URL=http://localhost:9000 playwright test --config=e2e/playwright.config.ts"
   },
   "repository": {
     "type": "git",
@@ -55,12 +61,14 @@
     "url": "https://github.com/contentstack/contentstack-gatsby-starter-app"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.0",
     "@types/node": "^17.0.35",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.4",
     "@types/react-helmet": "^6.1.7"
   },
   "overrides": {
+    "axe-core": "^4.10.0",
     "axios": "^1.12.0",
     "@babel/helpers": "^7.26.10",
     "@babel/runtime": "^7.26.10",

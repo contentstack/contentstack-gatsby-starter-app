@@ -15,7 +15,7 @@ export class ContactPage extends BasePage {
     this.contactSelectors = {
       heroBanner: '.hero-banner',
       heroTitle: '.hero-banner .hero-title, h1',
-      pageContent: 'main',
+      pageContent: '.contact-page-section, .contact-maps-section, .about',
     };
   }
 
@@ -36,6 +36,7 @@ export class ContactPage extends BasePage {
   }
 
   async hasMainContent(): Promise<boolean> {
-    return await this.page.locator(this.contactSelectors.pageContent).isVisible();
+    const content = this.page.locator(this.contactSelectors.pageContent).first();
+    return await content.isVisible();
   }
 }

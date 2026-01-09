@@ -17,9 +17,9 @@ export class BasePage {
   constructor(page: Page) {
     this.page = page;
     this.selectors = {
-      header: 'header',
-      headerLogo: 'header .logo',
-      headerNavItems: 'header .nav-li',
+      header: 'header.header',
+      headerLogo: 'header.header .logo',
+      headerNavItems: 'header.header .nav-li',
       footer: 'footer',
       footerNav: 'footer .nav-ul',
       footerSocialLinks: 'footer .social-nav a',
@@ -34,6 +34,7 @@ export class BasePage {
 
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
+    await this.page.locator(this.selectors.header).waitFor({ state: 'visible', timeout: 10000 });
   }
 
   async getPageTitle(): Promise<string> {
@@ -81,14 +82,14 @@ export class BasePage {
     const currentUrl = this.page.url();
     await this.page.waitForTimeout(200);
     await this.page.evaluate(() => {
-      const logo = document.querySelector('header .logo') as HTMLElement;
+      const logo = document.querySelector('header.header .logo') as HTMLElement;
       if (logo) {
         const link = logo.closest('a') as HTMLAnchorElement;
         if (link) link.click();
         else logo.click();
       }
     });
-    if (!currentUrl.match(/\/$|:8000\/?$/)) {
+    if (!currentUrl.match(/\/$|:9000\/?$|:8000\/?$/)) {
       await this.page.waitForFunction(
         (oldUrl) => window.location.href !== oldUrl,
         currentUrl,
