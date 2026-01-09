@@ -1,0 +1,36 @@
+{
+    "name": "contentstack-gatsby-starter-app-e2e",
+    "version": "1.0.0",
+    "description": "E2E test suite for Contentstack Gatsby Starter App using Playwright",
+    "main": "playwright.config.ts",
+    "scripts": {
+        "test": "playwright test",
+        "test:headed": "playwright test --headed",
+        "test:headless": "playwright test",
+        "test:chromium": "playwright test --project=chromium",
+        "test:firefox": "playwright test --project=firefox",
+        "test:webkit": "playwright test --project=webkit",
+        "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
+        "test:debug": "playwright test --debug",
+        "test:ui": "playwright test --ui",
+        "test:report": "playwright show-report ../playwright-report",
+        "test:ci": "CI=true playwright test --project=chromium",
+        "install:browsers": "playwright install"
+    },
+    "keywords": [
+        "playwright",
+        "e2e",
+        "testing",
+        "contentstack",
+        "gatsby",
+        "typescript"
+    ],
+    "author": "Contentstack",
+    "license": "MIT",
+    "devDependencies": {
+        "@playwright/test": "^1.40.0",
+        "@types/node": "^20.10.0",
+        "dotenv": "^16.3.1",
+        "typescript": "^5.3.0"
+    }
+}
