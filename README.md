@@ -18,6 +18,40 @@ We have created an in-depth tutorial on how you can create a Gatsby starter webs
 
 [Build a Starter Website with Gatsby and Contentstack](https://www.contentstack.com/docs/developers/sample-apps/build-a-starter-website-with-gatsby-and-contentstack/)
 
+## E2E Tests
+
+End-to-end tests using [Playwright](https://playwright.dev/).
+
+### Setup
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+### Run Tests
+
+```bash
+# Development (port 8000)
+npm run develop          # Terminal 1
+npm run test:e2e         # Terminal 2
+
+# Production build (port 9000)
+npm run build && npm run serve   # Terminal 1
+npm run test:e2e:prod            # Terminal 2
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run test:e2e` | Run tests against dev server (port 8000) |
+| `npm run test:e2e:prod` | Run tests against production build (port 9000) |
+| `npm run test:e2e:headed` | Run with visible browser |
+| `npm run test:e2e:debug` | Debug mode |
+| `npm run test:e2e:ui` | Interactive UI |
+| `npm run test:e2e:report` | View HTML report |
+
 **More Resources**
 
 - [Contentstack documentation](https://www.contentstack.com/docs/)
