@@ -12,6 +12,10 @@ yarn-error.log
 .env.development
 .env.production
 
+# Playwright
+playwright-report/
+test-results/
+
 .vercel
 
 .vscode/
