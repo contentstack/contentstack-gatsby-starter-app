@@ -5,7 +5,7 @@
   "version": "3.2.0",
   "author": "Contentstack",
   "dependencies": {
-    "@contentstack/live-preview-utils": "^1.4.0",
+    "@contentstack/live-preview-utils": "^4.3.0",
     "@contentstack/utils": "^1.1.1",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.1.3",
