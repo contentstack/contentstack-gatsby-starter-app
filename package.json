@@ -2,7 +2,7 @@
   "name": "contentstack-gatsby-starter-app",
   "private": true,
   "description": "A simple starter app build using Gatsby and Contentstack",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "author": "Contentstack",
   "dependencies": {
     "@contentstack/live-preview-utils": "^1.4.0",
@@ -67,31 +67,47 @@
     "@types/react-helmet": "^6.1.7"
   },
   "overrides": {
-    "axe-core": "^4.10.0",
-    "axios": "^1.12.0",
+    "@ardatan/relay-compiler": {
+      "glob": "^9.3.5"
+    },
+    "@sigmacomputing/babel-plugin-lodash": {
+      "glob": "^9.3.5"
+    },
     "@babel/helpers": "^7.26.10",
     "@babel/runtime": "^7.26.10",
+    "@pnpm/npm-conf": "^3.0.2",
+    "axe-core": "^4.10.0",
+    "axios": "1.15.2",
     "base-x": "^5.0.1",
     "body-parser": "^1.20.3",
     "brace-expansion": "^2.0.2",
     "braces": "^3.0.3",
     "cookie": "^0.7.0",
     "cross-spawn": "^7.0.5",
+    "eslint": "^9.26.0",
     "express": "^4.20.0",
-    "follow-redirects": "^1.15.6",
+    "file-type": "^21.3.1",
+    "follow-redirects": "^1.16.0",
     "form-data": "^4.0.4",
+    "gatsby-page-utils": {
+      "glob": "^9.3.5"
+    },
+    "immutable": "^4.3.8",
     "js-yaml": "^4.1.1",
     "jws": "^4.0.1",
+    "lodash": "4.18.1",
     "micromatch": "^4.0.8",
     "nanoid": "^3.3.8",
     "on-headers": "^1.1.0",
     "path-to-regexp": "^0.1.12",
+    "postcss": "^8.5.10",
     "send": "^0.19.0",
-    "serialize-javascript": "^6.0.2",
+    "serialize-javascript": "^7.0.5",
     "serve-static": "^1.16.0",
     "tar-fs": "^3.1.1",
     "tmp": "^0.2.4",
-    "ws": "^8.17.1",
-    "@pnpm/npm-conf": "^3.0.2"
+    "uuid": "^14.0.0",
+    "webpack": "^5.104.1",
+    "ws": "^8.17.1"
   }
 }
